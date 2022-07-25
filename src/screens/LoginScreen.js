@@ -3,6 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
+    SafeAreaView,
     TextInput,
     ActivityIndicator,
 } from 'react-native';
@@ -89,44 +90,55 @@ const LoginScreen = ({ navigation }) => {
                             elevation: 1000,
                         },
                     ]}>
-                    <ActivityIndicator size='large' color={colors.logoColor} />
+                    <ActivityIndicator size='large' color={colors.iconColor} />
                 </View>
             ) : null}
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder={'enter email'}
-                    placeholderTextColor={colors.bgTextInputDark}
-                    keyboardType='email-address'
-                    onChangeText={(emailInput) => setEmail(emailInput)}
-                />
-                <TextInput
-                    style={styles.textInput}
-                    placeholder='enter password'
-                    placeholderTextColor={colors.bgTextInputDark}
-                    secureTextEntry
-                    onChangeText={(passwordInput) => setPassword(passwordInput)}
-                />
-                <View style={{ alignItems: 'center' }}>
-                    <CustomSmallButton
-                        onPress={onSignIn}
-                        style={[
-                            styles.smallButtons,
-                            { backgroundColor: colors.bgPrimary },
-                        ]}>
-                        <Text>Login</Text>
+
+            <View style={styles.container}>
+                <SafeAreaView />
+                <View style={{ padding: 20 }}>
+                    <Text style={styles.largeText}>Log In</Text>
+                </View>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                    }}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder={'enter email'}
+                        placeholderTextColor={colors.textInputPlaceholder}
+                        keyboardType='email-address'
+                        onChangeText={(emailInput) => setEmail(emailInput)}
+                    />
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder='enter password'
+                        placeholderTextColor={colors.textInputPlaceholder}
+                        secureTextEntry
+                        onChangeText={(passwordInput) =>
+                            setPassword(passwordInput)
+                        }
+                    />
+                    <CustomSmallButton onPress={onSignIn}>
+                        <Text style={styles.smallButtonText}>Login</Text>
                     </CustomSmallButton>
+                </View>
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                    <Text style={styles.smallButtonText}>
+                        Not registered yet?
+                    </Text>
+                    <Text style={styles.smallButtonText}>
+                        Enter email and password above.
+                    </Text>
                     <CustomSmallButton
                         onPress={onSignUp}
-                        style={[
-                            styles.loginButtons,
-                            { borderColor: colors.bgPrimary },
-                        ]}>
-                        <Text>Sign Up</Text>
+                        style={{ backgroundColor: colors.bgSuccess }}>
+                        <Text style={styles.smallButtonText}>Sign Up</Text>
                     </CustomSmallButton>
                 </View>
             </View>
-            <View style={{ flex: 1 }}></View>
         </View>
     );
 };
