@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+    ScrollView,
     View,
     Text,
     StyleSheet,
@@ -96,7 +97,7 @@ const LoginScreen = ({ navigation }) => {
                 </View>
             ) : null}
 
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
                 <SafeAreaView />
                 <View style={{ padding: 20 }}>
                     <Text style={styles.largeText}>Log In</Text>
@@ -140,7 +141,7 @@ const LoginScreen = ({ navigation }) => {
                         <Text style={styles.smallButtonText}>Sign Up</Text>
                     </CustomSmallButton>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     );
 };
