@@ -1,8 +1,15 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
+import { styles } from '../../assets/styles';
 
 const OpenCreateMenu = ({ navigation }) => {
-    <Text>Open Create Menu here</Text>;
+    const user = navigation.getParam('user');
+    return (
+        <View style={styles.container}>
+            <Text style={styles.smallButtonText}>Open Create Menu here</Text>;
+            <Text style={styles.smallButtonText}>Welcome, {user.email}</Text>;
+        </View>
+    );
 };
 
 export default OpenCreateMenu;

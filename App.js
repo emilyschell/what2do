@@ -5,7 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './src/screens/AppSwitchNavigator/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import LoadingScreen from './src/screens/AppSwitchNavigator/LoadingScreen';
 import OpenCreateMenu from './src/screens/OpenCreateMenu';
+import { colors } from './assets/styles';
 
 // import { decode, encode } from 'base-64';
 
@@ -35,21 +37,23 @@ const App = () => {
     if (fontsLoaded) {
         return (
             <NavigationContainer>
-                <Stack.Navigator>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerTitle: '',
+                        headerStyle: {
+                            backgroundColor: colors.bgMain,
+                        },
+                    }}>
+                    <Stack.Screen name='Welcome' component={WelcomeScreen} />
+                    <Stack.Screen name='LoginScreen' component={LoginScreen} />
                     <Stack.Screen
-                        name='Welcome'
-                        component={WelcomeScreen}
-                        options={{ title: null }}
+                        name='LoadingScreen'
+                        component={LoadingScreen}
                     />
-                    <Stack.Screen
-                        name='LoginScreen'
-                        component={LoginScreen}
-                        options={{ title: null }}
-                    />
+
                     <Stack.Screen
                         name='OpenCreateMenu'
                         component={OpenCreateMenu}
-                        options={{ title: null }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

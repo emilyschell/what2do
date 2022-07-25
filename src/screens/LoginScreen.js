@@ -7,12 +7,14 @@ import {
     TextInput,
     ActivityIndicator,
 } from 'react-native';
-
 import { colors, styles } from '../../assets/styles';
 import CustomSmallButton from '../../components/CustomSmallButton';
-import firebase from '../firebase/firebase';
-// import 'firebase/auth';
-// import 'firebase/database';
+import { auth, db } from '../firebase/firebase';
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -23,9 +25,11 @@ const LoginScreen = ({ navigation }) => {
         if (email && password) {
             setIsLoading(true);
             try {
-                const response = await firebase
-                    .auth()
-                    .signInWithEmailAndPassword(email, password);
+                const response = await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
                 if (response) {
                     setIsLoading(false);
                     navigation.navigate('LoadingScreen');
@@ -44,23 +48,21 @@ const LoginScreen = ({ navigation }) => {
             }
         }
     };
-    const onSignUp = async () => {
+    const onSignUp = async (e) => {
         if (email && password) {
             setIsLoading(true);
             try {
-                const response = await firebase
-                    .auth()
-                    .createUserWithEmailAndPassword(email, password);
+                const response = await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
                 if (response) {
                     setIsLoading(false);
-                    const user = await firebase
-                        .database()
-                        .ref('users')
-                        .child(response.user.uid)
-                        .set({
-                            email: response.user.email,
-                            uid: response.user.uid,
-                        });
+                    await addDoc(collection(db, 'users'), {
+                        email: response.user.email,
+                        uid: response.user.uid,
+                    });
                     //automatically signs in the user
 
                     navigation.navigate('LoadingScreen');
@@ -68,12 +70,12 @@ const LoginScreen = ({ navigation }) => {
             } catch (error) {
                 setIsLoading(false);
                 if (error.code == 'auth/email-already-in-use') {
-                    alert('User already exists. Try loggin in');
+                    alert('User already exists. Try logging in.');
                 }
                 console.log(error);
             }
         } else {
-            alert('Please enter email and password');
+            alert('Please enter email and password.');
         }
     };
 

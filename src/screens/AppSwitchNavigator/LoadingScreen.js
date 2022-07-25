@@ -1,30 +1,28 @@
 import React, { useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { styles, colors } from '../../../assets/styles';
-
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
-import colors from '../../assets/colors';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const LoadingScreen = ({ navigation }) => {
-    useEffect(checkIfLoggedIn, []);
+    // useEffect(checkIfLoggedIn, []);
 
-    checkIfLoggedIn = () => {
-        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                //navigate to home screen
-                navigation.navigate('OpenCreateMenu', { user });
-            } else {
-                //login screen
-                navigation.navigate('LoginStackNavigator');
-            }
-        });
-        return unsubscribe;
-    };
+    // const checkIfLoggedIn = () => {
+    //     const unsubscribe = onAuthStateChanged((user) => {
+    //         if (user) {
+    //             //navigate to home screen
+    //             navigation.navigate('OpenCreateMenu', { user });
+    //         } else {
+    //             //login screen
+    //             navigation.navigate('LoginScreen');
+    //         }
+    //     });
+    //     return unsubscribe;
+    // };
 
     return (
         <View style={styles.container}>
-            <ActivityIndicator size='large' color={colors.iconColor} />
+            {/* <ActivityIndicator size='large' color={colors.iconColor} /> */}
+            <Text style={styles.largeText}>Loading Screen</Text>
         </View>
     );
 };
