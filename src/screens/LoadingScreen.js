@@ -8,7 +8,7 @@ const LoadingScreen = ({ navigation }) => {
     useEffect(() => checkIfLoggedIn(), []);
 
     const checkIfLoggedIn = () => {
-        onAuthStateChanged(auth, (user) => {
+        const subscriber = onAuthStateChanged(auth, (user) => {
             if (user) {
                 //navigate to home screen
                 navigation.navigate('OpenCreateMenu', { user });
@@ -17,6 +17,7 @@ const LoadingScreen = ({ navigation }) => {
                 navigation.navigate('LoginScreen');
             }
         });
+        return subscriber;
     };
 
     return (
