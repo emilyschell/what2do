@@ -71,6 +71,7 @@ export const styles = StyleSheet.create({
         shadowRadius: 15,
         height: 100,
         justifyContent: 'center',
+        margin: 10,
         width: 280,
     },
 });

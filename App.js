@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import WelcomeScreen from './src/screens/AppSwitchNavigator/WelcomeScreen';
+import WelcomeScreen from './src/screens/WelcomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import LoadingScreen from './src/screens/AppSwitchNavigator/LoadingScreen';
+import LoadingScreen from './src/screens/LoadingScreen';
 import OpenCreateMenu from './src/screens/OpenCreateMenu';
 import { colors } from './assets/styles';
 
