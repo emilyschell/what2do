@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { colors, styles } from '../../../assets/styles';
+import { styles } from '../../../assets/styles';
 import CustomBigButton from '../../../components/CustomBigButton';
 
 const WelcomeScreen = ({ navigation }) => {
@@ -10,7 +10,7 @@ const WelcomeScreen = ({ navigation }) => {
                 <Text
                     style={{
                         fontSize: 36,
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Roboto',
                         fontWeight: '400',
                     }}>
                     Thanks for using

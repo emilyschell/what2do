@@ -10,9 +10,9 @@ import {
 
 import { colors, styles } from '../../assets/styles';
 import CustomSmallButton from '../../components/CustomSmallButton';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
+import firebase from '../firebase/firebase';
+// import 'firebase/auth';
+// import 'firebase/database';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -61,9 +61,9 @@ const LoginScreen = ({ navigation }) => {
                             email: response.user.email,
                             uid: response.user.uid,
                         });
+                    //automatically signs in the user
 
                     navigation.navigate('LoadingScreen');
-                    //automatically signs in the user
                 }
             } catch (error) {
                 setIsLoading(false);

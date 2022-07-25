@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         color: colors.textColorDefault,
-        fontFamily: 'Montserrat',
+        fontFamily: 'Roboto',
         fontSize: 20,
         height: 40,
         marginHorizontal: 40,
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
         width: 100,
     },
     smallButtonText: {
-        fontFamily: 'Montserrat',
+        fontFamily: 'Roboto',
         fontSize: 18,
     },
     bigButtons: {
@@ -66,8 +66,8 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         color: colors.textColorDefault,
         shadowColor: '#000',
-        shadowOffset: { width: 40, height: 40 },
-        shadowOpacity: 1,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
         shadowRadius: 15,
         height: 100,
         justifyContent: 'center',
