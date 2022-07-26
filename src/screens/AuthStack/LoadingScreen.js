@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
-import { styles, colors } from '../../assets/styles';
-import { auth } from '../firebase/firebase';
+import { styles, colors } from '../../../assets/styles';
+import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const LoadingScreen = ({ navigation }) => {

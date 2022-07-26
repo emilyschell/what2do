@@ -8,14 +8,10 @@ import {
     TextInput,
     ActivityIndicator,
 } from 'react-native';
-import { colors, styles } from '../../assets/styles';
-import CustomSmallButton from '../../components/CustomSmallButton';
-import { auth, db } from '../firebase/firebase';
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-} from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { colors, styles } from '../../../assets/styles';
+import CustomSmallButton from '../../../components/CustomSmallButton';
+import { auth } from '../../firebase/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -33,7 +29,10 @@ const LoginScreen = ({ navigation }) => {
                 );
                 if (response) {
                     setIsLoading(false);
-                    navigation.navigate('LoadingScreen');
+                    const user = auth.currentUser;
+                    navigation.navigate('OpenCreateMenu', {
+                        user: JSON.stringify(user),
+                    });
                 }
             } catch (error) {
                 setIsLoading(false);
@@ -45,35 +44,15 @@ const LoginScreen = ({ navigation }) => {
                         break;
                     case 'auth/invalid-email':
                         alert('Please enter a valid email address');
+                        break;
+                    case 'auth/wrong-password':
+                        alert('Incorrect password');
+                        break;
+                    default:
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        alert({ errorCode }, { errorMessage });
                 }
-            }
-        }
-    };
-    const onSignUp = async (e) => {
-        if (email && password) {
-            setIsLoading(true);
-            try {
-                const response = await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
-                );
-                if (response) {
-                    setIsLoading(false);
-                    await addDoc(collection(db, 'users'), {
-                        email: response.user.email,
-                        uid: response.user.uid,
-                    });
-                    //automatically signs in the user
-
-                    navigation.navigate('LoadingScreen');
-                }
-            } catch (error) {
-                setIsLoading(false);
-                if (error.code == 'auth/email-already-in-use') {
-                    alert('User already exists. Try logging in.');
-                }
-                console.log(error);
             }
         } else {
             alert('Please enter email and password.');
@@ -99,7 +78,7 @@ const LoginScreen = ({ navigation }) => {
 
             <ScrollView contentContainerStyle={styles.container}>
                 <SafeAreaView />
-                <View style={{ padding: 20 }}>
+                <View style={{ padding: 20, marginTop: 50 }}>
                     <Text style={styles.largeText}>Log In</Text>
                 </View>
                 <View
@@ -132,11 +111,8 @@ const LoginScreen = ({ navigation }) => {
                     <Text style={styles.smallButtonText}>
                         Not registered yet?
                     </Text>
-                    <Text style={styles.smallButtonText}>
-                        Enter email and password above.
-                    </Text>
                     <CustomSmallButton
-                        onPress={onSignUp}
+                        onPress={() => navigation.navigate('SignUpScreen')}
                         style={{ backgroundColor: colors.bgSuccess }}>
                         <Text style={styles.smallButtonText}>Sign Up</Text>
                     </CustomSmallButton>

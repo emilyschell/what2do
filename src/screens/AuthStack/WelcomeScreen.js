@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { styles } from '../../assets/styles';
-import CustomBigButton from '../../components/CustomBigButton';
+import { styles } from '../../../assets/styles';
+import CustomBigButton from '../../../components/CustomBigButton';
 
 const WelcomeScreen = ({ navigation }) => {
     return (

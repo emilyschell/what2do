@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import WelcomeScreen from './src/screens/WelcomeScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import LoadingScreen from './src/screens/LoadingScreen';
-import OpenCreateMenu from './src/screens/OpenCreateMenu';
-import { colors } from './assets/styles';
+import WelcomeScreen from './src/screens/AuthStack/WelcomeScreen';
+import LoginScreen from './src/screens/AuthStack/LoginScreen';
+import SignUpScreen from './src/screens/AuthStack/SignUpScreen';
+import LoadingScreen from './src/screens/AuthStack/LoadingScreen';
+import OpenCreateMenu from './src/screens/AppStack/OpenCreateMenu';
 
 // import { decode, encode } from 'base-64';
 
@@ -39,13 +39,14 @@ const App = () => {
             <NavigationContainer>
                 <Stack.Navigator
                     screenOptions={{
-                        headerTitle: '',
-                        headerStyle: {
-                            backgroundColor: colors.bgMain,
-                        },
+                        headerShown: false,
                     }}>
                     <Stack.Screen name='Welcome' component={WelcomeScreen} />
                     <Stack.Screen name='LoginScreen' component={LoginScreen} />
+                    <Stack.Screen
+                        name='SignUpScreen'
+                        component={SignUpScreen}
+                    />
                     <Stack.Screen
                         name='LoadingScreen'
                         component={LoadingScreen}

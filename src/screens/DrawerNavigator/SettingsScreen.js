@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import CustomBigButton from '../../components/CustomBigButton';
-import { styles } from '../../assets/styles';
-import { auth } from '../firebase/firebase';
+import { View, Text } from 'react-native';
+import CustomBigButton from '../../../components/CustomBigButton';
+import { styles } from '../../../assets/styles';
+import { auth } from '../../firebase/firebase';
 import { signOut } from 'firebase/auth';
 
 const SettingScreen = ({ navigation }) => {

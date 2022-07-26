@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
         color: colors.textColorDefault,
         fontFamily: 'PermanentMarker',
         fontSize: 36,
+        margin: 15,
     },
     textInput: {
         backgroundColor: colors.bgTextInput,
