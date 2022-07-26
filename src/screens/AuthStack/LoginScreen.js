@@ -29,10 +29,7 @@ const LoginScreen = ({ navigation }) => {
                 );
                 if (response) {
                     setIsLoading(false);
-                    const user = auth.currentUser;
-                    navigation.navigate('OpenCreateMenu', {
-                        user: JSON.stringify(user),
-                    });
+                    navigation.navigate('OpenCreateMenu');
                 }
             } catch (error) {
                 setIsLoading(false);
@@ -108,9 +105,7 @@ const LoginScreen = ({ navigation }) => {
                     </CustomSmallButton>
                 </View>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Text style={styles.smallButtonText}>
-                        Not registered yet?
-                    </Text>
+                    <Text style={styles.mediumText}>Not registered yet?</Text>
                     <CustomSmallButton
                         onPress={() => navigation.navigate('SignUpScreen')}
                         style={{ backgroundColor: colors.bgSuccess }}>

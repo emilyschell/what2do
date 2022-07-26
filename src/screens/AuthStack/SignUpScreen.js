@@ -49,9 +49,7 @@ const SignUpScreen = ({ navigation }) => {
                         // adds displayName to user profile
                         // adds user to Firestore database
                         //automatically signs in the user
-                        navigation.navigate('OpenCreateMenu', {
-                            user: JSON.stringify(user),
-                        });
+                        navigation.navigate('OpenCreateMenu');
                     }
                 } catch (error) {
                     setIsLoading(false);

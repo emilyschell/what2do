@@ -4,26 +4,28 @@ import { styles } from '../../../assets/styles';
 import CustomBigButton from '../../../components/CustomBigButton';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { auth } from '../../firebase/firebase';
 
-const OpenCreateMenu = ({ route, navigation }) => {
-    const { user } = route.params;
+const OpenCreateMenu = ({ navigation }) => {
+    const name = auth.currentUser.displayName;
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { justifyContent: 'flex-start' }]}>
             <Text style={styles.largeText}>Schedules</Text>
-            <Text style={styles.smallButtonText}>
-                Welcome {JSON.parse(user).displayName}
-            </Text>
-
-            <CustomBigButton
-                style={[styles.bigButtons, { flexDirection: 'row' }]}>
-                <FontAwesome name='folder-open' size={40} color='black' />
-                <Text style={styles.largeText}>Open</Text>
-            </CustomBigButton>
-            <CustomBigButton
-                style={[styles.bigButtons, { flexDirection: 'row' }]}>
-                <Entypo name='edit' size={40} color='black' />
-                <Text style={styles.largeText}>Make</Text>
-            </CustomBigButton>
+            <Text style={styles.mediumText}>Welcome {name}</Text>
+            <View style={{ marginTop: 50 }}>
+                <CustomBigButton
+                    style={[styles.bigButtons, { flexDirection: 'row' }]}
+                    onPress={() => navigation.navigate('OpenFileList')}>
+                    <FontAwesome name='folder-open' size={40} color='black' />
+                    <Text style={styles.largeText}>Open</Text>
+                </CustomBigButton>
+                <CustomBigButton
+                    style={[styles.bigButtons, { flexDirection: 'row' }]}
+                    onPress={() => navigation.navigate('ScheduleTypeMenu')}>
+                    <Entypo name='edit' size={40} color='black' />
+                    <Text style={styles.largeText}>Make</Text>
+                </CustomBigButton>
+            </View>
         </View>
     );
 };

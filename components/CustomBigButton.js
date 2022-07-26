@@ -13,7 +13,8 @@ const CustomBigButton = ({ children, onPress, style }) => {
 
 CustomBigButton.propTypes = {
     onPress: Proptypes.func.isRequired,
-    children: Proptypes.element.isRequired,
+    children: Proptypes.oneOfType([Proptypes.element, Proptypes.array])
+        .isRequired,
     style: Proptypes.oneOfType([Proptypes.object, Proptypes.array]),
 };
 

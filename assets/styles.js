@@ -22,8 +22,12 @@ export const styles = StyleSheet.create({
     largeText: {
         color: colors.textColorDefault,
         fontFamily: 'PermanentMarker',
-        fontSize: 36,
+        fontSize: 40,
         margin: 15,
+    },
+    mediumText: {
+        fontFamily: 'Roboto',
+        fontSize: 30,
     },
     textInput: {
         backgroundColor: colors.bgTextInput,
@@ -48,7 +52,7 @@ export const styles = StyleSheet.create({
         color: colors.textColorDefault,
         height: 45,
         justifyContent: 'center',
-        marginTop: 10,
+        marginTop: 15,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.25,
