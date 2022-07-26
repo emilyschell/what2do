@@ -11,7 +11,9 @@ const LoadingScreen = ({ navigation }) => {
         const subscriber = onAuthStateChanged(auth, (user) => {
             if (user) {
                 //navigate to home screen
-                navigation.navigate('OpenCreateMenu', { user });
+                navigation.navigate('OpenCreateMenu', {
+                    user: JSON.stringify(user),
+                });
             } else {
                 //login screen
                 navigation.navigate('LoginScreen');

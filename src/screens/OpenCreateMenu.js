@@ -8,7 +8,9 @@ const OpenCreateMenu = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.largeText}>Schedules</Text>
-            <Text style={styles.smallButtonText}>Welcome {user.email}</Text>
+            <Text style={styles.smallButtonText}>
+                Welcome {JSON.parse(user).email}
+            </Text>
 
             <CustomBigButton>
                 <Text style={styles.largeText}>Open</Text>
