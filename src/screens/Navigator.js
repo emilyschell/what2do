@@ -9,6 +9,7 @@ import OpenFileList from './AppStack/OpenFileList';
 import { AuthContext } from '../contexts/AuthContext';
 import { useContext } from 'react';
 import { colors } from '../../assets/styles';
+import { ScheduleProvider } from '../contexts/ScheduleContext';
 
 const Navigator = () => {
     const { currentUser } = useContext(AuthContext);
@@ -29,25 +30,30 @@ const Navigator = () => {
 
     const AppStack = () => {
         return (
-            <Stack.Navigator
-                screenOptions={{
-                    headerTitle: '',
-                    headerStyle: { backgroundColor: colors.bgMain },
-                }}>
-                <Stack.Screen
-                    name='OpenCreateMenu'
-                    component={OpenCreateMenu}
-                />
-                <Stack.Screen
-                    name='CreateEditSchedule'
-                    component={CreateEditSchedule}
-                />
-                <Stack.Screen
-                    name='ScheduleTypeMenu'
-                    component={ScheduleTypeMenu}
-                />
-                <Stack.Screen name='OpenFileList' component={OpenFileList} />
-            </Stack.Navigator>
+            <ScheduleProvider>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerTitle: '',
+                        headerStyle: { backgroundColor: colors.bgMain },
+                    }}>
+                    <Stack.Screen
+                        name='OpenCreateMenu'
+                        component={OpenCreateMenu}
+                    />
+                    <Stack.Screen
+                        name='CreateEditSchedule'
+                        component={CreateEditSchedule}
+                    />
+                    <Stack.Screen
+                        name='ScheduleTypeMenu'
+                        component={ScheduleTypeMenu}
+                    />
+                    <Stack.Screen
+                        name='OpenFileList'
+                        component={OpenFileList}
+                    />
+                </Stack.Navigator>
+            </ScheduleProvider>
         );
     };
 
