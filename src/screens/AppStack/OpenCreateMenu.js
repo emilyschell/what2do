@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
 import { styles } from '../../../assets/styles';
 import CustomBigButton from '../../../components/CustomBigButton';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { auth } from '../../firebase/firebase';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const OpenCreateMenu = ({ navigation }) => {
-    const name = auth.currentUser.displayName;
+    const { currentUser } = useContext(AuthContext);
     return (
         <View style={[styles.container, { justifyContent: 'flex-start' }]}>
             <Text style={styles.largeText}>Schedules</Text>
-            <Text style={styles.mediumText}>Welcome {name}</Text>
+            <Text style={styles.mediumText}>
+                Welcome {currentUser.displayName}
+            </Text>
             <View style={{ marginTop: 50 }}>
                 <CustomBigButton
                     style={[styles.bigButtons, { flexDirection: 'row' }]}

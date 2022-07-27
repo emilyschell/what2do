@@ -14,7 +14,7 @@ import { auth, db } from '../../firebase/firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 
-const SignUpScreen = ({ navigation }) => {
+const SignUpScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
@@ -36,7 +36,6 @@ const SignUpScreen = ({ navigation }) => {
                         password
                     );
                     if (response) {
-                        setIsLoading(false);
                         const user = auth.currentUser;
                         await updateProfile(user, {
                             displayName: name,
@@ -48,8 +47,7 @@ const SignUpScreen = ({ navigation }) => {
                         });
                         // adds displayName to user profile
                         // adds user to Firestore database
-                        //automatically signs in the user
-                        navigation.navigate('OpenCreateMenu');
+                        // //automatically signs in the user
                     }
                 } catch (error) {
                     setIsLoading(false);

@@ -27,10 +27,6 @@ const LoginScreen = ({ navigation }) => {
                     email,
                     password
                 );
-                if (response) {
-                    setIsLoading(false);
-                    navigation.navigate('OpenCreateMenu');
-                }
             } catch (error) {
                 setIsLoading(false);
                 switch (error.code) {
@@ -46,9 +42,7 @@ const LoginScreen = ({ navigation }) => {
                         alert('Incorrect password');
                         break;
                     default:
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                        alert({ errorCode }, { errorMessage });
+                        alert(JSON.stringify(error.message));
                 }
             }
         } else {
