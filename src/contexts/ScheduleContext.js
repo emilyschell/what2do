@@ -30,6 +30,7 @@ export const ScheduleProvider = ({ children }) => {
         setType,
         setTitle,
         setTasks,
+        setScheduleInfo,
     };
 
     return (

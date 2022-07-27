@@ -9,7 +9,7 @@ export const colors = {
     borderColor: '#000',
     iconColor: '#000',
     textColorDefault: '#000',
-    textInputPlaceholder: '#555',
+    textInputPlaceholder: '#aaa',
 };
 
 export const styles = StyleSheet.create({
@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.bgMain,
+        paddingTop: 30,
     },
     largeText: {
         color: colors.textColorDefault,
@@ -78,5 +79,69 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         margin: 10,
         width: 280,
+    },
+    taskContainer: {
+        flex: 1,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+    },
+    taskText: {
+        fontSize: 30,
+        fontFamily: 'Roboto',
+        margin: 10,
+    },
+    taskTextInput: {
+        fontFamily: 'Roboto',
+        margin: 10,
+        backgroundColor: colors.bgTextInput,
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        color: colors.textColorDefault,
+        fontFamily: 'Roboto',
+        fontSize: 30,
+        height: 50,
+        marginBottom: 20,
+        paddingHorizontal: 10,
+        width: 300,
+    },
+    completed: {
+        textDecorationLine: 'line-through',
+    },
+    incomplete: {
+        textDecorationLine: 'none',
+    },
+    image: {
+        borderWidth: 1,
+        borderColor: colors.borderColor,
+        borderRadius: 10,
+        height: 200,
+        width: 200,
+    },
+    imageContainer: {
+        alignItems: 'center',
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        borderRadius: 10,
+        height: 200,
+        justifyContent: 'center',
+        width: 200,
+    },
+    addButton: {
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: colors.borderColor,
+        backgroundColor: colors.bgPrimary,
+        height: 25,
+        width: 25,
+    },
+    scrollView: {
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        borderRadius: 5,
+        backgroundColor: '#fff',
+        width: '90%',
+        height: '85%',
     },
 });

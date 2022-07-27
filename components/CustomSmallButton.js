@@ -6,9 +6,9 @@ import { styles } from '../assets/styles';
 const getPosition = (position) => {
     switch (position) {
         case 'left':
-            return { position: 'absolute', left: 20, bottom: 50 };
+            return { position: 'absolute', left: 20, bottom: 20 };
         case 'right':
-            return { position: 'absolute', right: 20, bottom: 50 };
+            return { position: 'absolute', right: 20, bottom: 20 };
         default:
             return {};
     }

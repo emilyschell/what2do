@@ -33,8 +33,7 @@ const Navigator = () => {
             <ScheduleProvider>
                 <Stack.Navigator
                     screenOptions={{
-                        headerTitle: '',
-                        headerStyle: { backgroundColor: colors.bgMain },
+                        headerShown: false,
                     }}>
                     <Stack.Screen
                         name='OpenCreateMenu'

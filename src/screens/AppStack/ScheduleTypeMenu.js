@@ -4,9 +4,10 @@ import React, { useContext } from 'react';
 import CustomBigButton from '../../../components/CustomBigButton';
 import { FontAwesome } from '@expo/vector-icons';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
+import CustomSmallButton from '../../../components/CustomSmallButton';
 
 const ScheduleTypeMenu = ({ navigation }) => {
-    const { setType } = useContext(ScheduleContext);
+    const { setScheduleInfo } = useContext(ScheduleContext);
     return (
         <View style={[styles.container, { justifyContent: 'flex-start' }]}>
             <Text style={styles.largeText}>Schedules</Text>
@@ -14,7 +15,11 @@ const ScheduleTypeMenu = ({ navigation }) => {
                 <CustomBigButton
                     style={[styles.bigButtons, { paddingTop: 15 }]}
                     onPress={() => {
-                        setType('picture');
+                        setScheduleInfo({
+                            type: 'picture',
+                            title: '',
+                            tasks: [],
+                        });
                         navigation.navigate('CreateEditSchedule');
                     }}>
                     <FontAwesome name='photo' size={50} />
@@ -29,7 +34,7 @@ const ScheduleTypeMenu = ({ navigation }) => {
                 <CustomBigButton
                     style={[styles.bigButtons, { flexDirection: 'row' }]}
                     onPress={() => {
-                        setType('text');
+                        setScheduleInfo({ type: 'text', title: '', tasks: [] });
                         navigation.navigate('CreateEditSchedule');
                     }}>
                     <Text style={styles.largeText}>Words</Text>
@@ -37,13 +42,24 @@ const ScheduleTypeMenu = ({ navigation }) => {
                 <CustomBigButton
                     style={[styles.bigButtons, { flexDirection: 'row' }]}
                     onPress={() => {
-                        setType('hybrid');
+                        setScheduleInfo({
+                            type: 'hybrid',
+                            title: '',
+                            tasks: [],
+                        });
                         navigation.navigate('CreateEditSchedule');
                     }}>
                     <FontAwesome name='photo' size={40} />
                     <Text style={styles.largeText}>Both</Text>
                 </CustomBigButton>
             </View>
+            <CustomSmallButton
+                position='left'
+                onPress={() => {
+                    navigation.goBack();
+                }}>
+                <Text style={styles.smallButtonText}>Back</Text>
+            </CustomSmallButton>
         </View>
     );
 };
