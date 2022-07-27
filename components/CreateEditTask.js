@@ -33,7 +33,7 @@ const CreateEditTask = ({ addTask }) => {
             return (
                 <View style={styles.taskContainer}>
                     <TextInput
-                        style={styles.taskTextInput}
+                        style={[styles.taskTextInput, { flex: 5 }]}
                         placeholder='enter task'
                         placeholderTextColor={colors.textInputPlaceholder}
                         onChangeText={(val) => setText(val)}
@@ -41,8 +41,18 @@ const CreateEditTask = ({ addTask }) => {
                     />
                     <TouchableOpacity
                         style={styles.addButton}
-                        onPress={() => addTask(text, null)}>
-                        <Text style={styles.smallButtonText}>+</Text>
+                        onPress={() => {
+                            addTask(text, null);
+                            setText('');
+                        }}>
+                        <Text
+                            style={{
+                                fontSize: 40,
+                                textAlign: 'center',
+                                textAlignVertical: 'center',
+                            }}>
+                            +
+                        </Text>
                     </TouchableOpacity>
                 </View>
             );

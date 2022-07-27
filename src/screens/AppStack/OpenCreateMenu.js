@@ -13,7 +13,9 @@ const OpenCreateMenu = ({ navigation }) => {
         <View style={[styles.container, { justifyContent: 'flex-start' }]}>
             <Text style={styles.largeText}>Schedules</Text>
             <Text style={styles.mediumText}>
-                Welcome {currentUser ? currentUser.displayName : 'New User'}!
+                Welcome{' '}
+                {currentUser.displayName ? currentUser.displayName : 'New User'}
+                !
             </Text>
             <View style={{ marginTop: 50 }}>
                 <CustomBigButton

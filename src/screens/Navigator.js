@@ -10,6 +10,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { useContext } from 'react';
 import { colors } from '../../assets/styles';
 import { ScheduleProvider } from '../contexts/ScheduleContext';
+import ReadSchedule from './AppStack/ReadSchedule';
 
 const Navigator = () => {
     const { currentUser } = useContext(AuthContext);
@@ -50,6 +51,10 @@ const Navigator = () => {
                     <Stack.Screen
                         name='OpenFileList'
                         component={OpenFileList}
+                    />
+                    <Stack.Screen
+                        name='ReadSchedule'
+                        component={ReadSchedule}
                     />
                 </Stack.Navigator>
             </ScheduleProvider>

@@ -12,7 +12,7 @@ import { colors, styles } from '../../../assets/styles';
 import CustomSmallButton from '../../../components/CustomSmallButton';
 import { auth, db } from '../../firebase/firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 
 const SignUpScreen = () => {
     const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ const SignUpScreen = () => {
                         await updateProfile(user, {
                             displayName: name,
                         });
-                        await addDoc(collection(db, 'users'), {
+                        await setDoc(doc(db, 'users', response.user.uid), {
                             email: response.user.email,
                             uid: response.user.uid,
                             displayName: name,
@@ -50,7 +50,6 @@ const SignUpScreen = () => {
                         // //automatically signs in the user
                     }
                 } catch (error) {
-                    setIsLoading(false);
                     if (error.code == 'auth/email-already-in-use') {
                         alert('User already exists. Try logging in.');
                     }
