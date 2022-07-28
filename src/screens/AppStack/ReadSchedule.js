@@ -73,7 +73,7 @@ const ReadSchedule = ({ navigation }) => {
         );
     } else {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, { paddingTop: 0 }]}>
                 <SafeAreaView />
                 <View style={styles.scheduleView}>
                     <TouchableOpacity

@@ -85,6 +85,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         margin: 10,
+        width: '90%',
     },
     taskText: {
         fontSize: 30,
@@ -103,6 +104,7 @@ export const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 30,
         height: 50,
+        width: '90%',
         paddingHorizontal: 10,
     },
     completed: {
@@ -137,7 +139,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     scheduleView: {
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'flex-start',
         borderColor: colors.borderColor,
         borderWidth: 1,
@@ -146,9 +148,22 @@ export const styles = StyleSheet.create({
         width: '90%',
         height: '90%',
     },
+    editScheduleView: {
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        width: '90%',
+        height: '80%',
+        marginTop: 0,
+    },
     taskList: {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
+        padding: 10,
+        width: '100%',
     },
     checkboxBase: {
         width: 30,
@@ -157,5 +172,21 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderColor: colors.borderColor,
+    },
+    fileItem: {
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        justifyContent: 'space-between',
+        poadding: 10,
+        width: '100%',
+    },
+    fileList: {
+        alignItems: 'flex-start',
+        backgroundColor: colors.bgPrimary,
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        borderRadius: 10,
+        justifyContent: 'flex-start',
+        width: '90%',
     },
 });

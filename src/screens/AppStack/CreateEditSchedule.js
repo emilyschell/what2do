@@ -12,7 +12,7 @@ import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
 import CreateEditTask from '../../../components/CreateEditTask';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, setDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
@@ -44,11 +44,23 @@ const CreateEditSchedule = ({ navigation }) => {
             type,
         };
         if (newTasks.length && newTitle) {
+            // Add schedule to user's Firestore collection
             try {
                 const schedulesColl = collection(db, 'users', uid, 'schedules');
                 const schedResponse = await addDoc(schedulesColl, newSchedule);
                 if (schedResponse) {
+                    // Add schedule ID to newly created schedule
+                    await setDoc(
+                        doc(schedulesColl, schedResponse.id),
+                        {
+                            sid: schedResponse.id,
+                        },
+                        { merge: true }
+                    );
+                    // Set schedule id in app context
                     setSid(schedResponse.id);
+
+                    // Assign tasks to newly created schedule, in loops with setTimeout due to rate limits
                     const tasksColl = collection(
                         db,
                         'users',
@@ -57,6 +69,7 @@ const CreateEditSchedule = ({ navigation }) => {
                         schedResponse.id,
                         'tasks'
                     );
+
                     const timeouts = [];
                     for (const task of newTasks) {
                         timeouts.push(
@@ -66,8 +79,29 @@ const CreateEditSchedule = ({ navigation }) => {
                     for (const to of timeouts) {
                         clearTimeout(to);
                     }
+
+                    // Assign task IDs to newly created tasks
+                    const tasksSnap = await getDocs(tasksColl);
+                    const taskIds = [];
+                    tasksSnap.forEach((task) => taskIds.push(task.id));
+                    const timeouts2 = [];
+                    for (const taskId of taskIds) {
+                        timeouts2.push(
+                            setTimeout(
+                                setDoc(
+                                    doc(tasksColl, taskId),
+                                    { tid: taskId },
+                                    { merge: true }
+                                ),
+                                1000
+                            )
+                        );
+                    }
+                    for (const to2 of timeouts2) {
+                        clearTimeout(to2);
+                    }
                 }
-                // move into conditional?
+                // move to inside conditional?
                 navigation.navigate('ReadSchedule');
             } catch (error) {
                 console.log('error: ', error);
@@ -104,7 +138,7 @@ const CreateEditSchedule = ({ navigation }) => {
                 <SafeAreaView />
 
                 {/* Schedule View */}
-                <View style={[styles.scheduleView, { height: '85%' }]}>
+                <View style={styles.editScheduleView}>
                     {/* Delete Button */}
                     <TouchableOpacity
                         style={{ margin: 10 }}
@@ -118,7 +152,10 @@ const CreateEditSchedule = ({ navigation }) => {
 
                     {/* Title Field */}
                     <TextInput
-                        style={styles.taskTextInput}
+                        style={[
+                            styles.taskTextInput,
+                            { marginRight: 0, textAlign: 'center' },
+                        ]}
                         placeholder='enter title'
                         placeholderTextColor={colors.textInputPlaceholder}
                         value={newTitle}
@@ -126,10 +163,11 @@ const CreateEditSchedule = ({ navigation }) => {
                     />
 
                     {/* Task List */}
-                    {newTasks.length > 0 ? (
-                        <FlatList data={newTasks} renderItem={renderTask} />
-                    ) : null}
-
+                    <View style={styles.taskList}>
+                        {newTasks.length > 0 ? (
+                            <FlatList data={newTasks} renderItem={renderTask} />
+                        ) : null}
+                    </View>
                     {/* New Task Input */}
                     <CreateEditTask addTask={addTask} />
                 </View>
