@@ -76,12 +76,22 @@ const ReadSchedule = ({ navigation }) => {
             <View style={[styles.container, { paddingTop: 0 }]}>
                 <SafeAreaView />
                 <View style={styles.scheduleView}>
-                    <TouchableOpacity
-                        style={{ display: 'absolute', right: 10, top: 20 }}
-                        onPress={() => navigation.navigate('OpenCreateMenu')}>
-                        <FontAwesome name='close' size={24} />
-                    </TouchableOpacity>
-                    <Text style={styles.largeText}>{title}</Text>
+                    <View
+                        style={{
+                            width: '95%',
+                            alignItems: 'flex-end',
+                            margin: 10,
+                        }}>
+                        <TouchableOpacity
+                            onPress={() =>
+                                navigation.navigate('OpenCreateMenu')
+                            }>
+                            <FontAwesome name='close' size={24} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ width: '100%', alignItems: 'center' }}>
+                        <Text style={styles.largeText}>{title}</Text>
+                    </View>
                     <FlatList
                         data={tasks}
                         renderItem={({ item }) => {
