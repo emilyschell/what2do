@@ -1,41 +1,34 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import CheckBox from '@react-native-community/checkbox';
 import { ScheduleContext } from '../src/contexts/ScheduleContext';
 import { styles } from '../assets/styles';
+import Checkbox from './Checkbox';
 
 const ScheduleTask = ({ task }) => {
     const { type } = useContext(ScheduleContext);
-    const [toggleCheckBox, setToggleCheckBox] = useState(task.completed);
+    const [complete, setComplete] = useState(false);
 
     switch (type) {
         case 'text':
-            return;
-            <View style={styles.taskContainer}>
-                <CheckBox
-                    height={40}
-                    value={toggleCheckBox}
-                    onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
-                />
-                <Text
-                    style={[
-                        styles.taskText,
-                        task.completed ? styles.completed : styles.incomplete,
-                    ]}>
-                    {task.text}
-                </Text>
-            </View>;
+            return (
+                <View style={styles.taskContainer}>
+                    <Checkbox setComplete={setComplete} />
+                    <Text
+                        style={[
+                            styles.taskText,
+                            complete ? styles.completed : styles.incomplete,
+                        ]}>
+                        {task.text}
+                    </Text>
+                </View>
+            );
             break;
 
         case 'picture':
             return (
                 <View style={styles.taskContainer}>
-                    <CheckBox
-                        height={40}
-                        value={toggleCheckBox}
-                        onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
-                    />
+                    <Checkbox setComplete={setComplete} />
                     <Image
                         style={[
                             styles.image,
@@ -54,24 +47,18 @@ const ScheduleTask = ({ task }) => {
                         styles.taskContainer,
                         { justifyContent: 'center' },
                     ]}>
-                    <CheckBox
-                        height={40}
-                        value={toggleCheckBox}
-                        onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
-                    />
+                    <Checkbox setComplete={setComplete} />
                     <Text
                         style={[
                             styles.taskText,
-                            task.completed
-                                ? styles.completed
-                                : styles.incomplete,
+                            complete ? styles.completed : styles.incomplete,
                         ]}>
                         {task.text}
                     </Text>
                     <Image
                         style={[
                             styles.image,
-                            task.completed ? { opacity: 0.7 } : null,
+                            complete ? { opacity: 0.7 } : null,
                         ]}
                         source={task.image}
                     />
@@ -85,11 +72,8 @@ const ScheduleTask = ({ task }) => {
 
 ScheduleTask.propTypes = {
     task: PropTypes.shape({
-        id: PropTypes.number,
         image: PropTypes.string,
         text: PropTypes.string,
-        completed: PropTypes.bool,
-        subtasks: PropTypes.array,
     }),
 };
 

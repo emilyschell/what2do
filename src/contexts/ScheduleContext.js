@@ -3,33 +3,21 @@ import React, { useState, createContext } from 'react';
 export const ScheduleContext = createContext();
 
 export const ScheduleProvider = ({ children }) => {
-    const blankSchedule = {
-        type: '',
-        title: '',
-        tasks: [],
-    };
-
-    const [scheduleInfo, setScheduleInfo] = useState(blankSchedule);
+    const [scheduleInfo, setScheduleInfo] = useState({ type: '', sid: '' });
 
     const setType = (type) => {
         const newSchedule = { ...scheduleInfo, type };
         setScheduleInfo(newSchedule);
     };
 
-    const setTitle = (title) => {
-        const newSchedule = { ...scheduleInfo, title };
-        setScheduleInfo(newSchedule);
-    };
-
-    const setTasks = (tasks) => {
-        const newSchedule = { ...scheduleInfo, tasks };
+    const setSid = (sid) => {
+        const newSchedule = { ...scheduleInfo, sid };
         setScheduleInfo(newSchedule);
     };
 
     const scheduleContextSetters = {
         setType,
-        setTitle,
-        setTasks,
+        setSid,
         setScheduleInfo,
     };
 

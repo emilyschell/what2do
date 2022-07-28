@@ -5,7 +5,6 @@ import CustomBigButton from '../../../components/CustomBigButton';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { AuthContext } from '../../contexts/AuthContext';
-import CustomSmallButton from '../../../components/CustomSmallButton';
 
 const OpenCreateMenu = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);

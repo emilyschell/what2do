@@ -12,37 +12,43 @@ import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
 import CreateEditTask from '../../../components/CreateEditTask';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, addDoc, writeBatch } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
 
 const CreateEditSchedule = ({ navigation }) => {
-    const { type, title, tasks, setScheduleInfo } = useContext(ScheduleContext);
-    const [newTitle, setNewTitle] = useState(title);
-    const [newTasks, setNewTasks] = useState(tasks);
     const { currentUser } = useContext(AuthContext);
+    const { type, sid, setSid } = useContext(ScheduleContext);
     const uid = currentUser.uid;
+    const [newTitle, setNewTitle] = useState('');
+    const [newTasks, setNewTasks] = useState([]);
+
+    // write logic to pull down title and tasks given sid if sid is set, and updateSchedule function
 
     const addTask = (text, imageUrl) => {
-        const newTask = {
-            completed: false,
-            text: text,
-            image: imageUrl,
-        };
-        setNewTasks([...newTasks, newTask]);
+        if (text.length) {
+            const newTask = {
+                text: text,
+                image: imageUrl,
+            };
+            setNewTasks([...newTasks, newTask]);
+        } else {
+            alert('Please enter a task');
+        }
     };
 
-    const addSchedule = async () => {
+    const makeSchedule = async () => {
         const newSchedule = {
             title: newTitle,
             type,
         };
-        if (newTasks.length > 0 && newTitle) {
+        if (newTasks.length && newTitle) {
             try {
                 const schedulesColl = collection(db, 'users', uid, 'schedules');
                 const schedResponse = await addDoc(schedulesColl, newSchedule);
                 if (schedResponse) {
+                    setSid(schedResponse.id);
                     const tasksColl = collection(
                         db,
                         'users',
@@ -51,24 +57,45 @@ const CreateEditSchedule = ({ navigation }) => {
                         schedResponse.id,
                         'tasks'
                     );
+                    const timeouts = [];
                     for (const task of newTasks) {
-                        setTimeout(() => addDoc(tasksColl, task), 1000);
+                        timeouts.push(
+                            setTimeout(addDoc(tasksColl, task), 1000)
+                        );
+                    }
+                    for (const to of timeouts) {
+                        clearTimeout(to);
                     }
                 }
-
-                setScheduleInfo({
-                    title: newTitle,
-                    type,
-                    tasks: newTasks,
-                    sid: schedResponse.id,
-                });
+                // move into conditional?
                 navigation.navigate('ReadSchedule');
             } catch (error) {
-                console.log(error);
+                console.log('error: ', error);
             }
         } else {
             alert('Please enter a title and at least 1 task.');
         }
+    };
+
+    const updateSchedule = () => {
+        // logic to update existing schedule with sid here
+    };
+
+    const createOrUpdate = () => {
+        sid == '' ? makeSchedule() : updateSchedule();
+    };
+
+    const renderTask = ({ item, index }) => {
+        return (
+            <View key={index} style={styles.taskContainer}>
+                <Text style={styles.taskText}>{item.text}</Text>
+                <TouchableOpacity
+                    style={{ marginLeft: 20 }}
+                    onPress={() => alert('delete task!')}>
+                    <Ionicons name='ios-trash-outline' size={24} color='red' />
+                </TouchableOpacity>
+            </View>
+        );
     };
 
     return (
@@ -77,7 +104,7 @@ const CreateEditSchedule = ({ navigation }) => {
                 <SafeAreaView />
 
                 {/* Schedule View */}
-                <View style={styles.scheduleView}>
+                <View style={[styles.scheduleView, { height: '85%' }]}>
                     {/* Delete Button */}
                     <TouchableOpacity
                         style={{ margin: 10 }}
@@ -100,29 +127,7 @@ const CreateEditSchedule = ({ navigation }) => {
 
                     {/* Task List */}
                     {newTasks.length > 0 ? (
-                        <FlatList
-                            data={newTasks}
-                            renderItem={({ item }) => {
-                                return (
-                                    <View style={styles.taskContainer}>
-                                        <Text style={styles.taskText}>
-                                            {item.text}
-                                        </Text>
-                                        <TouchableOpacity
-                                            style={{ marginLeft: 20 }}
-                                            onPress={() =>
-                                                alert('delete task!')
-                                            }>
-                                            <Ionicons
-                                                name='ios-trash-outline'
-                                                size={24}
-                                                color='red'
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                );
-                            }}
-                        />
+                        <FlatList data={newTasks} renderItem={renderTask} />
                     ) : null}
 
                     {/* New Task Input */}
@@ -140,7 +145,7 @@ const CreateEditSchedule = ({ navigation }) => {
                 <CustomSmallButton
                     position='right'
                     onPress={() => {
-                        addSchedule();
+                        createOrUpdate();
                     }}>
                     <Text style={styles.smallButtonText}>Save</Text>
                 </CustomSmallButton>

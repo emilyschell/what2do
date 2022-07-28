@@ -17,8 +17,7 @@ const ScheduleTypeMenu = ({ navigation }) => {
                     onPress={() => {
                         setScheduleInfo({
                             type: 'picture',
-                            title: '',
-                            tasks: [],
+                            sid: '',
                         });
                         navigation.navigate('CreateEditSchedule');
                     }}>
@@ -34,7 +33,7 @@ const ScheduleTypeMenu = ({ navigation }) => {
                 <CustomBigButton
                     style={[styles.bigButtons, { flexDirection: 'row' }]}
                     onPress={() => {
-                        setScheduleInfo({ type: 'text', title: '', tasks: [] });
+                        setScheduleInfo({ type: 'text', sid: '' });
                         navigation.navigate('CreateEditSchedule');
                     }}>
                     <Text style={styles.largeText}>Words</Text>
@@ -44,8 +43,7 @@ const ScheduleTypeMenu = ({ navigation }) => {
                     onPress={() => {
                         setScheduleInfo({
                             type: 'hybrid',
-                            title: '',
-                            tasks: [],
+                            sid: '',
                         });
                         navigation.navigate('CreateEditSchedule');
                     }}>

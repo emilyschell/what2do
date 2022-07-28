@@ -6,8 +6,17 @@ import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import Navigator from './src/screens/Navigator';
 import { AuthProvider } from './src/contexts/AuthContext';
+import { decode, encode } from 'base-64';
 
 const App = () => {
+    if (!global.btoa) {
+        global.btoa = encode;
+    }
+
+    if (!global.atob) {
+        global.atob = decode;
+    }
+
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
     useEffect(() => {

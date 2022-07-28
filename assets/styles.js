@@ -143,10 +143,18 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#fff',
         width: '90%',
-        height: '80%',
+        height: '90%',
     },
     taskList: {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
+    },
+    checkboxBase: {
+        width: 30,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: colors.borderColor,
     },
 });
