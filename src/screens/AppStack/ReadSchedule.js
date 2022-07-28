@@ -21,7 +21,7 @@ const ReadSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState('');
-    const tasks = [];
+    const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
         const getSchedule = async () => {
@@ -48,11 +48,10 @@ const ReadSchedule = ({ navigation }) => {
                             'tasks'
                         );
                         const tasksSnap = await getDocs(tasksColl);
-                        tasksSnap.forEach((task) => tasks.push(task.data()));
-                        if (tasks.length) {
-                            setLoading(false);
-                            console.log(tasks);
-                        }
+                        const newTasks = [];
+                        tasksSnap.forEach((task) => newTasks.push(task.data()));
+                        setTasks(newTasks);
+                        setLoading(false);
                     } catch (error) {
                         console.log('Error in getting tasks: ', error);
                     }
@@ -86,7 +85,7 @@ const ReadSchedule = ({ navigation }) => {
                     <FlatList
                         data={tasks}
                         renderItem={({ item }) => {
-                            return <Text>{item.text}</Text>;
+                            return <ScheduleTask task={item} />;
                         }}
                     />
                 </View>

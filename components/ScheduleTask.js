@@ -1,19 +1,37 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { ScheduleContext } from '../src/contexts/ScheduleContext';
-import { styles } from '../assets/styles';
-import Checkbox from './Checkbox';
+import { styles, colors } from '../assets/styles';
+import { Ionicons } from '@expo/vector-icons';
 
 const ScheduleTask = ({ task }) => {
     const { type } = useContext(ScheduleContext);
     const [complete, setComplete] = useState(false);
 
+    const Checkbox = () => {
+        return (
+            <TouchableOpacity
+                style={styles.checkboxBase}
+                onPress={() => {
+                    setComplete(!complete);
+                }}>
+                {complete && (
+                    <Ionicons
+                        name='checkmark'
+                        size={30}
+                        color={colors.bgSuccess}
+                    />
+                )}
+            </TouchableOpacity>
+        );
+    };
+
     switch (type) {
         case 'text':
             return (
                 <View style={styles.taskContainer}>
-                    <Checkbox setComplete={setComplete} />
+                    <Checkbox />
                     <Text
                         style={[
                             styles.taskText,
@@ -28,7 +46,7 @@ const ScheduleTask = ({ task }) => {
         case 'picture':
             return (
                 <View style={styles.taskContainer}>
-                    <Checkbox setComplete={setComplete} />
+                    <Checkbox />
                     <Image
                         style={[
                             styles.image,
@@ -47,7 +65,7 @@ const ScheduleTask = ({ task }) => {
                         styles.taskContainer,
                         { justifyContent: 'center' },
                     ]}>
-                    <Checkbox setComplete={setComplete} />
+                    <Checkbox />
                     <Text
                         style={[
                             styles.taskText,

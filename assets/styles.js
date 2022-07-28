@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     },
     taskContainer: {
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         flexDirection: 'row',
         margin: 10,
     },
@@ -90,6 +90,7 @@ export const styles = StyleSheet.create({
         fontSize: 30,
         fontFamily: 'Roboto',
         margin: 0,
+        marginLeft: 15,
         padding: 0,
     },
     taskTextInput: {
