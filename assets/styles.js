@@ -140,6 +140,7 @@ export const styles = StyleSheet.create({
     },
     scheduleView: {
         alignItems: 'flex-start',
+        alignContent: 'flex-start',
         justifyContent: 'flex-start',
         borderColor: colors.borderColor,
         borderWidth: 1,

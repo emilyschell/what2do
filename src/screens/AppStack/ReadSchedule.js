@@ -78,9 +78,12 @@ const ReadSchedule = ({ navigation }) => {
                 <View style={styles.scheduleView}>
                     <View
                         style={{
-                            width: '95%',
-                            alignItems: 'flex-end',
-                            margin: 10,
+                            alignSelf: 'flex-end',
+                            position: 'absolute',
+                            right: 10,
+                            top: 10,
+                            width: 20,
+                            zIndex: 1000,
                         }}>
                         <TouchableOpacity
                             onPress={() =>
@@ -89,8 +92,15 @@ const ReadSchedule = ({ navigation }) => {
                             <FontAwesome name='close' size={24} />
                         </TouchableOpacity>
                     </View>
-                    <View style={{ width: '100%', alignItems: 'center' }}>
-                        <Text style={styles.largeText}>{title}</Text>
+                    <View
+                        style={{
+                            width: '100%',
+                            alignItems: 'center',
+                            justifySelf: 'flex-start',
+                        }}>
+                        <Text style={[styles.largeText, { margin: 0 }]}>
+                            {title}
+                        </Text>
                     </View>
                     <FlatList
                         data={tasks}
