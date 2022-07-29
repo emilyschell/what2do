@@ -8,6 +8,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 
 const OpenCreateMenu = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
+
     return (
         <View style={[styles.container, { justifyContent: 'flex-start' }]}>
             <Text style={styles.largeText}>Schedules</Text>

@@ -140,7 +140,6 @@ export const styles = StyleSheet.create({
     },
     scheduleView: {
         alignItems: 'flex-start',
-        alignContent: 'flex-start',
         justifyContent: 'flex-start',
         borderColor: colors.borderColor,
         borderWidth: 1,
@@ -182,6 +181,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 7,
+        width: '90%',
     },
     fileList: {
         alignItems: 'flex-start',
@@ -193,5 +193,17 @@ export const styles = StyleSheet.create({
         height: '75%',
         padding: 0,
         width: '90%',
+    },
+    modal: {
+        alignSelf: 'center',
+        backgroundColor: colors.bgMain,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        width: 300,
+        height: 200,
     },
 });

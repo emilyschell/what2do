@@ -32,13 +32,18 @@ const ScheduleTask = ({ task }) => {
             return (
                 <View style={styles.taskContainer}>
                     <Checkbox />
-                    <Text
-                        style={[
-                            styles.taskText,
-                            complete ? styles.completed : styles.incomplete,
-                        ]}>
-                        {task.text}
-                    </Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setComplete(!complete);
+                        }}>
+                        <Text
+                            style={[
+                                styles.taskText,
+                                complete ? styles.completed : styles.incomplete,
+                            ]}>
+                            {task.text}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             );
             break;
@@ -47,13 +52,18 @@ const ScheduleTask = ({ task }) => {
             return (
                 <View style={styles.taskContainer}>
                     <Checkbox />
-                    <Image
-                        style={[
-                            styles.image,
-                            task.completed ? { opacity: 0.7 } : null,
-                        ]}
-                        source={task.image}
-                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            setComplete(!complete);
+                        }}>
+                        <Image
+                            style={[
+                                styles.image,
+                                task.completed ? { opacity: 0.7 } : null,
+                            ]}
+                            source={task.image}
+                        />
+                    </TouchableOpacity>
                 </View>
             );
             break;
@@ -66,20 +76,25 @@ const ScheduleTask = ({ task }) => {
                         { justifyContent: 'center' },
                     ]}>
                     <Checkbox />
-                    <Text
-                        style={[
-                            styles.taskText,
-                            complete ? styles.completed : styles.incomplete,
-                        ]}>
-                        {task.text}
-                    </Text>
-                    <Image
-                        style={[
-                            styles.image,
-                            complete ? { opacity: 0.7 } : null,
-                        ]}
-                        source={task.image}
-                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            setComplete(!complete);
+                        }}>
+                        <Text
+                            style={[
+                                styles.taskText,
+                                complete ? styles.completed : styles.incomplete,
+                            ]}>
+                            {task.text}
+                        </Text>
+                        <Image
+                            style={[
+                                styles.image,
+                                complete ? { opacity: 0.7 } : null,
+                            ]}
+                            source={task.image}
+                        />
+                    </TouchableOpacity>
                 </View>
             );
             break;

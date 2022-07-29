@@ -31,9 +31,9 @@ const FileItem = ({ title, sid, deleteSched }) => {
                 <TouchableOpacity
                     onPress={() => {
                         setSid(sid);
-                        navigation.navigate('CreateEditSchedule');
+                        navigation.navigate('EditSchedule');
                     }}>
-                    <Entypo name='edit' size={24} color='black' />
+                    <Entypo name='edit' size={24} />
                 </TouchableOpacity>
             </View>
         </View>

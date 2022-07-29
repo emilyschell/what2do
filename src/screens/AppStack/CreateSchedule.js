@@ -17,14 +17,12 @@ import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
 
-const CreateEditSchedule = ({ navigation }) => {
+const CreateSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
-    const { type, sid, setSid } = useContext(ScheduleContext);
+    const { type, setSid } = useContext(ScheduleContext);
     const uid = currentUser.uid;
     const [newTitle, setNewTitle] = useState('');
     const [newTasks, setNewTasks] = useState([]);
-
-    // write logic to pull down title and tasks given sid if sid is set, and updateSchedule function
 
     const addTask = (text, imageUrl) => {
         if (text.length) {
@@ -35,6 +33,20 @@ const CreateEditSchedule = ({ navigation }) => {
             setNewTasks([...newTasks, newTask]);
         } else {
             alert('Please enter a task');
+        }
+    };
+
+    const deleteTask = (str) => {
+        if (type === 'text') {
+            const newTasks = tasks.filter((task) => {
+                task.text !== str;
+            });
+            setTasks(newTasks);
+        } else {
+            const newTasks = tasks.filter((task) => {
+                task.image !== str;
+            });
+            setTasks(newTasks);
         }
     };
 
@@ -100,9 +112,8 @@ const CreateEditSchedule = ({ navigation }) => {
                     for (const to2 of timeouts2) {
                         clearTimeout(to2);
                     }
+                    navigation.navigate('ReadSchedule');
                 }
-                // move to inside conditional?
-                navigation.navigate('ReadSchedule');
             } catch (error) {
                 console.log('error: ', error);
             }
@@ -111,21 +122,13 @@ const CreateEditSchedule = ({ navigation }) => {
         }
     };
 
-    const updateSchedule = () => {
-        // logic to update existing schedule with sid here
-    };
-
-    const createOrUpdate = () => {
-        sid == '' ? makeSchedule() : updateSchedule();
-    };
-
     const renderTask = ({ item, index }) => {
         return (
             <View key={index} style={styles.taskContainer}>
                 <Text style={styles.taskText}>{item.text}</Text>
                 <TouchableOpacity
                     style={{ marginLeft: 20 }}
-                    onPress={() => alert('delete task!')}>
+                    onPress={() => deleteTask(item.text)}>
                     <Ionicons name='ios-trash-outline' size={24} color='red' />
                 </TouchableOpacity>
             </View>
@@ -183,7 +186,7 @@ const CreateEditSchedule = ({ navigation }) => {
                 <CustomSmallButton
                     position='right'
                     onPress={() => {
-                        createOrUpdate();
+                        makeSchedule();
                     }}>
                     <Text style={styles.smallButtonText}>Save</Text>
                 </CustomSmallButton>
@@ -192,4 +195,4 @@ const CreateEditSchedule = ({ navigation }) => {
     );
 };
 
-export default CreateEditSchedule;
+export default CreateSchedule;

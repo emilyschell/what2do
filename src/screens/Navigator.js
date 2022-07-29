@@ -3,14 +3,14 @@ import WelcomeScreen from './AuthStack/WelcomeScreen';
 import LoginScreen from './AuthStack/LoginScreen';
 import SignUpScreen from './AuthStack/SignUpScreen';
 import OpenCreateMenu from './AppStack/OpenCreateMenu';
-import CreateEditSchedule from './AppStack/CreateEditSchedule';
+import CreateSchedule from './AppStack/CreateSchedule';
 import ScheduleTypeMenu from './AppStack/ScheduleTypeMenu';
 import OpenFileList from './AppStack/OpenFileList';
 import { AuthContext } from '../contexts/AuthContext';
 import { useContext } from 'react';
-import { colors } from '../../assets/styles';
 import { ScheduleProvider } from '../contexts/ScheduleContext';
 import ReadSchedule from './AppStack/ReadSchedule';
+import EditSchedule from './AppStack/EditSchedule';
 
 const Navigator = () => {
     const { currentUser } = useContext(AuthContext);
@@ -41,8 +41,8 @@ const Navigator = () => {
                         component={OpenCreateMenu}
                     />
                     <Stack.Screen
-                        name='CreateEditSchedule'
-                        component={CreateEditSchedule}
+                        name='CreateSchedule'
+                        component={CreateSchedule}
                     />
                     <Stack.Screen
                         name='ScheduleTypeMenu'
@@ -55,6 +55,10 @@ const Navigator = () => {
                     <Stack.Screen
                         name='ReadSchedule'
                         component={ReadSchedule}
+                    />
+                    <Stack.Screen
+                        name='EditSchedule'
+                        component={EditSchedule}
                     />
                 </Stack.Navigator>
             </ScheduleProvider>

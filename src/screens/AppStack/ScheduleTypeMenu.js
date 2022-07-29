@@ -19,7 +19,7 @@ const ScheduleTypeMenu = ({ navigation }) => {
                             type: 'picture',
                             sid: '',
                         });
-                        navigation.navigate('CreateEditSchedule');
+                        navigation.navigate('CreateSchedule');
                     }}>
                     <FontAwesome name='photo' size={50} />
                     <Text
@@ -34,7 +34,7 @@ const ScheduleTypeMenu = ({ navigation }) => {
                     style={[styles.bigButtons, { flexDirection: 'row' }]}
                     onPress={() => {
                         setScheduleInfo({ type: 'text', sid: '' });
-                        navigation.navigate('CreateEditSchedule');
+                        navigation.navigate('CreateSchedule');
                     }}>
                     <Text style={styles.largeText}>Words</Text>
                 </CustomBigButton>
@@ -45,7 +45,7 @@ const ScheduleTypeMenu = ({ navigation }) => {
                             type: 'hybrid',
                             sid: '',
                         });
-                        navigation.navigate('CreateEditSchedule');
+                        navigation.navigate('CreateSchedule');
                     }}>
                     <FontAwesome name='photo' size={40} />
                     <Text style={styles.largeText}>Both</Text>
