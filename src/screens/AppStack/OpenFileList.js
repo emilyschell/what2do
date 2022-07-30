@@ -33,9 +33,9 @@ const OpenFileList = ({ navigation }) => {
 
     const deleteSchedule = async (sid) => {
         await deleteDoc(doc(db, 'users', currentUser.uid, 'schedules', sid));
-        const newSchedules = schedules.filter((schedule) => {
-            schedule.sid !== sid;
-        });
+        const newSchedules = schedules.filter(
+            (schedule) => schedule.sid !== sid
+        );
         setSchedules(newSchedules);
     };
 

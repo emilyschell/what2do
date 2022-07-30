@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-    bgSuccess: '#00B394',
-    bgError: '#FF0404',
+    bgSuccess: '#39BFA9',
+    bgError: '#FF5252',
     bgPrimary: '#FFF7E0',
     bgMain: '#E0E5FF',
     bgTextInput: '#FFF',
@@ -156,6 +156,7 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         backgroundColor: '#fff',
+        padding: 10,
         width: '90%',
         height: '80%',
         marginTop: 0,
@@ -181,7 +182,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 7,
-        width: '90%',
+        width: 350,
     },
     fileList: {
         alignItems: 'flex-start',
@@ -192,11 +193,11 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         height: '75%',
         padding: 0,
-        width: '90%',
+        width: 350,
     },
     modal: {
         alignSelf: 'center',
-        backgroundColor: colors.bgMain,
+        backgroundColor: colors.bgError,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         borderColor: colors.borderColor,

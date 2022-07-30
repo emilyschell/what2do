@@ -34,9 +34,11 @@ const EditSchedule = ({ navigation }) => {
     const { setType, type, sid } = useContext(ScheduleContext);
 
     const [title, setTitle] = useState('');
-    const [tasks, setTasks] = useState([]);
+    const [displayedTasks, setDisplayedTasks] = useState([]);
+    const [addedTasks, setAddedTasks] = useState([]);
     const [modalShown, setModalShown] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
+    const [deleteType, setDeleteType] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -66,7 +68,7 @@ const EditSchedule = ({ navigation }) => {
                         const tasksSnap = await getDocs(tasksColl);
                         const newTasks = [];
                         tasksSnap.forEach((task) => newTasks.push(task.data()));
-                        setTasks(newTasks);
+                        setDisplayedTasks(newTasks);
                         setLoading(false);
                     } catch (error) {
                         console.log('Error in getting tasks: ', error);
@@ -87,7 +89,8 @@ const EditSchedule = ({ navigation }) => {
                 text: text,
                 image: imageUrl,
             };
-            setTasks([...tasks, newTask]);
+            setDisplayedTasks([...displayedTasks, newTask]);
+            setAddedTasks([...addedTasks, newTask]);
         } else {
             switch (type) {
                 case 'text':
@@ -107,7 +110,7 @@ const EditSchedule = ({ navigation }) => {
             title,
             type,
         };
-        if (tasks.length && title) {
+        if (title) {
             // Update title
             try {
                 const scheduleRef = doc(
@@ -118,52 +121,55 @@ const EditSchedule = ({ navigation }) => {
                     sid
                 );
                 await updateDoc(scheduleRef, { title });
-
-                // Add new tasks, in loops with setTimeout due to rate limits
-                const tasksColl = collection(
-                    db,
-                    'users',
-                    currentUser.uid,
-                    'schedules',
-                    sid,
-                    'tasks'
-                );
-
-                const timeouts = [];
-                for (const task of tasks) {
-                    timeouts.push(setTimeout(addDoc(tasksColl, task), 1000));
-                }
-                for (const to of timeouts) {
-                    clearTimeout(to);
-                }
-
-                // Assign task IDs to newly created tasks
-                const tasksSnap = await getDocs(tasksColl);
-                const taskIds = [];
-                tasksSnap.forEach((task) => taskIds.push(task.id));
-                const timeouts2 = [];
-                for (const taskId of taskIds) {
-                    timeouts2.push(
-                        setTimeout(
-                            setDoc(
-                                doc(tasksColl, taskId),
-                                { tid: taskId },
-                                { merge: true }
-                            ),
-                            1000
-                        )
+                if (addedTasks.length) {
+                    // Add new tasks, in loops with setTimeout due to rate limits
+                    const tasksColl = collection(
+                        db,
+                        'users',
+                        currentUser.uid,
+                        'schedules',
+                        sid,
+                        'tasks'
                     );
-                }
-                for (const to2 of timeouts2) {
-                    clearTimeout(to2);
-                }
 
-                navigation.navigate('ReadSchedule');
+                    const timeouts = [];
+                    for (const task of addedTasks) {
+                        timeouts.push(
+                            setTimeout(addDoc(tasksColl, task), 1000)
+                        );
+                    }
+                    for (const to of timeouts) {
+                        clearTimeout(to);
+                    }
+
+                    // Assign task IDs to newly created tasks
+                    const tasksSnap = await getDocs(tasksColl);
+                    const taskIds = [];
+                    tasksSnap.forEach((task) => taskIds.push(task.id));
+                    const timeouts2 = [];
+                    for (const taskId of taskIds) {
+                        timeouts2.push(
+                            setTimeout(
+                                setDoc(
+                                    doc(tasksColl, taskId),
+                                    { tid: taskId },
+                                    { merge: true }
+                                ),
+                                1000
+                            )
+                        );
+                    }
+                    for (const to2 of timeouts2) {
+                        clearTimeout(to2);
+                    }
+
+                    navigation.navigate('ReadSchedule');
+                }
             } catch (error) {
                 console.log('Error in updating schedule: ', error);
             }
         } else {
-            alert('Please enter a title and at least 1 task.');
+            alert('Please enter a title.');
         }
     };
 
@@ -178,28 +184,36 @@ const EditSchedule = ({ navigation }) => {
             tid
         );
         await deleteDoc(taskRef);
-        const newTasks = tasks.filter((task) => {
-            task.tid !== tid || !task.hasOwnProperty('tid');
-        });
-        setTasks(newTasks);
+        const newTasks = displayedTasks.filter(
+            (task) => task.tid !== tid || !task.hasOwnProperty('tid')
+        );
+        setDisplayedTasks(newTasks);
     };
 
     const deleteLocalTask = (str) => {
         if (type === 'text') {
-            const newTasks = tasks.filter((task) => {
-                task.text !== str;
-            });
-            setTasks(newTasks);
+            const newDispTasks = displayedTasks.filter(
+                (task) => task.text !== str
+            );
+            setDisplayedTasks(newDispTasks);
+            const newAddedTasks = addedTasks.filter(
+                (task) => task.text !== str
+            );
+            setAddedTasks(newAddedTasks);
         } else {
-            const newTasks = tasks.filter((task) => {
-                task.image !== str;
-            });
-            setTasks(newTasks);
+            const newDispTasks = displayedTasks.filter(
+                (task) => task.image !== str
+            );
+            setDisplayedTasks(newDispTasks);
+            const newAddedTasks = addedTasks.filter(
+                (task) => task.image !== str
+            );
+            setAddedTasks(newAddedTasks);
         }
     };
 
-    const onPressDelete = (item) => {
-        setDeleteItem(item);
+    const onPressDelete = (toDelete) => {
+        setDeleteItem(toDelete);
         setModalShown(true);
     };
 
@@ -212,10 +226,14 @@ const EditSchedule = ({ navigation }) => {
                     justifyContent: 'center',
                 }}>
                 <View
-                    style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
                     <View style={styles.modal}>
                         <Text style={styles.mediumText}>
-                            Cannot undo delete, do you want to delete task?
+                            Cannot undo delete, do you want to delete{' '}
+                            {deleteType}?
                         </Text>
                         <View
                             style={{
@@ -233,14 +251,27 @@ const EditSchedule = ({ navigation }) => {
                             </Pressable>
                             <Pressable
                                 style={[styles.smallButtons, { margin: 10 }]}
-                                onPress={() => {
-                                    item.hasOwnProperty('tid')
-                                        ? deleteFirebaseTask(deleteItem.tid)
-                                        : deleteLocalTask(
-                                              deleteItem.text ||
-                                                  deleteItem.image
-                                          );
-                                }}>
+                                onPress={
+                                    deleteType === 'task'
+                                        ? deleteItem.hasOwnProperty('tid')
+                                            ? () => {
+                                                  deleteFirebaseTask(
+                                                      deleteItem.tid
+                                                  );
+                                                  setModalShown(false);
+                                              }
+                                            : () => {
+                                                  deleteLocalTask(
+                                                      deleteItem.text ||
+                                                          deleteItem.image
+                                                  );
+                                                  setModalShown(false);
+                                              }
+                                        : () => {
+                                              deleteSchedule(deleteItem);
+                                              setModalShown(false);
+                                          }
+                                }>
                                 <Text style={styles.smallButtonText}>
                                     Delete
                                 </Text>
@@ -263,7 +294,11 @@ const EditSchedule = ({ navigation }) => {
                 <Text style={styles.taskText}>{item.text}</Text>
                 <TouchableOpacity
                     style={{ marginLeft: 20 }}
-                    onPress={() => onPressDelete(item)}>
+                    onPress={() => {
+                        setDeleteType('task');
+                        onPressDelete(item);
+                        //check above braces
+                    }}>
                     <Ionicons name='ios-trash-outline' size={24} color='red' />
                 </TouchableOpacity>
             </View>
@@ -287,7 +322,10 @@ const EditSchedule = ({ navigation }) => {
                         {/* Delete Button */}
                         <TouchableOpacity
                             style={{ margin: 10 }}
-                            onPress={() => deleteSchedule()}>
+                            onPress={() => {
+                                setDeleteType('schedule');
+                                onPressDelete(sid);
+                            }}>
                             <Ionicons
                                 name='ios-trash-outline'
                                 size={24}
@@ -311,9 +349,9 @@ const EditSchedule = ({ navigation }) => {
 
                         {/* Task List */}
                         <View style={styles.taskList}>
-                            {tasks.length > 0 ? (
+                            {displayedTasks.length ? (
                                 <FlatList
-                                    data={tasks}
+                                    data={displayedTasks}
                                     renderItem={renderTask}
                                 />
                             ) : null}

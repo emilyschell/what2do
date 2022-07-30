@@ -142,17 +142,6 @@ const CreateSchedule = ({ navigation }) => {
 
                 {/* Schedule View */}
                 <View style={styles.editScheduleView}>
-                    {/* Delete Button */}
-                    <TouchableOpacity
-                        style={{ margin: 10 }}
-                        onPress={() => alert('delete schedule!')}>
-                        <Ionicons
-                            name='ios-trash-outline'
-                            size={24}
-                            color='red'
-                        />
-                    </TouchableOpacity>
-
                     {/* Title Field */}
                     <TextInput
                         style={[
