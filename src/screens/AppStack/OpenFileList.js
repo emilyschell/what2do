@@ -1,5 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, FlatList } from 'react-native';
+import {
+    View,
+    Text,
+    ActivityIndicator,
+    FlatList,
+    Modal,
+    Pressable,
+} from 'react-native';
 import { styles, colors } from '../../../assets/styles';
 import CustomSmallButton from '../../../components/CustomSmallButton';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -11,6 +18,8 @@ const OpenFileList = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [modalShown, setModalShown] = useState(false);
+    const [sidToDelete, setSidToDelete] = useState(null);
 
     useEffect(() => {
         const getSchedules = async () => {
@@ -31,13 +40,68 @@ const OpenFileList = ({ navigation }) => {
         getSchedules();
     }, []);
 
-    const deleteSchedule = async (sid) => {
-        await deleteDoc(doc(db, 'users', currentUser.uid, 'schedules', sid));
+    const onPressDelete = (sid) => {
+        setSidToDelete(sid);
+        setModalShown(true);
+    };
+
+    const deleteSchedule = async () => {
+        await deleteDoc(
+            doc(db, 'users', currentUser.uid, 'schedules', sidToDelete)
+        );
         const newSchedules = schedules.filter(
-            (schedule) => schedule.sid !== sid
+            (schedule) => schedule.sid !== sidToDelete
         );
         setSchedules(newSchedules);
     };
+
+    const ConfirmDeleteModal = (
+        <Modal visible={modalShown} transparent={true}>
+            <View
+                style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                <View
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                    <View style={styles.modal}>
+                        <Text style={styles.mediumText}>
+                            Cannot undo delete, do you want to delete schedule?
+                        </Text>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                width: '100%',
+                            }}>
+                            <Pressable
+                                style={[styles.smallButtons, { margin: 10 }]}
+                                onPress={() => setModalShown(false)}
+                                title='Cancel'>
+                                <Text style={styles.smallButtonText}>
+                                    Cancel
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.smallButtons, { margin: 10 }]}
+                                onPress={() => {
+                                    deleteSchedule(sidToDelete);
+                                    setModalShown(false);
+                                }}>
+                                <Text style={styles.smallButtonText}>
+                                    Delete
+                                </Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    );
 
     if (loading) {
         return (
@@ -65,6 +129,7 @@ const OpenFileList = ({ navigation }) => {
         return (
             <View style={[styles.container, { justifyContent: 'flex-start' }]}>
                 <Text style={styles.largeText}>Schedules</Text>
+                {ConfirmDeleteModal}
                 <View style={styles.fileList}>
                     <FlatList
                         data={schedules}
@@ -73,7 +138,7 @@ const OpenFileList = ({ navigation }) => {
                                 <FileItem
                                     sid={item.sid}
                                     title={item.title}
-                                    deleteSched={deleteSchedule}
+                                    deleteSched={onPressDelete}
                                 />
                             );
                         }}
