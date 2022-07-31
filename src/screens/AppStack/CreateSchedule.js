@@ -129,12 +129,12 @@ const CreateSchedule = ({ navigation }) => {
                 <Text
                     style={[
                         styles.taskText,
-                        { marginLeft: 0, paddingLeft: 0 },
+                        { marginLeft: 0, paddingLeft: 0, flex: 4 },
                     ]}>
                     {item.text}
                 </Text>
                 <TouchableOpacity
-                    // style={{ marginLeft: 20 }}
+                    style={{ flex: 1 }}
                     onPress={() => deleteTask(item.text)}>
                     <Ionicons name='ios-trash-outline' size={24} color='red' />
                 </TouchableOpacity>
