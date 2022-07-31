@@ -84,7 +84,7 @@ const EditSchedule = ({ navigation }) => {
     }, []);
 
     const addTask = (text, imageUrl) => {
-        if (text.length || imageUrl.length) {
+        if (text || imageUrl) {
             const newTask = {
                 text: text,
                 image: imageUrl,
@@ -313,70 +313,70 @@ const EditSchedule = ({ navigation }) => {
         );
     } else {
         return (
-            <DismissKeyboard>
-                <View style={[styles.container, { paddingTop: 0 }]}>
-                    <SafeAreaView />
+            // <DismissKeyboard>
+            <View style={[styles.container, { paddingTop: 0 }]}>
+                <SafeAreaView />
 
-                    {/* Schedule View */}
-                    <View style={styles.editScheduleView}>
-                        {/* Delete Button */}
-                        <TouchableOpacity
-                            style={{ margin: 10 }}
-                            onPress={() => {
-                                setDeleteType('schedule');
-                                onPressDelete(sid);
-                            }}>
-                            <Ionicons
-                                name='ios-trash-outline'
-                                size={24}
-                                color='red'
-                            />
-                        </TouchableOpacity>
-
-                        {/* Title Field */}
-                        <TextInput
-                            style={[
-                                styles.taskTextInput,
-                                { marginRight: 0, textAlign: 'center' },
-                            ]}
-                            placeholder={title}
-                            placeholderTextColor={colors.textInputPlaceholder}
-                            value={title}
-                            onChangeText={(val) => setTitle(val)}
+                {/* Schedule View */}
+                <View style={styles.editScheduleView}>
+                    {/* Delete Button */}
+                    <TouchableOpacity
+                        style={{ margin: 10 }}
+                        onPress={() => {
+                            setDeleteType('schedule');
+                            onPressDelete(sid);
+                        }}>
+                        <Ionicons
+                            name='ios-trash-outline'
+                            size={24}
+                            color='red'
                         />
+                    </TouchableOpacity>
 
-                        {ConfirmDeleteModal}
+                    {/* Title Field */}
+                    <TextInput
+                        style={[
+                            styles.taskTextInput,
+                            { marginRight: 0, textAlign: 'center' },
+                        ]}
+                        placeholder={title}
+                        placeholderTextColor={colors.textInputPlaceholder}
+                        value={title}
+                        onChangeText={(val) => setTitle(val)}
+                    />
 
-                        {/* Task List */}
-                        <View style={styles.taskList}>
-                            {displayedTasks.length ? (
-                                <FlatList
-                                    data={displayedTasks}
-                                    renderItem={renderTask}
-                                />
-                            ) : null}
-                        </View>
-                        {/* New Task Input */}
-                        <CreateEditTask addTask={addTask} />
-                    </View>
+                    {ConfirmDeleteModal}
+                    {/* New Task Input */}
+                    <CreateEditTask addTask={addTask} />
 
-                    {/* Small Bottom Buttons */}
-                    <CustomSmallButton
-                        position='left'
-                        onPress={() => {
-                            navigation.goBack();
-                        }}>
-                        <Text style={styles.smallButtonText}>Cancel</Text>
-                    </CustomSmallButton>
-                    <CustomSmallButton
-                        position='right'
-                        onPress={() => {
-                            updateSchedule();
-                        }}>
-                        <Text style={styles.smallButtonText}>Save</Text>
-                    </CustomSmallButton>
+                    {/* Task List */}
+                    {/* <View style={styles.taskList}> */}
+                    {displayedTasks.length ? (
+                        <FlatList
+                            data={displayedTasks}
+                            renderItem={renderTask}
+                        />
+                    ) : null}
+                    {/* </View> */}
                 </View>
-            </DismissKeyboard>
+
+                {/* Small Bottom Buttons */}
+                <CustomSmallButton
+                    position='left'
+                    onPress={() => {
+                        navigation.goBack();
+                    }}>
+                    <Text style={styles.smallButtonText}>Cancel</Text>
+                </CustomSmallButton>
+                <CustomSmallButton
+                    position='right'
+                    onPress={() => {
+                        updateSchedule();
+                    }}>
+                    <Text style={styles.smallButtonText}>Save</Text>
+                </CustomSmallButton>
+            </View>
+            // </DismissKeyboard>
         );
     }
 };

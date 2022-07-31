@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
         width: '90%',
     },
     taskText: {
-        fontSize: 30,
+        fontSize: 26,
         fontFamily: 'Roboto',
         margin: 0,
         marginLeft: 15,
@@ -136,6 +136,7 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.bgPrimary,
         flex: 1,
         height: 50,
+        alignItems: 'center',
         justifyContent: 'center',
     },
     scheduleView: {
@@ -157,15 +158,15 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#fff',
         padding: 10,
-        width: '90%',
+        width: 350,
         height: '80%',
+        marginBottom: 40,
         marginTop: 0,
     },
     taskList: {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        padding: 10,
-        width: '100%',
+        flex: 1,
     },
     checkboxBase: {
         width: 30,
