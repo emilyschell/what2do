@@ -292,15 +292,8 @@ const EditSchedule = ({ navigation }) => {
     const renderTask = ({ item, index }) => {
         return (
             <View key={index} style={styles.taskContainer}>
-                <Text
-                    style={[
-                        styles.taskText,
-                        { marginLeft, paddingLeft, flex: 4 },
-                    ]}>
-                    {item.text}
-                </Text>
+                <Text style={styles.taskText}>{item.text}</Text>
                 <TouchableOpacity
-                    style={{ flex: 1 }}
                     onPress={() => {
                         setDeleteType('task');
                         onPressDelete(item);

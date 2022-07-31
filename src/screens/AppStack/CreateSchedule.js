@@ -23,7 +23,7 @@ const CreateSchedule = ({ navigation }) => {
     const { type, setSid } = useContext(ScheduleContext);
     const uid = currentUser.uid;
     const [newTitle, setNewTitle] = useState('');
-    const [newTasks, setNewTasks] = useState([]);
+    const [tasks, setTasks] = useState([]);
 
     const addTask = (text, imageUrl) => {
         if (text.length) {
@@ -31,7 +31,7 @@ const CreateSchedule = ({ navigation }) => {
                 text: text,
                 image: imageUrl,
             };
-            setNewTasks([...newTasks, newTask]);
+            setTasks([...tasks, newTask]);
         } else {
             alert('Please enter a task');
         }
@@ -39,14 +39,10 @@ const CreateSchedule = ({ navigation }) => {
 
     const deleteTask = (str) => {
         if (type === 'text') {
-            const newTasks = tasks.filter((task) => {
-                task.text !== str;
-            });
+            const newTasks = tasks.filter((task) => task.text !== str);
             setTasks(newTasks);
         } else {
-            const newTasks = tasks.filter((task) => {
-                task.image !== str;
-            });
+            const newTasks = tasks.filter((task) => task.image !== str);
             setTasks(newTasks);
         }
     };
@@ -56,7 +52,7 @@ const CreateSchedule = ({ navigation }) => {
             title: newTitle,
             type,
         };
-        if (newTasks.length && newTitle) {
+        if (tasks.length && newTitle) {
             // Add schedule to user's Firestore collection
             try {
                 const schedulesColl = collection(db, 'users', uid, 'schedules');
@@ -84,7 +80,7 @@ const CreateSchedule = ({ navigation }) => {
                     );
 
                     const timeouts = [];
-                    for (const task of newTasks) {
+                    for (const task of tasks) {
                         timeouts.push(
                             setTimeout(addDoc(tasksColl, task), 1000)
                         );
@@ -126,16 +122,8 @@ const CreateSchedule = ({ navigation }) => {
     const renderTask = ({ item, index }) => {
         return (
             <View key={index} style={styles.taskContainer}>
-                <Text
-                    style={[
-                        styles.taskText,
-                        { marginLeft: 0, paddingLeft: 0, flex: 4 },
-                    ]}>
-                    {item.text}
-                </Text>
-                <TouchableOpacity
-                    style={{ flex: 1 }}
-                    onPress={() => deleteTask(item.text)}>
+                <Text style={styles.taskText}>{item.text}</Text>
+                <TouchableOpacity onPress={() => deleteTask(item.text)}>
                     <Ionicons name='ios-trash-outline' size={24} color='red' />
                 </TouchableOpacity>
             </View>
@@ -168,9 +156,9 @@ const CreateSchedule = ({ navigation }) => {
                 </DismissKeyboard>
                 <View style={{ flex: 2 }}>
                     {/* Task List */}
-                    {newTasks.length > 0 ? (
+                    {tasks.length > 0 ? (
                         <FlatList
-                            data={newTasks}
+                            data={tasks}
                             renderItem={renderTask}
                             onScrollBeginDrag={Keyboard.dismiss}
                         />
