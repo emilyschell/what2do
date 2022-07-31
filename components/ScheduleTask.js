@@ -30,7 +30,7 @@ const ScheduleTask = ({ task }) => {
     switch (type) {
         case 'text':
             return (
-                <View style={styles.taskContainer}>
+                <View style={styles.readTaskContainer}>
                     <Checkbox />
                     <TouchableOpacity
                         onPress={() => {
@@ -50,7 +50,7 @@ const ScheduleTask = ({ task }) => {
 
         case 'picture':
             return (
-                <View style={styles.taskContainer}>
+                <View style={styles.readTaskContainer}>
                     <Checkbox />
                     <TouchableOpacity
                         onPress={() => {
@@ -72,7 +72,7 @@ const ScheduleTask = ({ task }) => {
             return (
                 <View
                     style={[
-                        styles.taskContainer,
+                        styles.readTaskContainer,
                         { justifyContent: 'center' },
                     ]}>
                     <Checkbox />

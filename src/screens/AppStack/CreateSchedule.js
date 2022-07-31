@@ -6,11 +6,12 @@ import {
     TextInput,
     SafeAreaView,
     TouchableOpacity,
+    Keyboard,
 } from 'react-native';
 import { styles, colors } from '../../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
-import CreateEditTask from '../../../components/CreateEditTask';
+import CreateTask from '../../../components/CreateTask';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc, setDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
@@ -125,9 +126,15 @@ const CreateSchedule = ({ navigation }) => {
     const renderTask = ({ item, index }) => {
         return (
             <View key={index} style={styles.taskContainer}>
-                <Text style={styles.taskText}>{item.text}</Text>
+                <Text
+                    style={[
+                        styles.taskText,
+                        { marginLeft: 0, paddingLeft: 0 },
+                    ]}>
+                    {item.text}
+                </Text>
                 <TouchableOpacity
-                    style={{ marginLeft: 20 }}
+                    // style={{ marginLeft: 20 }}
                     onPress={() => deleteTask(item.text)}>
                     <Ionicons name='ios-trash-outline' size={24} color='red' />
                 </TouchableOpacity>
@@ -136,51 +143,57 @@ const CreateSchedule = ({ navigation }) => {
     };
 
     return (
-        <DismissKeyboard>
-            <View style={[styles.container, { paddingTop: 0 }]}>
-                <SafeAreaView />
+        <View style={[styles.container, { paddingTop: 0 }]}>
+            <SafeAreaView />
 
-                {/* Schedule View */}
-                <View style={styles.editScheduleView}>
-                    {/* Title Field */}
-                    <TextInput
-                        style={[
-                            styles.taskTextInput,
-                            { marginRight: 0, textAlign: 'center' },
-                        ]}
-                        placeholder='enter title'
-                        placeholderTextColor={colors.textInputPlaceholder}
-                        value={newTitle}
-                        onChangeText={(val) => setNewTitle(val)}
-                    />
+            {/* Schedule View */}
+            <View style={styles.editScheduleView}>
+                <DismissKeyboard>
+                    <View style={styles.editScheduleHeader}>
+                        {/* Title Field */}
+                        <TextInput
+                            style={[
+                                styles.taskTextInput,
+                                { marginRight: 0, textAlign: 'center' },
+                            ]}
+                            placeholder='enter title'
+                            placeholderTextColor={colors.textInputPlaceholder}
+                            value={newTitle}
+                            onChangeText={(val) => setNewTitle(val)}
+                        />
 
-                    {/* Task List */}
-                    <View style={styles.taskList}>
-                        {newTasks.length > 0 ? (
-                            <FlatList data={newTasks} renderItem={renderTask} />
-                        ) : null}
+                        {/* New Task Input */}
+                        <CreateTask addTask={addTask} />
                     </View>
-                    {/* New Task Input */}
-                    <CreateEditTask addTask={addTask} />
+                </DismissKeyboard>
+                <View style={{ flex: 2 }}>
+                    {/* Task List */}
+                    {newTasks.length > 0 ? (
+                        <FlatList
+                            data={newTasks}
+                            renderItem={renderTask}
+                            onScrollBeginDrag={Keyboard.dismiss}
+                        />
+                    ) : null}
                 </View>
-
-                {/* Small Bottom Buttons */}
-                <CustomSmallButton
-                    position='left'
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Text style={styles.smallButtonText}>Back</Text>
-                </CustomSmallButton>
-                <CustomSmallButton
-                    position='right'
-                    onPress={() => {
-                        makeSchedule();
-                    }}>
-                    <Text style={styles.smallButtonText}>Save</Text>
-                </CustomSmallButton>
             </View>
-        </DismissKeyboard>
+
+            {/* Small Bottom Buttons */}
+            <CustomSmallButton
+                position='left'
+                onPress={() => {
+                    navigation.goBack();
+                }}>
+                <Text style={styles.smallButtonText}>Back</Text>
+            </CustomSmallButton>
+            <CustomSmallButton
+                position='right'
+                onPress={() => {
+                    makeSchedule();
+                }}>
+                <Text style={styles.smallButtonText}>Save</Text>
+            </CustomSmallButton>
+        </View>
     );
 };
 

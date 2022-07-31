@@ -82,10 +82,17 @@ export const styles = StyleSheet.create({
     },
     taskContainer: {
         alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        margin: 8,
+        flex: 1,
+    },
+    readTaskContainer: {
+        alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        margin: 10,
-        width: '90%',
+        margin: 8,
+        flex: 1,
     },
     taskText: {
         fontSize: 26,
@@ -163,10 +170,10 @@ export const styles = StyleSheet.create({
         marginBottom: 40,
         marginTop: 0,
     },
-    taskList: {
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+    editScheduleHeader: {
+        justifyContent: 'center',
         flex: 1,
+        alignItems: 'center',
     },
     checkboxBase: {
         width: 30,

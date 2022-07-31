@@ -16,7 +16,7 @@ import {
 } from '../helpers/ImageHelpers';
 import PropTypes from 'prop-types';
 
-const CreateEditTask = ({ addTask }) => {
+const CreateTask = ({ addTask }) => {
     const { type } = useContext(ScheduleContext);
     const [imageUrl, setImageUrl] = useState('');
     const [text, setText] = useState('');
@@ -113,8 +113,8 @@ const CreateEditTask = ({ addTask }) => {
     }
 };
 
-CreateEditTask.propTypes = {
+CreateTask.propTypes = {
     addTask: PropTypes.func.isRequired,
 };
 
-export default CreateEditTask;
+export default CreateTask;

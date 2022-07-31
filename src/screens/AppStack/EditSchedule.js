@@ -9,11 +9,12 @@ import {
     Modal,
     Pressable,
     ActivityIndicator,
+    Keyboard,
 } from 'react-native';
 import { styles, colors } from '../../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
-import CreateEditTask from '../../../components/CreateEditTask';
+import CreateTask from '../../../components/CreateTask';
 import { Ionicons } from '@expo/vector-icons';
 import {
     collection,
@@ -297,7 +298,6 @@ const EditSchedule = ({ navigation }) => {
                     onPress={() => {
                         setDeleteType('task');
                         onPressDelete(item);
-                        //check above braces
                     }}>
                     <Ionicons name='ios-trash-outline' size={24} color='red' />
                 </TouchableOpacity>
@@ -313,51 +313,57 @@ const EditSchedule = ({ navigation }) => {
         );
     } else {
         return (
-            // <DismissKeyboard>
             <View style={[styles.container, { paddingTop: 0 }]}>
                 <SafeAreaView />
 
                 {/* Schedule View */}
                 <View style={styles.editScheduleView}>
-                    {/* Delete Button */}
-                    <TouchableOpacity
-                        style={{ margin: 10 }}
-                        onPress={() => {
-                            setDeleteType('schedule');
-                            onPressDelete(sid);
-                        }}>
-                        <Ionicons
-                            name='ios-trash-outline'
-                            size={24}
-                            color='red'
-                        />
-                    </TouchableOpacity>
+                    <DismissKeyboard>
+                        <View style={styles.editScheduleHeader}>
+                            {/* Delete Button */}
+                            <TouchableOpacity
+                                style={{ margin: 10 }}
+                                onPress={() => {
+                                    setDeleteType('schedule');
+                                    onPressDelete(sid);
+                                }}>
+                                <Ionicons
+                                    name='ios-trash-outline'
+                                    size={24}
+                                    color='red'
+                                />
+                            </TouchableOpacity>
 
-                    {/* Title Field */}
-                    <TextInput
-                        style={[
-                            styles.taskTextInput,
-                            { marginRight: 0, textAlign: 'center' },
-                        ]}
-                        placeholder={title}
-                        placeholderTextColor={colors.textInputPlaceholder}
-                        value={title}
-                        onChangeText={(val) => setTitle(val)}
-                    />
+                            {/* Title Field */}
+                            <TextInput
+                                style={[
+                                    styles.taskTextInput,
+                                    { marginRight: 0, textAlign: 'center' },
+                                ]}
+                                placeholder={title}
+                                placeholderTextColor={
+                                    colors.textInputPlaceholder
+                                }
+                                value={title}
+                                onChangeText={(val) => setTitle(val)}
+                            />
 
-                    {ConfirmDeleteModal}
-                    {/* New Task Input */}
-                    <CreateEditTask addTask={addTask} />
-
+                            {ConfirmDeleteModal}
+                            {/* New Task Input */}
+                            <CreateTask addTask={addTask} />
+                        </View>
+                    </DismissKeyboard>
                     {/* Task List */}
-                    {/* <View style={styles.taskList}> */}
-                    {displayedTasks.length ? (
-                        <FlatList
-                            data={displayedTasks}
-                            renderItem={renderTask}
-                        />
-                    ) : null}
-                    {/* </View> */}
+
+                    <View style={{ flex: 2 }}>
+                        {displayedTasks.length ? (
+                            <FlatList
+                                data={displayedTasks}
+                                renderItem={renderTask}
+                                onScrollBeginDrag={Keyboard.dismiss}
+                            />
+                        ) : null}
+                    </View>
                 </View>
 
                 {/* Small Bottom Buttons */}
@@ -376,7 +382,7 @@ const EditSchedule = ({ navigation }) => {
                     <Text style={styles.smallButtonText}>Save</Text>
                 </CustomSmallButton>
             </View>
-            // </DismissKeyboard>
+            // {/* // </DismissKeyboard> */}
         );
     }
 };
