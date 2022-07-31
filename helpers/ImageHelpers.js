@@ -1,41 +1,33 @@
-import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { Platform } from 'react-native';
+import { Camera } from 'expo-camera';
 
 export const openImageLibrary = async () => {
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-    if (status !== 'granted') {
-        alert('Sorry, we need camera roll permission to select an image');
-        return false;
-    } else {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [1, 1],
-            base64: true,
-        });
+    const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        base64: true,
+    });
 
-        return !result.cancelled ? result : false;
-    }
+    return !result.cancelled ? result : false;
 };
 
 export const openCamera = async () => {
-    const { status } = await Permissions.askAsync(
-        Permissions.MEDIA_LIBRARY,
-        Permissions.CAMERA
-    );
+    // const [camera, setCamera] = useState(null);
+    // const [hasCameraPermission, setHasCameraPermission] = useState(null);
+    // const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+    const cameraStatus = await Camera.requestCameraPermissionsAsync();
 
-    if (status !== 'granted') {
-        alert(
-            'Sorry, we need camera roll & camera permission to select an image'
-        );
+    if (cameraStatus.status !== 'granted') {
+        alert('Must give camera permission to select an image');
         return false;
     } else {
         const result = await ImagePicker.launchCameraAsync({
             quality: 0.1,
             base64: true,
             allowsEditing: Platform.OS == 'ios' ? false : true,
-            aspect: [4, 3],
+            aspect: [1, 1],
         });
 
         return !result.cancelled ? result : false;

@@ -7,6 +7,7 @@ import {
     SafeAreaView,
     TouchableOpacity,
     Keyboard,
+    Image,
 } from 'react-native';
 import { styles, colors } from '../../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
@@ -26,14 +27,14 @@ const CreateSchedule = ({ navigation }) => {
     const [tasks, setTasks] = useState([]);
 
     const addTask = (text, imageUrl) => {
-        if (text.length) {
+        if (text || imageUrl) {
             const newTask = {
                 text: text,
                 image: imageUrl,
             };
             setTasks([...tasks, newTask]);
         } else {
-            alert('Please enter a task');
+            alert('Please create a task to add');
         }
     };
 
@@ -120,14 +121,39 @@ const CreateSchedule = ({ navigation }) => {
     };
 
     const renderTask = ({ item, index }) => {
-        return (
-            <View key={index} style={styles.taskContainer}>
-                <Text style={styles.taskText}>{item.text}</Text>
-                <TouchableOpacity onPress={() => deleteTask(item.text)}>
-                    <Ionicons name='ios-trash-outline' size={24} color='red' />
-                </TouchableOpacity>
-            </View>
-        );
+        switch (type) {
+            case 'text':
+                return (
+                    <View key={index} style={styles.taskContainer}>
+                        <Text style={styles.taskText}>{item.text}</Text>
+                        <TouchableOpacity onPress={() => deleteTask(item.text)}>
+                            <Ionicons
+                                name='ios-trash-outline'
+                                size={24}
+                                color='red'
+                            />
+                        </TouchableOpacity>
+                    </View>
+                );
+            case 'picture':
+                return (
+                    <View key={index} style={styles.taskContainer}>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                style={styles.image}
+                                source={{ uri: item.image }}
+                            />
+                        </View>
+                        <TouchableOpacity onPress={() => deleteTask(item.text)}>
+                            <Ionicons
+                                name='ios-trash-outline'
+                                size={24}
+                                color='red'
+                            />
+                        </TouchableOpacity>
+                    </View>
+                );
+        }
     };
 
     return (

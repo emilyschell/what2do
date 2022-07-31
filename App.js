@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Navigator from './src/screens/Navigator';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { decode, encode } from 'base-64';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 const App = () => {
     if (!global.btoa) {
@@ -32,11 +33,13 @@ const App = () => {
 
     if (fontsLoaded) {
         return (
-            <AuthProvider>
-                <NavigationContainer>
-                    <Navigator />
-                </NavigationContainer>
-            </AuthProvider>
+            <ActionSheetProvider>
+                <AuthProvider>
+                    <NavigationContainer>
+                        <Navigator />
+                    </NavigationContainer>
+                </AuthProvider>
+            </ActionSheetProvider>
         );
     } else {
         return (

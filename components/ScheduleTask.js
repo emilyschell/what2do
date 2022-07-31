@@ -53,15 +53,17 @@ const ScheduleTask = ({ task }) => {
                 <View style={styles.readTaskContainer}>
                     <Checkbox />
                     <TouchableOpacity
+                        style={styles.imageContainer}
                         onPress={() => {
                             setComplete(!complete);
                         }}>
                         <Image
                             style={[
                                 styles.image,
-                                task.completed ? { opacity: 0.7 } : null,
+                                complete ? { opacity: 0.5 } : null,
                             ]}
-                            source={task.image}
+                            source={{ uri: task.image }}
+                            resizeMode='contain'
                         />
                     </TouchableOpacity>
                 </View>
