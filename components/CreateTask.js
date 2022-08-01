@@ -15,6 +15,7 @@ import * as ImageHelpers from '../helpers/ImageHelpers';
 import { storage } from '../src/firebase/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../src/contexts/AuthContext';
+import { manipulateAsync } from 'expo-image-manipulator';
 import PropTypes from 'prop-types';
 
 const CreateTask = ({ addTask }) => {
@@ -28,13 +29,15 @@ const CreateTask = ({ addTask }) => {
 
     const uploadImage = async (image) => {
         let fileName = new Date().toString().replace(/\s+/g, '') + '.jpg';
-
         try {
             const storageRef = ref(
                 storage,
                 `'users'/${uid}/'images'/${fileName}`
             );
-            const blob = await ImageHelpers.prepareBlob(image.uri);
+            const shrunkImage = await manipulateAsync(image.uri, [
+                { resize: { width: 300 } },
+            ]);
+            const blob = await ImageHelpers.prepareBlob(shrunkImage.uri);
             await uploadBytes(storageRef, blob);
             let downloadUrl = await getDownloadURL(storageRef);
             blob.close();
