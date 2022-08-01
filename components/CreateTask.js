@@ -6,9 +6,6 @@ import {
     ImageBackground,
     TouchableOpacity,
     ActivityIndicator,
-    Button,
-    Modal,
-    Image,
 } from 'react-native';
 import { ScheduleContext } from '../src/contexts/ScheduleContext';
 import { Entypo } from '@expo/vector-icons';
@@ -21,27 +18,21 @@ import { AuthContext } from '../src/contexts/AuthContext';
 import PropTypes from 'prop-types';
 
 const CreateTask = ({ addTask }) => {
-    const { type } = useContext(ScheduleContext);
-    const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
-    const [image, setImage] = useState(null);
+    const [text, setText] = useState('');
     const [imageUrl, setImageUrl] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
+    const { type } = useContext(ScheduleContext);
     const { currentUser } = useContext(AuthContext);
     const uid = currentUser.uid;
 
-    // const [modalShown, setModalShown] = useState(false);
-
     const uploadImage = async (image) => {
-        console.log('made it to upload image');
+        let fileName = new Date().toString().replace(/\s+/g, '') + '.jpg';
 
         try {
             const storageRef = ref(
                 storage,
-                'users',
-                uid,
-                'images',
-                new Date().toLocaleString()
+                `'users'/${uid}/'images'/${fileName}`
             );
             const blob = await ImageHelpers.prepareBlob(image.uri);
             await uploadBytes(storageRef, blob);
@@ -64,62 +55,14 @@ const CreateTask = ({ addTask }) => {
     };
 
     const openCamera = async () => {
-        const data = await ImageHelpers.openCamera();
-        if (data) {
+        const result = await ImageHelpers.openCamera();
+        if (result) {
             setLoading(true);
-            setImage(data);
-            const downloadUrl = await uploadImage(image);
+            const downloadUrl = await uploadImage(result);
             setImageUrl(downloadUrl);
             setLoading(false);
         }
     };
-
-    // const takePicture = async () => {
-    //     if (camera) {
-    //         const data = await camera.takePictureAsync(null);
-    //         if (data.uri) {
-    //             setLoading(true);
-    //             setImage(data.uri);
-    //             const downloadUrl = await uploadImage(image);
-    //             setImageUrl(downloadUrl);
-    //             setLoading(false);
-    //             setModalShown(false);
-    //         }
-    //     }
-    // };
-
-    // if (hasCameraPermission === false) {
-    //     alert('No access to camera');
-    // }
-
-    // const openCamera = () => {
-    //     console.log('open camera running!');
-    //     setModalShown(true);
-    // };
-
-    // const cameraModal = (
-    //     <Modal visible={modalShown}>
-    //         <View style={styles.cameraContainer}>
-    //             <Camera
-    //                 ref={(ref) => setCamera(ref)}
-    //                 style={styles.fixedRatio}
-    //                 type={type}
-    //                 ratio={'1:1'}
-    //             />
-    //         </View>
-    //         <Button
-    //             title='Flip Image'
-    //             onPress={() => {
-    //                 setType(
-    //                     type === Camera.Constants.Type.back
-    //                         ? Camera.Constants.Type.front
-    //                         : Camera.Constants.Type.back
-    //                 );
-    //             }}></Button>
-    //         <Button title='Take Picture' onPress={() => takePicture()} />
-    //         {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
-    //     </Modal>
-    // );
 
     const addImage = () => {
         const options = ['Select from Photos', 'Camera', 'Cancel'];
@@ -139,6 +82,8 @@ const CreateTask = ({ addTask }) => {
             }
         );
     };
+
+    const blankImageUrl = '../assets/BlankImage.png';
 
     if (loading) {
         return (
@@ -185,31 +130,22 @@ const CreateTask = ({ addTask }) => {
                             onPress={() => addImage()}>
                             <ImageBackground
                                 style={[styles.image, { opacity: 0.7 }]}
-                                source={{ uri: imageUrl }}
-                                resizeMode='contain'>
+                                source={{ uri: imageUrl }}>
                                 <Entypo name='camera' size={40} />
                             </ImageBackground>
                         </TouchableOpacity>
-                        {/* {cameraModal} */}
                         <TouchableOpacity
                             style={styles.addButton}
                             onPress={() => {
                                 if (imageUrl) {
                                     addTask(null, imageUrl);
-                                    setImageUrl(null);
+                                    setImageUrl(blankImageUrl);
                                 } else
                                     alert(
                                         'click the camera to upload an image before adding'
                                     );
                             }}>
-                            <Text
-                                style={{
-                                    fontSize: 40,
-                                    textAlign: 'center',
-                                    textAlignVertical: 'center',
-                                }}>
-                                +
-                            </Text>
+                            <Text style={styles.addButtonText}>+</Text>
                         </TouchableOpacity>
                     </View>
                 );
@@ -220,16 +156,16 @@ const CreateTask = ({ addTask }) => {
                     <View
                         style={[
                             styles.taskContainer,
-                            { justifyContent: 'center' },
+                            { marginTop: 60, justifyContent: 'center' },
                         ]}>
                         <TouchableOpacity style={styles.imageContainer}>
                             <ImageBackground
                                 style={[styles.image, { opacity: 0.7 }]}
-                                source={imageUrl}>
-                                <Entypo name='camera' size={24} />
+                                source={imageUrl}
+                                resizeMode='contain'>
+                                <Entypo name='camera' size={40} />
                             </ImageBackground>
                         </TouchableOpacity>
-                        {/* {cameraModal} */}
                         <TextInput
                             style={[styles.taskTextInput, { width: 200 }]}
                             placeholder='enter task'
@@ -239,8 +175,12 @@ const CreateTask = ({ addTask }) => {
                         />
                         <TouchableOpacity
                             style={styles.addButton}
-                            onPress={() => addTask(text, imageUrl)}>
-                            <Text style={styles.smallButtonText}>+</Text>
+                            onPress={() => {
+                                addTask(text, imageUrl);
+                                setText('');
+                                setImageUrl(blankImageUrl);
+                            }}>
+                            <Text style={styles.addButtonText}>+</Text>
                         </TouchableOpacity>
                     </View>
                 );

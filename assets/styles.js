@@ -122,6 +122,9 @@ export const styles = StyleSheet.create({
     },
     image: {
         alignItems: 'center',
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        borderRadius: 10,
         height: 150,
         justifyContent: 'center',
         width: 150,
@@ -145,6 +148,11 @@ export const styles = StyleSheet.create({
         width: 50,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    addButtonText: {
+        fontSize: 40,
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
     scheduleView: {
         alignItems: 'flex-start',

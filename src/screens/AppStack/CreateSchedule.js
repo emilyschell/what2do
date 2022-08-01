@@ -23,7 +23,7 @@ const CreateSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
     const { type, setSid } = useContext(ScheduleContext);
     const uid = currentUser.uid;
-    const [newTitle, setNewTitle] = useState('');
+    const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
 
     const addTask = (text, imageUrl) => {
@@ -50,10 +50,10 @@ const CreateSchedule = ({ navigation }) => {
 
     const makeSchedule = async () => {
         const newSchedule = {
-            title: newTitle,
+            title,
             type,
         };
-        if (tasks.length && newTitle) {
+        if (tasks.length && title) {
             // Add schedule to user's Firestore collection
             try {
                 const schedulesColl = collection(db, 'users', uid, 'schedules');
@@ -120,7 +120,7 @@ const CreateSchedule = ({ navigation }) => {
         }
     };
 
-    const renderTask = ({ item, index }) => {
+    const renderTask = ({ item }, index) => {
         switch (type) {
             case 'text':
                 return (
@@ -142,9 +142,11 @@ const CreateSchedule = ({ navigation }) => {
                             <Image
                                 style={styles.image}
                                 source={{ uri: item.image }}
+                                resizeMode='contain'
                             />
                         </View>
-                        <TouchableOpacity onPress={() => deleteTask(item.text)}>
+                        <TouchableOpacity
+                            onPress={() => deleteTask(item.image)}>
                             <Ionicons
                                 name='ios-trash-outline'
                                 size={24}
@@ -172,8 +174,8 @@ const CreateSchedule = ({ navigation }) => {
                             ]}
                             placeholder='enter title'
                             placeholderTextColor={colors.textInputPlaceholder}
-                            value={newTitle}
-                            onChangeText={(val) => setNewTitle(val)}
+                            value={title}
+                            onChangeText={(val) => setTitle(val)}
                         />
 
                         {/* New Task Input */}
@@ -187,6 +189,7 @@ const CreateSchedule = ({ navigation }) => {
                             data={tasks}
                             renderItem={renderTask}
                             onScrollBeginDrag={Keyboard.dismiss}
+                            contentContainerStyle={{ marginTop: 50 }}
                         />
                     ) : null}
                 </View>

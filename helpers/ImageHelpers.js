@@ -14,9 +14,6 @@ export const openImageLibrary = async () => {
 };
 
 export const openCamera = async () => {
-    // const [camera, setCamera] = useState(null);
-    // const [hasCameraPermission, setHasCameraPermission] = useState(null);
-    // const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
     const cameraStatus = await Camera.requestCameraPermissionsAsync();
 
     if (cameraStatus.status !== 'granted') {
@@ -24,9 +21,9 @@ export const openCamera = async () => {
         return false;
     } else {
         const result = await ImagePicker.launchCameraAsync({
-            quality: 0.1,
+            quality: 0.5,
             base64: true,
-            allowsEditing: Platform.OS == 'ios' ? false : true,
+            allowsEditing: true,
             aspect: [1, 1],
         });
 
