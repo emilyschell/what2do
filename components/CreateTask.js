@@ -114,6 +114,7 @@ const CreateTask = ({ addTask }) => {
                             }}>
                             <Text
                                 style={{
+                                    flex: 1,
                                     fontSize: 40,
                                     textAlign: 'center',
                                     textAlignVertical: 'center',
@@ -127,7 +128,7 @@ const CreateTask = ({ addTask }) => {
 
             case 'picture':
                 return (
-                    <View style={[styles.taskContainer, { marginTop: 60 }]}>
+                    <View style={[styles.taskContainer]}>
                         <TouchableOpacity
                             style={styles.imageContainer}
                             onPress={() => addImage()}>
@@ -160,7 +161,6 @@ const CreateTask = ({ addTask }) => {
                         style={[
                             styles.taskContainer,
                             {
-                                marginTop: 100,
                                 justifyContent: 'center',
                                 flex: 1,
                             },

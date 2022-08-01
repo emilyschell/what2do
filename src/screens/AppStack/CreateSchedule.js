@@ -130,7 +130,9 @@ const CreateSchedule = ({ navigation }) => {
                 return (
                     <View key={index} style={styles.taskContainer}>
                         <Text style={styles.taskText}>{item.text}</Text>
-                        <TouchableOpacity onPress={() => deleteTask(item.text)}>
+                        <TouchableOpacity
+                            onPress={() => deleteTask(item.text)}
+                            style={{ marginLeft: 15 }}>
                             <Ionicons
                                 name='ios-trash-outline'
                                 size={24}
@@ -194,19 +196,6 @@ const CreateSchedule = ({ navigation }) => {
         }
     };
 
-    const flatlistMargin = () => {
-        switch (type) {
-            case 'text':
-                return 0;
-                break;
-            case 'picture':
-                return 50;
-                break;
-            case 'hybrid':
-                return 100;
-        }
-    };
-
     if (loading) {
         return (
             <View style={styles.container}>
@@ -221,35 +210,52 @@ const CreateSchedule = ({ navigation }) => {
                 {/* Schedule View */}
                 <View style={styles.editScheduleView}>
                     <DismissKeyboard>
-                        <View style={styles.editScheduleHeader}>
-                            {/* Title Field */}
-                            <TextInput
-                                style={[
-                                    styles.taskTextInput,
-                                    { marginRight: 0, textAlign: 'center' },
-                                ]}
-                                placeholder='enter title'
-                                placeholderTextColor={
-                                    colors.textInputPlaceholder
-                                }
-                                value={title}
-                                onChangeText={(val) => setTitle(val)}
-                            />
-
+                        <>
+                            <View style={styles.editScheduleHeader}>
+                                {/* Title Field */}
+                                <TextInput
+                                    style={[
+                                        styles.taskTextInput,
+                                        { marginRight: 0, textAlign: 'center' },
+                                    ]}
+                                    placeholder='enter title'
+                                    placeholderTextColor={
+                                        colors.textInputPlaceholder
+                                    }
+                                    value={title}
+                                    onChangeText={(val) => setTitle(val)}
+                                />
+                            </View>
                             {/* New Task Input */}
-                            <CreateTask addTask={addTask} />
-                        </View>
+                            <View
+                                style={
+                                    type === 'text'
+                                        ? {
+                                              flex: 1,
+                                              margin: 0,
+                                              width: '100%',
+                                          }
+                                        : { flex: 2 }
+                                }>
+                                <CreateTask addTask={addTask} />
+                            </View>
+                        </>
                     </DismissKeyboard>
-                    <View style={{ flex: 2 }}>
-                        {/* Task List */}
+
+                    {/* Task List */}
+                    <View
+                        style={
+                            type === 'text'
+                                ? {
+                                      flex: 3,
+                                  }
+                                : { flex: 2 }
+                        }>
                         {tasks.length > 0 ? (
                             <FlatList
                                 data={tasks}
                                 renderItem={renderTask}
                                 onScrollBeginDrag={Keyboard.dismiss}
-                                contentContainerStyle={{
-                                    marginTop: flatlistMargin(),
-                                }}
                             />
                         ) : null}
                     </View>

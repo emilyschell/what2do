@@ -10,6 +10,7 @@ import {
     Pressable,
     ActivityIndicator,
     Keyboard,
+    Image,
 } from 'react-native';
 import { styles, colors } from '../../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
@@ -107,6 +108,7 @@ const EditSchedule = ({ navigation }) => {
     };
 
     const updateSchedule = async () => {
+        setLoading(true);
         const newSchedule = {
             title,
             type,
@@ -163,7 +165,7 @@ const EditSchedule = ({ navigation }) => {
                     for (const to2 of timeouts2) {
                         clearTimeout(to2);
                     }
-
+                    setLoading(false);
                     navigation.navigate('ReadSchedule');
                 }
             } catch (error) {
@@ -263,8 +265,8 @@ const EditSchedule = ({ navigation }) => {
                                               }
                                             : () => {
                                                   deleteLocalTask(
-                                                      deleteItem.text ||
-                                                          deleteItem.image
+                                                      deleteItem.image ||
+                                                          deleteItem.text
                                                   );
                                                   setModalShown(false);
                                               }
@@ -289,19 +291,84 @@ const EditSchedule = ({ navigation }) => {
         navigation.navigate('OpenCreateMenu');
     };
 
-    const renderTask = ({ item, index }) => {
-        return (
-            <View key={index} style={styles.taskContainer}>
-                <Text style={styles.taskText}>{item.text}</Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        setDeleteType('task');
-                        onPressDelete(item);
-                    }}>
-                    <Ionicons name='ios-trash-outline' size={24} color='red' />
-                </TouchableOpacity>
-            </View>
-        );
+    const renderTask = ({ item }, index) => {
+        switch (type) {
+            case 'text':
+                return (
+                    <View key={index} style={styles.taskContainer}>
+                        <Text style={styles.taskText}>{item.text}</Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setDeleteType('task');
+                                onPressDelete(item);
+                            }}>
+                            <Ionicons
+                                name='ios-trash-outline'
+                                size={24}
+                                color='red'
+                            />
+                        </TouchableOpacity>
+                    </View>
+                );
+            case 'picture':
+                return (
+                    <View key={index} style={styles.taskContainer}>
+                        <View style={[styles.imageContainer]}>
+                            <Image
+                                style={styles.image}
+                                source={{ uri: item.image }}
+                                resizeMode='contain'
+                            />
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setDeleteType('task');
+                                onPressDelete(item);
+                            }}>
+                            <Ionicons
+                                name='ios-trash-outline'
+                                size={24}
+                                color='red'
+                            />
+                        </TouchableOpacity>
+                    </View>
+                );
+            case 'hybrid':
+                return (
+                    <View
+                        key={index}
+                        style={[
+                            styles.taskContainer,
+                            { justifyContent: 'center' },
+                        ]}>
+                        <View
+                            style={{
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}>
+                            <View style={styles.imageContainer}>
+                                <Image
+                                    style={styles.image}
+                                    source={{ uri: item.image }}
+                                    resizeMode='contain'
+                                />
+                            </View>
+                            <Text style={styles.taskText}>{item.text}</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setDeleteType('task');
+                                onPressDelete(item);
+                            }}>
+                            <Ionicons
+                                name='ios-trash-outline'
+                                size={24}
+                                color='red'
+                            />
+                        </TouchableOpacity>
+                    </View>
+                );
+        }
     };
 
     if (loading) {
@@ -318,43 +385,65 @@ const EditSchedule = ({ navigation }) => {
                 {/* Schedule View */}
                 <View style={styles.editScheduleView}>
                     <DismissKeyboard>
-                        <View style={styles.editScheduleHeader}>
-                            {/* Delete Button */}
-                            <TouchableOpacity
-                                style={{ margin: 10 }}
-                                onPress={() => {
-                                    setDeleteType('schedule');
-                                    onPressDelete(sid);
-                                }}>
-                                <Ionicons
-                                    name='ios-trash-outline'
-                                    size={24}
-                                    color='red'
-                                />
-                            </TouchableOpacity>
+                        <>
+                            <View style={styles.editScheduleHeader}>
+                                {/* Delete Button */}
+                                <TouchableOpacity
+                                    style={{ margin: 10 }}
+                                    onPress={() => {
+                                        setDeleteType('schedule');
+                                        onPressDelete(sid);
+                                    }}>
+                                    <Ionicons
+                                        name='ios-trash-outline'
+                                        size={24}
+                                        color='red'
+                                    />
+                                </TouchableOpacity>
 
-                            {/* Title Field */}
-                            <TextInput
-                                style={[
-                                    styles.taskTextInput,
-                                    { marginRight: 0, textAlign: 'center' },
-                                ]}
-                                placeholder={title}
-                                placeholderTextColor={
-                                    colors.textInputPlaceholder
-                                }
-                                value={title}
-                                onChangeText={(val) => setTitle(val)}
-                            />
+                                {/* Title Field */}
+                                <TextInput
+                                    style={[
+                                        styles.taskTextInput,
+                                        { marginRight: 0, textAlign: 'center' },
+                                    ]}
+                                    placeholder={title}
+                                    placeholderTextColor={
+                                        colors.textInputPlaceholder
+                                    }
+                                    value={title}
+                                    onChangeText={(val) => setTitle(val)}
+                                />
+                            </View>
 
                             {ConfirmDeleteModal}
+
                             {/* New Task Input */}
-                            <CreateTask addTask={addTask} />
-                        </View>
+                            <View
+                                style={
+                                    type === 'text'
+                                        ? {
+                                              flex: 1,
+                                              margin: 0,
+                                              width: '100%',
+                                          }
+                                        : { flex: 2 }
+                                }>
+                                <CreateTask addTask={addTask} />
+                            </View>
+                        </>
                     </DismissKeyboard>
+
                     {/* Task List */}
 
-                    <View style={{ flex: 2 }}>
+                    <View
+                        style={
+                            type === 'text'
+                                ? {
+                                      flex: 3,
+                                  }
+                                : { flex: 2 }
+                        }>
                         {displayedTasks.length ? (
                             <FlatList
                                 data={displayedTasks}
