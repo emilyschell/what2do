@@ -271,11 +271,7 @@ const EditSchedule = ({ navigation }) => {
                 return (
                     <TouchableOpacity
                         onLongPress={drag}
-                        style={{
-                            backgroundColor: isActive ? '#ddd' : null,
-                            borderWidth: isActive ? 1 : null,
-                            borderColor: isActive ? 'black' : null,
-                        }}>
+                        style={isActive ? styles.activeDragItem : null}>
                         <View style={styles.taskContainer}>
                             <Text style={styles.taskText}>{item.text}</Text>
                             <TouchableOpacity
@@ -290,7 +286,11 @@ const EditSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons name='drag-indicator' size={36} />
+                            <MaterialIcons
+                                name='drag-indicator'
+                                size={30}
+                                color='#888'
+                            />
                         </View>
                     </TouchableOpacity>
                 );
@@ -318,7 +318,11 @@ const EditSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons name='drag-indicator' size={36} />
+                            <MaterialIcons
+                                name='drag-indicator'
+                                size={30}
+                                color='#888'
+                            />
                         </View>
                     </TouchableOpacity>
                 );
@@ -326,11 +330,7 @@ const EditSchedule = ({ navigation }) => {
                 return (
                     <TouchableOpacity
                         onLongPress={drag}
-                        style={{
-                            backgroundColor: isActive ? '#ccc' : null,
-                            borderWidth: isActive ? 1 : null,
-                            borderColor: isActive ? 'black' : null,
-                        }}>
+                        style={isActive ? styles.activeDragItem : null}>
                         <View
                             style={[
                                 styles.taskContainer,
@@ -361,7 +361,11 @@ const EditSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons name='drag-indicator' size={36} />
+                            <MaterialIcons
+                                name='drag-indicator'
+                                size={30}
+                                color='#888'
+                            />
                         </View>
                     </TouchableOpacity>
                 );

@@ -141,7 +141,7 @@ const CreateTask = ({ addTask }) => {
                         <TouchableOpacity
                             style={styles.addButton}
                             onPress={() => {
-                                if (imageUrl) {
+                                if (imageUrl !== blankImageUrl) {
                                     addTask(null, imageUrl);
                                     setImageUrl(blankImageUrl);
                                 } else

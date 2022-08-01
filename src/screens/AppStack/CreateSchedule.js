@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
 import {
     View,
-    FlatList,
     Text,
     TextInput,
     SafeAreaView,
     TouchableOpacity,
-    Keyboard,
     Image,
     ActivityIndicator,
 } from 'react-native';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 import { styles, colors } from '../../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
@@ -19,6 +18,7 @@ import { collection, addDoc, setDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const CreateSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
@@ -36,7 +36,16 @@ const CreateSchedule = ({ navigation }) => {
             };
             setTasks([...tasks, newTask]);
         } else {
-            alert('Please create a task to add');
+            switch (type) {
+                case 'text':
+                    alert('Please enter a task to add');
+                    break;
+                case 'photo':
+                    alert('Please select a photo to add');
+                    break;
+                case 'hybrid':
+                    alert('Please add text or a photo to add');
+            }
         }
     };
 
@@ -52,10 +61,17 @@ const CreateSchedule = ({ navigation }) => {
 
     const makeSchedule = async () => {
         setLoading(true);
+
         const newSchedule = {
             title,
             type,
         };
+
+        // assign order to task objects
+        tasks.forEach((task) => {
+            task.order = tasks.indexOf(task);
+        });
+
         if (tasks.length && title) {
             // Add schedule to user's Firestore collection
             try {
@@ -93,26 +109,6 @@ const CreateSchedule = ({ navigation }) => {
                         clearTimeout(to);
                     }
 
-                    // Assign task IDs to newly created tasks
-                    const tasksSnap = await getDocs(tasksColl);
-                    const taskIds = [];
-                    tasksSnap.forEach((task) => taskIds.push(task.id));
-                    const timeouts2 = [];
-                    for (const taskId of taskIds) {
-                        timeouts2.push(
-                            setTimeout(
-                                setDoc(
-                                    doc(tasksColl, taskId),
-                                    { tid: taskId },
-                                    { merge: true }
-                                ),
-                                1000
-                            )
-                        );
-                    }
-                    for (const to2 of timeouts2) {
-                        clearTimeout(to2);
-                    }
                     setLoading(false);
                     navigation.navigate('ReadSchedule');
                 }
@@ -124,56 +120,38 @@ const CreateSchedule = ({ navigation }) => {
         }
     };
 
-    const renderTask = ({ item }, index) => {
+    const renderTask = ({ item, drag, isActive }) => {
         switch (type) {
             case 'text':
                 return (
-                    <View key={index} style={styles.taskContainer}>
-                        <Text style={styles.taskText}>{item.text}</Text>
-                        <TouchableOpacity
-                            onPress={() => deleteTask(item.text)}
-                            style={{ marginLeft: 15 }}>
-                            <Ionicons
-                                name='ios-trash-outline'
-                                size={24}
-                                color='red'
+                    <TouchableOpacity
+                        onLongPress={drag}
+                        style={isActive ? styles.activeDragItem : null}>
+                        <View style={styles.taskContainer}>
+                            <Text style={styles.taskText}>{item.text}</Text>
+                            <TouchableOpacity
+                                onPress={() => deleteTask(item.text)}
+                                style={{ marginLeft: 15 }}>
+                                <Ionicons
+                                    name='ios-trash-outline'
+                                    size={24}
+                                    color='red'
+                                />
+                            </TouchableOpacity>
+                            <MaterialIcons
+                                name='drag-indicator'
+                                size={30}
+                                color='#888'
                             />
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                    </TouchableOpacity>
                 );
             case 'picture':
                 return (
-                    <View key={index} style={styles.taskContainer}>
-                        <View style={styles.imageContainer}>
-                            <Image
-                                style={styles.image}
-                                source={{ uri: item.image }}
-                                resizeMode='contain'
-                            />
-                        </View>
-                        <TouchableOpacity
-                            onPress={() => deleteTask(item.image)}>
-                            <Ionicons
-                                name='ios-trash-outline'
-                                size={24}
-                                color='red'
-                            />
-                        </TouchableOpacity>
-                    </View>
-                );
-            case 'hybrid':
-                return (
-                    <View
-                        key={index}
-                        style={[
-                            styles.taskContainer,
-                            { justifyContent: 'center' },
-                        ]}>
-                        <View
-                            style={{
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}>
+                    <TouchableOpacity
+                        onLongPress={drag}
+                        style={isActive ? styles.activeDragItem : null}>
+                        <View style={styles.taskContainer}>
                             <View style={styles.imageContainer}>
                                 <Image
                                     style={styles.image}
@@ -181,17 +159,61 @@ const CreateSchedule = ({ navigation }) => {
                                     resizeMode='contain'
                                 />
                             </View>
-                            <Text style={styles.taskText}>{item.text}</Text>
-                        </View>
-                        <TouchableOpacity
-                            onPress={() => deleteTask(item.image)}>
-                            <Ionicons
-                                name='ios-trash-outline'
-                                size={24}
-                                color='red'
+                            <TouchableOpacity
+                                onPress={() => deleteTask(item.image)}>
+                                <Ionicons
+                                    name='ios-trash-outline'
+                                    size={24}
+                                    color='red'
+                                />
+                            </TouchableOpacity>
+                            <MaterialIcons
+                                name='drag-indicator'
+                                size={30}
+                                color='#888'
                             />
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                    </TouchableOpacity>
+                );
+            case 'hybrid':
+                return (
+                    <TouchableOpacity
+                        onLongPress={drag}
+                        style={isActive ? styles.activeDragItem : null}>
+                        <View
+                            style={[
+                                styles.taskContainer,
+                                { justifyContent: 'center' },
+                            ]}>
+                            <View
+                                style={{
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                }}>
+                                <View style={styles.imageContainer}>
+                                    <Image
+                                        style={styles.image}
+                                        source={{ uri: item.image }}
+                                        resizeMode='contain'
+                                    />
+                                </View>
+                                <Text style={styles.taskText}>{item.text}</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => deleteTask(item.image)}>
+                                <Ionicons
+                                    name='ios-trash-outline'
+                                    size={24}
+                                    color='red'
+                                />
+                            </TouchableOpacity>
+                            <MaterialIcons
+                                name='drag-indicator'
+                                size={30}
+                                color='#888'
+                            />
+                        </View>
+                    </TouchableOpacity>
                 );
         }
     };
@@ -251,11 +273,12 @@ const CreateSchedule = ({ navigation }) => {
                                   }
                                 : { flex: 2 }
                         }>
-                        {tasks.length > 0 ? (
-                            <FlatList
+                        {tasks.length ? (
+                            <DraggableFlatList
                                 data={tasks}
                                 renderItem={renderTask}
-                                onScrollBeginDrag={Keyboard.dismiss}
+                                onDragEnd={({ data }) => setTasks(data)}
+                                keyExtractor={(item) => tasks.indexOf(item)}
                             />
                         ) : null}
                     </View>
