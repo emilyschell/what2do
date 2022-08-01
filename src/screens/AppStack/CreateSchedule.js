@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     Keyboard,
     Image,
+    ActivityIndicator,
 } from 'react-native';
 import { styles, colors } from '../../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
@@ -25,6 +26,7 @@ const CreateSchedule = ({ navigation }) => {
     const uid = currentUser.uid;
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const addTask = (text, imageUrl) => {
         if (text || imageUrl) {
@@ -49,6 +51,7 @@ const CreateSchedule = ({ navigation }) => {
     };
 
     const makeSchedule = async () => {
+        setLoading(true);
         const newSchedule = {
             title,
             type,
@@ -110,6 +113,7 @@ const CreateSchedule = ({ navigation }) => {
                     for (const to2 of timeouts2) {
                         clearTimeout(to2);
                     }
+                    setLoading(false);
                     navigation.navigate('ReadSchedule');
                 }
             } catch (error) {
@@ -190,64 +194,85 @@ const CreateSchedule = ({ navigation }) => {
         }
     };
 
-    return (
-        <View style={[styles.container, { paddingTop: 0 }]}>
-            <SafeAreaView />
+    const flatlistMargin = () => {
+        switch (type) {
+            case 'text':
+                return 0;
+                break;
+            case 'picture':
+                return 50;
+                break;
+            case 'hybrid':
+                return 100;
+        }
+    };
 
-            {/* Schedule View */}
-            <View style={styles.editScheduleView}>
-                <DismissKeyboard>
-                    <View style={styles.editScheduleHeader}>
-                        {/* Title Field */}
-                        <TextInput
-                            style={[
-                                styles.taskTextInput,
-                                { marginRight: 0, textAlign: 'center' },
-                            ]}
-                            placeholder='enter title'
-                            placeholderTextColor={colors.textInputPlaceholder}
-                            value={title}
-                            onChangeText={(val) => setTitle(val)}
-                        />
-
-                        {/* New Task Input */}
-                        <CreateTask addTask={addTask} />
-                    </View>
-                </DismissKeyboard>
-                <View style={{ flex: 2 }}>
-                    {/* Task List */}
-                    {tasks.length > 0 ? (
-                        <FlatList
-                            data={tasks}
-                            renderItem={renderTask}
-                            onScrollBeginDrag={Keyboard.dismiss}
-                            contentContainerStyle={
-                                type === 'hybrid'
-                                    ? { marginTop: 100 }
-                                    : { marginTop: 50 }
-                            }
-                        />
-                    ) : null}
-                </View>
+    if (loading) {
+        return (
+            <View style={styles.container}>
+                <ActivityIndicator size='large' color={colors.iconColor} />
             </View>
+        );
+    } else {
+        return (
+            <View style={[styles.container, { paddingTop: 0 }]}>
+                <SafeAreaView />
 
-            {/* Small Bottom Buttons */}
-            <CustomSmallButton
-                position='left'
-                onPress={() => {
-                    navigation.goBack();
-                }}>
-                <Text style={styles.smallButtonText}>Back</Text>
-            </CustomSmallButton>
-            <CustomSmallButton
-                position='right'
-                onPress={() => {
-                    makeSchedule();
-                }}>
-                <Text style={styles.smallButtonText}>Save</Text>
-            </CustomSmallButton>
-        </View>
-    );
+                {/* Schedule View */}
+                <View style={styles.editScheduleView}>
+                    <DismissKeyboard>
+                        <View style={styles.editScheduleHeader}>
+                            {/* Title Field */}
+                            <TextInput
+                                style={[
+                                    styles.taskTextInput,
+                                    { marginRight: 0, textAlign: 'center' },
+                                ]}
+                                placeholder='enter title'
+                                placeholderTextColor={
+                                    colors.textInputPlaceholder
+                                }
+                                value={title}
+                                onChangeText={(val) => setTitle(val)}
+                            />
+
+                            {/* New Task Input */}
+                            <CreateTask addTask={addTask} />
+                        </View>
+                    </DismissKeyboard>
+                    <View style={{ flex: 2 }}>
+                        {/* Task List */}
+                        {tasks.length > 0 ? (
+                            <FlatList
+                                data={tasks}
+                                renderItem={renderTask}
+                                onScrollBeginDrag={Keyboard.dismiss}
+                                contentContainerStyle={{
+                                    marginTop: flatlistMargin(),
+                                }}
+                            />
+                        ) : null}
+                    </View>
+                </View>
+
+                {/* Small Bottom Buttons */}
+                <CustomSmallButton
+                    position='left'
+                    onPress={() => {
+                        navigation.goBack();
+                    }}>
+                    <Text style={styles.smallButtonText}>Back</Text>
+                </CustomSmallButton>
+                <CustomSmallButton
+                    position='right'
+                    onPress={() => {
+                        makeSchedule();
+                    }}>
+                    <Text style={styles.smallButtonText}>Save</Text>
+                </CustomSmallButton>
+            </View>
+        );
+    }
 };
 
 export default CreateSchedule;
