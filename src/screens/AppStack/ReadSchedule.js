@@ -13,7 +13,14 @@ import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { FontAwesome } from '@expo/vector-icons';
 import { db } from '../../firebase/firebase';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import {
+    doc,
+    getDoc,
+    collection,
+    getDocs,
+    query,
+    orderBy,
+} from 'firebase/firestore';
 import ScheduleTask from '../../../components/ScheduleTask';
 
 const ReadSchedule = ({ navigation }) => {
@@ -47,7 +54,9 @@ const ReadSchedule = ({ navigation }) => {
                             sid,
                             'tasks'
                         );
-                        const tasksSnap = await getDocs(tasksColl);
+                        const tasksSnap = await getDocs(
+                            query(tasksColl, orderBy('order'))
+                        );
                         const newTasks = [];
                         tasksSnap.forEach((task) => newTasks.push(task.data()));
                         setTasks(newTasks);

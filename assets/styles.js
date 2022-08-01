@@ -223,4 +223,10 @@ export const styles = StyleSheet.create({
         width: 300,
         height: 200,
     },
+    activeDragItem: {
+        backgroundColor: '#aaa',
+        borderStyle: 'dotted',
+        borderWidth: 1,
+        borderColor: '#555',
+    },
 });

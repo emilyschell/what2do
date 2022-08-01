@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import {
     View,
-    FlatList,
     Text,
     TextInput,
     SafeAreaView,
@@ -9,9 +8,9 @@ import {
     Modal,
     Pressable,
     ActivityIndicator,
-    Keyboard,
     Image,
 } from 'react-native';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 import { styles, colors } from '../../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
@@ -20,7 +19,6 @@ import { Ionicons } from '@expo/vector-icons';
 import {
     collection,
     addDoc,
-    setDoc,
     doc,
     getDocs,
     getDoc,
@@ -30,14 +28,14 @@ import {
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
     const { setType, type, sid } = useContext(ScheduleContext);
 
     const [title, setTitle] = useState('');
-    const [displayedTasks, setDisplayedTasks] = useState([]);
-    const [addedTasks, setAddedTasks] = useState([]);
+    const [tasks, setTasks] = useState([]);
     const [modalShown, setModalShown] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
     const [deleteType, setDeleteType] = useState(null);
@@ -69,8 +67,10 @@ const EditSchedule = ({ navigation }) => {
                         );
                         const tasksSnap = await getDocs(tasksColl);
                         const newTasks = [];
-                        tasksSnap.forEach((task) => newTasks.push(task.data()));
-                        setDisplayedTasks(newTasks);
+                        tasksSnap.forEach((task) =>
+                            newTasks.push({ ...task.data(), tid: task.id })
+                        );
+                        setTasks(newTasks);
                         setLoading(false);
                     } catch (error) {
                         console.log('Error in getting tasks: ', error);
@@ -79,7 +79,7 @@ const EditSchedule = ({ navigation }) => {
                     console.log('No such schedule!');
                 }
             } catch (error) {
-                console.log('Error in getting schedule: ', { error });
+                console.log('Error in getting schedule: ', error);
             }
         };
         getSchedule();
@@ -91,8 +91,7 @@ const EditSchedule = ({ navigation }) => {
                 text: text,
                 image: imageUrl,
             };
-            setDisplayedTasks([...displayedTasks, newTask]);
-            setAddedTasks([...addedTasks, newTask]);
+            setTasks([...tasks, newTask]);
         } else {
             switch (type) {
                 case 'text':
@@ -109,10 +108,12 @@ const EditSchedule = ({ navigation }) => {
 
     const updateSchedule = async () => {
         setLoading(true);
-        const newSchedule = {
-            title,
-            type,
-        };
+
+        // assign order to task objects
+        tasks.forEach((task) => {
+            task.order = tasks.indexOf(task);
+        });
+
         if (title) {
             // Update title
             try {
@@ -124,8 +125,9 @@ const EditSchedule = ({ navigation }) => {
                     sid
                 );
                 await updateDoc(scheduleRef, { title });
-                if (addedTasks.length) {
-                    // Add new tasks, in loops with setTimeout due to rate limits
+
+                //delete all tasks from firebase, in loops with timeouts due to rate limits
+                try {
                     const tasksColl = collection(
                         db,
                         'users',
@@ -134,39 +136,41 @@ const EditSchedule = ({ navigation }) => {
                         sid,
                         'tasks'
                     );
-
                     const timeouts = [];
-                    for (const task of addedTasks) {
+                    const taskSnap = await getDocs(tasksColl);
+                    taskSnap.forEach((task) => {
                         timeouts.push(
-                            setTimeout(addDoc(tasksColl, task), 1000)
+                            setTimeout(deleteDoc(doc(tasksColl, task.id)), 1000)
                         );
-                    }
-                    for (const to of timeouts) {
-                        clearTimeout(to);
-                    }
+                    });
+                    timeouts.forEach((to) => clearTimeout(to));
 
-                    // Assign task IDs to newly created tasks
-                    const tasksSnap = await getDocs(tasksColl);
-                    const taskIds = [];
-                    tasksSnap.forEach((task) => taskIds.push(task.id));
-                    const timeouts2 = [];
-                    for (const taskId of taskIds) {
-                        timeouts2.push(
-                            setTimeout(
-                                setDoc(
-                                    doc(tasksColl, taskId),
-                                    { tid: taskId },
-                                    { merge: true }
-                                ),
-                                1000
-                            )
+                    //send all new tasks to firebase, in loops with setTimeout due to rate limits
+                    if (tasks.length) {
+                        const tasksColl = collection(
+                            db,
+                            'users',
+                            currentUser.uid,
+                            'schedules',
+                            sid,
+                            'tasks'
                         );
+
+                        const timeouts2 = [];
+                        for (const task of tasks) {
+                            timeouts2.push(
+                                setTimeout(addDoc(tasksColl, task), 1000)
+                            );
+                        }
+                        for (const to2 of timeouts2) {
+                            clearTimeout(to2);
+                        }
+
+                        setLoading(false);
+                        navigation.navigate('ReadSchedule');
                     }
-                    for (const to2 of timeouts2) {
-                        clearTimeout(to2);
-                    }
-                    setLoading(false);
-                    navigation.navigate('ReadSchedule');
+                } catch (error) {
+                    console.log('error deleting tasks from firestore: ', error);
                 }
             } catch (error) {
                 console.log('Error in updating schedule: ', error);
@@ -176,42 +180,22 @@ const EditSchedule = ({ navigation }) => {
         }
     };
 
-    const deleteFirebaseTask = async (tid) => {
-        const taskRef = doc(
-            db,
-            'users',
-            currentUser.uid,
-            'schedules',
-            sid,
-            'tasks',
-            tid
-        );
-        await deleteDoc(taskRef);
-        const newTasks = displayedTasks.filter(
-            (task) => task.tid !== tid || !task.hasOwnProperty('tid')
-        );
-        setDisplayedTasks(newTasks);
-    };
-
-    const deleteLocalTask = (str) => {
-        if (type === 'text') {
-            const newDispTasks = displayedTasks.filter(
-                (task) => task.text !== str
+    const deleteTask = () => {
+        if (deleteItem.hasOwnProperty('tid')) {
+            const newTasks = tasks.filter(
+                (task) => task.tid !== deleteItem.tid
             );
-            setDisplayedTasks(newDispTasks);
-            const newAddedTasks = addedTasks.filter(
-                (task) => task.text !== str
+            setTasks(newTasks);
+        } else if (type === 'text') {
+            const newTasks = tasks.filter(
+                (task) => task.text !== deleteItem.text
             );
-            setAddedTasks(newAddedTasks);
+            setTasks(newTasks);
         } else {
-            const newDispTasks = displayedTasks.filter(
-                (task) => task.image !== str
+            const newTasks = tasks.filter(
+                (task) => task.image !== deleteItem.image
             );
-            setDisplayedTasks(newDispTasks);
-            const newAddedTasks = addedTasks.filter(
-                (task) => task.image !== str
-            );
-            setAddedTasks(newAddedTasks);
+            setTasks(newTasks);
         }
     };
 
@@ -256,22 +240,12 @@ const EditSchedule = ({ navigation }) => {
                                 style={[styles.smallButtons, { margin: 10 }]}
                                 onPress={
                                     deleteType === 'task'
-                                        ? deleteItem.hasOwnProperty('tid')
-                                            ? () => {
-                                                  deleteFirebaseTask(
-                                                      deleteItem.tid
-                                                  );
-                                                  setModalShown(false);
-                                              }
-                                            : () => {
-                                                  deleteLocalTask(
-                                                      deleteItem.image ||
-                                                          deleteItem.text
-                                                  );
-                                                  setModalShown(false);
-                                              }
+                                        ? () => {
+                                              deleteTask();
+                                              setModalShown(false);
+                                          }
                                         : () => {
-                                              deleteSchedule(deleteItem);
+                                              deleteSchedule();
                                               setModalShown(false);
                                           }
                                 }>
@@ -291,82 +265,105 @@ const EditSchedule = ({ navigation }) => {
         navigation.navigate('OpenCreateMenu');
     };
 
-    const renderTask = ({ item }, index) => {
+    const renderTask = ({ item, drag, isActive }) => {
         switch (type) {
             case 'text':
                 return (
-                    <View key={index} style={styles.taskContainer}>
-                        <Text style={styles.taskText}>{item.text}</Text>
-                        <TouchableOpacity
-                            onPress={() => {
-                                setDeleteType('task');
-                                onPressDelete(item);
-                            }}>
-                            <Ionicons
-                                name='ios-trash-outline'
-                                size={24}
-                                color='red'
-                            />
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                        onLongPress={drag}
+                        style={{
+                            backgroundColor: isActive ? '#ddd' : null,
+                            borderWidth: isActive ? 1 : null,
+                            borderColor: isActive ? 'black' : null,
+                        }}>
+                        <View style={styles.taskContainer}>
+                            <Text style={styles.taskText}>{item.text}</Text>
+                            <TouchableOpacity
+                                style={{ marginLeft: 10 }}
+                                onPress={() => {
+                                    setDeleteType('task');
+                                    onPressDelete(item);
+                                }}>
+                                <Ionicons
+                                    name='ios-trash-outline'
+                                    size={24}
+                                    color='red'
+                                />
+                            </TouchableOpacity>
+                            <MaterialIcons name='drag-indicator' size={36} />
+                        </View>
+                    </TouchableOpacity>
                 );
             case 'picture':
                 return (
-                    <View key={index} style={styles.taskContainer}>
-                        <View style={[styles.imageContainer]}>
-                            <Image
-                                style={styles.image}
-                                source={{ uri: item.image }}
-                                resizeMode='contain'
-                            />
-                        </View>
-                        <TouchableOpacity
-                            onPress={() => {
-                                setDeleteType('task');
-                                onPressDelete(item);
-                            }}>
-                            <Ionicons
-                                name='ios-trash-outline'
-                                size={24}
-                                color='red'
-                            />
-                        </TouchableOpacity>
-                    </View>
-                );
-            case 'hybrid':
-                return (
-                    <View
-                        key={index}
-                        style={[
-                            styles.taskContainer,
-                            { justifyContent: 'center' },
-                        ]}>
-                        <View
-                            style={{
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}>
-                            <View style={styles.imageContainer}>
+                    <TouchableOpacity
+                        onLongPress={drag}
+                        style={isActive ? styles.activeDragItem : null}>
+                        <View style={styles.taskContainer}>
+                            <View style={[styles.imageContainer]}>
                                 <Image
                                     style={styles.image}
                                     source={{ uri: item.image }}
                                     resizeMode='contain'
                                 />
                             </View>
-                            <Text style={styles.taskText}>{item.text}</Text>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setDeleteType('task');
+                                    onPressDelete(item);
+                                }}>
+                                <Ionicons
+                                    name='ios-trash-outline'
+                                    size={24}
+                                    color='red'
+                                />
+                            </TouchableOpacity>
+                            <MaterialIcons name='drag-indicator' size={36} />
                         </View>
-                        <TouchableOpacity
-                            onPress={() => {
-                                setDeleteType('task');
-                                onPressDelete(item);
-                            }}>
-                            <Ionicons
-                                name='ios-trash-outline'
-                                size={24}
-                                color='red'
-                            />
-                        </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
+                );
+            case 'hybrid':
+                return (
+                    <TouchableOpacity
+                        onLongPress={drag}
+                        style={{
+                            backgroundColor: isActive ? '#ccc' : null,
+                            borderWidth: isActive ? 1 : null,
+                            borderColor: isActive ? 'black' : null,
+                        }}>
+                        <View
+                            style={[
+                                styles.taskContainer,
+                                { justifyContent: 'center' },
+                            ]}>
+                            <View
+                                style={{
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                }}>
+                                <View style={styles.imageContainer}>
+                                    <Image
+                                        style={styles.image}
+                                        source={{ uri: item.image }}
+                                        resizeMode='contain'
+                                    />
+                                </View>
+                                <Text style={styles.taskText}>{item.text}</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setDeleteType('task');
+                                    onPressDelete(item);
+                                }}>
+                                <Ionicons
+                                    name='ios-trash-outline'
+                                    size={24}
+                                    color='red'
+                                />
+                            </TouchableOpacity>
+                            <MaterialIcons name='drag-indicator' size={36} />
+                        </View>
+                    </TouchableOpacity>
                 );
         }
     };
@@ -444,11 +441,12 @@ const EditSchedule = ({ navigation }) => {
                                   }
                                 : { flex: 2 }
                         }>
-                        {displayedTasks.length ? (
-                            <FlatList
-                                data={displayedTasks}
+                        {tasks.length ? (
+                            <DraggableFlatList
+                                data={tasks}
                                 renderItem={renderTask}
-                                onScrollBeginDrag={Keyboard.dismiss}
+                                onDragEnd={({ data }) => setTasks(data)}
+                                keyExtractor={(item) => tasks.indexOf(item)}
                             />
                         ) : null}
                     </View>
