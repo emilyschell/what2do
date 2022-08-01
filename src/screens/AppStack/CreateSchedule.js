@@ -155,6 +155,38 @@ const CreateSchedule = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 );
+            case 'hybrid':
+                return (
+                    <View
+                        key={index}
+                        style={[
+                            styles.taskContainer,
+                            { justifyContent: 'center' },
+                        ]}>
+                        <View
+                            style={{
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}>
+                            <View style={styles.imageContainer}>
+                                <Image
+                                    style={styles.image}
+                                    source={{ uri: item.image }}
+                                    resizeMode='contain'
+                                />
+                            </View>
+                            <Text style={styles.taskText}>{item.text}</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => deleteTask(item.image)}>
+                            <Ionicons
+                                name='ios-trash-outline'
+                                size={24}
+                                color='red'
+                            />
+                        </TouchableOpacity>
+                    </View>
+                );
         }
     };
 
@@ -189,7 +221,11 @@ const CreateSchedule = ({ navigation }) => {
                             data={tasks}
                             renderItem={renderTask}
                             onScrollBeginDrag={Keyboard.dismiss}
-                            contentContainerStyle={{ marginTop: 50 }}
+                            contentContainerStyle={
+                                type === 'hybrid'
+                                    ? { marginTop: 100 }
+                                    : { marginTop: 50 }
+                            }
                         />
                     ) : null}
                 </View>

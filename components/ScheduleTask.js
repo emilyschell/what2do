@@ -85,7 +85,8 @@ const ScheduleTask = ({ task }) => {
                     <TouchableOpacity
                         onPress={() => {
                             setComplete(!complete);
-                        }}>
+                        }}
+                        style={{ marginLeft: 15, alignItems: 'center' }}>
                         <Text
                             style={[
                                 styles.taskText,
@@ -98,7 +99,7 @@ const ScheduleTask = ({ task }) => {
                                 styles.image,
                                 complete ? { opacity: 0.7 } : null,
                             ]}
-                            source={task.image}
+                            source={{ uri: task.image }}
                         />
                     </TouchableOpacity>
                 </View>

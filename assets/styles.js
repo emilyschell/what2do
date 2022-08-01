@@ -223,12 +223,4 @@ export const styles = StyleSheet.create({
         width: 300,
         height: 200,
     },
-    cameraContainer: {
-        flex: 1,
-        flexDirection: 'row',
-    },
-    fixedRatio: {
-        flex: 1,
-        aspectRatio: 1,
-    },
 });

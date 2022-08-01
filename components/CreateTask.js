@@ -90,7 +90,7 @@ const CreateTask = ({ addTask }) => {
 
     if (loading) {
         return (
-            <View style={styles.container}>
+            <View>
                 <ActivityIndicator size='large' color={colors.iconColor} />
             </View>
         );
@@ -159,23 +159,37 @@ const CreateTask = ({ addTask }) => {
                     <View
                         style={[
                             styles.taskContainer,
-                            { marginTop: 60, justifyContent: 'center' },
+                            {
+                                marginTop: 100,
+                                justifyContent: 'center',
+                                flex: 1,
+                            },
                         ]}>
-                        <TouchableOpacity style={styles.imageContainer}>
-                            <ImageBackground
-                                style={[styles.image, { opacity: 0.7 }]}
-                                source={imageUrl}
-                                resizeMode='contain'>
-                                <Entypo name='camera' size={40} />
-                            </ImageBackground>
-                        </TouchableOpacity>
-                        <TextInput
-                            style={[styles.taskTextInput, { width: 200 }]}
-                            placeholder='enter task'
-                            placeholderTextColor={colors.textInputPlaceholder}
-                            onChangeText={(val) => setText(val)}
-                            value={text}
-                        />
+                        <View
+                            style={{
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}>
+                            <TouchableOpacity
+                                style={styles.imageContainer}
+                                onPress={() => addImage()}>
+                                <ImageBackground
+                                    style={[styles.image, { opacity: 0.7 }]}
+                                    source={{ uri: imageUrl }}
+                                    resizeMode='contain'>
+                                    <Entypo name='camera' size={40} />
+                                </ImageBackground>
+                            </TouchableOpacity>
+                            <TextInput
+                                style={[styles.taskTextInput, { width: 200 }]}
+                                placeholder='enter task'
+                                placeholderTextColor={
+                                    colors.textInputPlaceholder
+                                }
+                                onChangeText={(val) => setText(val)}
+                                value={text}
+                            />
+                        </View>
                         <TouchableOpacity
                             style={styles.addButton}
                             onPress={() => {
