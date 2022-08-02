@@ -1,13 +1,24 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { ScheduleContext } from '../src/contexts/ScheduleContext';
 import { styles, colors } from '../assets/styles';
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const ScheduleTask = ({ task }) => {
-    const { type } = useContext(ScheduleContext);
+    const { type, sid, setSid, setParentSid, setOnLinkedSchedule } =
+        useContext(ScheduleContext);
     const [complete, setComplete] = useState(false);
+    const navigation = useNavigation();
+
+    const getLinkedSchedule = () => {
+        setParentSid(sid);
+        setOnLinkedSchedule(true);
+        setSid(task.subSchedule);
+        navigation.navigate('ReadSchedule');
+    };
 
     const Checkbox = () => {
         return (
@@ -44,6 +55,11 @@ const ScheduleTask = ({ task }) => {
                             {task.text}
                         </Text>
                     </TouchableOpacity>
+                    {task.subSchedule && (
+                        <TouchableOpacity onPress={getLinkedSchedule}>
+                            <AntDesign name='rightcircleo' size={24} />
+                        </TouchableOpacity>
+                    )}
                 </View>
             );
             break;
@@ -70,6 +86,11 @@ const ScheduleTask = ({ task }) => {
                             resizeMode='contain'
                         />
                     </TouchableOpacity>
+                    {task.subSchedule && (
+                        <TouchableOpacity onPress={getLinkedSchedule}>
+                            <AntDesign name='rightcircleo' size={24} />
+                        </TouchableOpacity>
+                    )}
                 </View>
             );
             break;
@@ -102,6 +123,11 @@ const ScheduleTask = ({ task }) => {
                             source={{ uri: task.image }}
                         />
                     </TouchableOpacity>
+                    {task.subSchedule && (
+                        <TouchableOpacity onPress={getLinkedSchedule}>
+                            <AntDesign name='rightcircleo' size={24} />
+                        </TouchableOpacity>
+                    )}
                 </View>
             );
             break;

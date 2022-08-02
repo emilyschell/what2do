@@ -59,7 +59,7 @@ const OpenFileList = ({ navigation }) => {
 
     const selectSchedule = (sid) => {
         setSid(sid);
-        navigation.navigate('EditSchedule');
+        navigation.navigate('ReadSchedule');
     };
 
     const ConfirmDeleteModal = (

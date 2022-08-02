@@ -3,8 +3,9 @@ import React, { useState, createContext } from 'react';
 export const ScheduleContext = createContext();
 
 export const ScheduleProvider = ({ children }) => {
-    const [scheduleInfo, setScheduleInfo] = useState({ type: '', sid: '' });
-    const [linkedScheduleInfo, setLinkedScheduleInfo] = useState({
+    const [scheduleInfo, setScheduleInfo] = useState({
+        type: '',
+        sid: '',
         tid: '',
         onLinkedSchedule: false,
         parentSid: '',
@@ -19,39 +20,35 @@ export const ScheduleProvider = ({ children }) => {
     };
 
     const setTid = (tid) => {
-        setLinkedScheduleInfo({ ...linkedScheduleInfo, tid });
+        setScheduleInfo({ ...scheduleInfo, tid });
     };
 
     const setOnLinkedSchedule = (bool) => {
-        setLinkedScheduleInfo({
-            ...linkedScheduleInfo,
+        setScheduleInfo({
+            ...scheduleInfo,
             onLinkedSchedule: bool,
         });
     };
 
     const setParentSid = (sid) => {
-        setLinkedScheduleInfo({ ...linkedScheduleInfo, parentSid: sid });
+        setScheduleInfo({ ...scheduleInfo, parentSid: sid });
     };
 
     const scheduleContextSetters = {
         setType,
         setSid,
-        setScheduleInfo,
-    };
-
-    const linkedScheduleContextSetters = {
         setTid,
         setParentSid,
         setOnLinkedSchedule,
+        setScheduleInfo,
     };
 
     return (
         <ScheduleContext.Provider
             value={{
+                scheduleInfo,
                 ...scheduleInfo,
                 ...scheduleContextSetters,
-                ...linkedScheduleInfo,
-                ...linkedScheduleContextSetters,
             }}>
             {children}
         </ScheduleContext.Provider>
