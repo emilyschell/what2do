@@ -24,15 +24,18 @@ import {
     getDoc,
     updateDoc,
     deleteDoc,
+    query,
+    orderBy,
 } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
-    const { setType, type, sid } = useContext(ScheduleContext);
+    const { setType, type, sid, setTid, setParentSid } =
+        useContext(ScheduleContext);
 
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
@@ -65,7 +68,9 @@ const EditSchedule = ({ navigation }) => {
                             sid,
                             'tasks'
                         );
-                        const tasksSnap = await getDocs(tasksColl);
+                        const tasksSnap = await getDocs(
+                            query(tasksColl, orderBy('order'))
+                        );
                         const newTasks = [];
                         tasksSnap.forEach((task) =>
                             newTasks.push({ ...task.data(), tid: task.id })
@@ -265,6 +270,12 @@ const EditSchedule = ({ navigation }) => {
         navigation.navigate('OpenCreateMenu');
     };
 
+    const openLinkedScheduleMenu = (tid) => {
+        setTid(tid);
+        setParentSid(sid);
+        navigation.navigate('LinkScheduleMenu');
+    };
+
     const renderTask = ({ item, drag, isActive }) => {
         switch (type) {
             case 'text':
@@ -286,11 +297,12 @@ const EditSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons
-                                name='drag-indicator'
-                                size={30}
-                                color='#888'
-                            />
+                            <TouchableOpacity
+                                onPress={() =>
+                                    openLinkedScheduleMenu(item.tid)
+                                }>
+                                <Entypo name='link' size={24} />
+                            </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
                 );
@@ -318,11 +330,12 @@ const EditSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons
-                                name='drag-indicator'
-                                size={30}
-                                color='#888'
-                            />
+                            <TouchableOpacity
+                                onPress={() =>
+                                    openLinkedScheduleMenu(item.tid)
+                                }>
+                                <Entypo name='link' size={24} />
+                            </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
                 );
@@ -361,11 +374,12 @@ const EditSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons
-                                name='drag-indicator'
-                                size={30}
-                                color='#888'
-                            />
+                            <TouchableOpacity
+                                onPress={() =>
+                                    openLinkedScheduleMenu(item.tid)
+                                }>
+                                <Entypo name='link' size={24} />
+                            </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
                 );

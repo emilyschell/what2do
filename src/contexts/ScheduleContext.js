@@ -4,15 +4,33 @@ export const ScheduleContext = createContext();
 
 export const ScheduleProvider = ({ children }) => {
     const [scheduleInfo, setScheduleInfo] = useState({ type: '', sid: '' });
+    const [linkedScheduleInfo, setLinkedScheduleInfo] = useState({
+        tid: '',
+        onLinkedSchedule: false,
+        parentSid: '',
+    });
 
     const setType = (type) => {
-        const newSchedule = { ...scheduleInfo, type };
-        setScheduleInfo(newSchedule);
+        setScheduleInfo({ ...scheduleInfo, type });
     };
 
     const setSid = (sid) => {
-        const newSchedule = { ...scheduleInfo, sid };
-        setScheduleInfo(newSchedule);
+        setScheduleInfo({ ...scheduleInfo, sid });
+    };
+
+    const setTid = (tid) => {
+        setLinkedScheduleInfo({ ...linkedScheduleInfo, tid });
+    };
+
+    const setOnLinkedSchedule = (bool) => {
+        setLinkedScheduleInfo({
+            ...linkedScheduleInfo,
+            onLinkedSchedule: bool,
+        });
+    };
+
+    const setParentSid = (sid) => {
+        setLinkedScheduleInfo({ ...linkedScheduleInfo, parentSid: sid });
     };
 
     const scheduleContextSetters = {
@@ -21,9 +39,20 @@ export const ScheduleProvider = ({ children }) => {
         setScheduleInfo,
     };
 
+    const linkedScheduleContextSetters = {
+        setTid,
+        setParentSid,
+        setOnLinkedSchedule,
+    };
+
     return (
         <ScheduleContext.Provider
-            value={{ ...scheduleInfo, ...scheduleContextSetters }}>
+            value={{
+                ...scheduleInfo,
+                ...scheduleContextSetters,
+                ...linkedScheduleInfo,
+                ...linkedScheduleContextSetters,
+            }}>
             {children}
         </ScheduleContext.Provider>
     );

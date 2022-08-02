@@ -13,9 +13,11 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { db } from '../../firebase/firebase';
 import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import FileItem from '../../../components/FileItem';
+import { ScheduleContext } from '../../contexts/ScheduleContext';
 
 const OpenFileList = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
+    const { setSid } = useContext(ScheduleContext);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
     const [modalShown, setModalShown] = useState(false);
@@ -53,6 +55,11 @@ const OpenFileList = ({ navigation }) => {
             (schedule) => schedule.sid !== sidToDelete
         );
         setSchedules(newSchedules);
+    };
+
+    const selectSchedule = (sid) => {
+        setSid(sid);
+        navigation.navigate('EditSchedule');
     };
 
     const ConfirmDeleteModal = (
@@ -138,7 +145,10 @@ const OpenFileList = ({ navigation }) => {
                                 <FileItem
                                     sid={item.sid}
                                     title={item.title}
+                                    onPressCallback={selectSchedule}
+                                    showDelete={true}
                                     deleteSched={onPressDelete}
+                                    showEdit={true}
                                 />
                             );
                         }}

@@ -11,6 +11,7 @@ import { useContext } from 'react';
 import { ScheduleProvider } from '../contexts/ScheduleContext';
 import ReadSchedule from './AppStack/ReadSchedule';
 import EditSchedule from './AppStack/EditSchedule';
+import LinkScheduleMenu from './AppStack/LinkScheduleMenu';
 
 const Navigator = () => {
     const { currentUser } = useContext(AuthContext);
@@ -59,6 +60,10 @@ const Navigator = () => {
                     <Stack.Screen
                         name='EditSchedule'
                         component={EditSchedule}
+                    />
+                    <Stack.Screen
+                        name='LinkScheduleMenu'
+                        component={LinkScheduleMenu}
                     />
                 </Stack.Navigator>
             </ScheduleProvider>
