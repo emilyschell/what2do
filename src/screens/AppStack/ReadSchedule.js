@@ -24,7 +24,14 @@ import {
 import ScheduleTask from '../../../components/ScheduleTask';
 
 const ReadSchedule = ({ navigation }) => {
-    const { sid, setType } = useContext(ScheduleContext);
+    const {
+        sid,
+        setType,
+        onLinkedSchedule,
+        parentSid,
+        setSid,
+        setLinkedScheduleInfo,
+    } = useContext(ScheduleContext);
     const { currentUser } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState('');
@@ -74,6 +81,18 @@ const ReadSchedule = ({ navigation }) => {
         getSchedule();
     }, []);
 
+    const closeSchedule = onLinkedSchedule
+        ? () => {
+              setSid(parentSid);
+              setLinkedScheduleInfo({
+                  tid: '',
+                  parentSid: '',
+                  onLinkedSchedule: false,
+              });
+              navigation.pop();
+          }
+        : () => navigation.navigate('OpenCreateMenu');
+
     if (loading) {
         return (
             <View style={styles.container}>
@@ -94,10 +113,7 @@ const ReadSchedule = ({ navigation }) => {
                             width: 20,
                             zIndex: 1000,
                         }}>
-                        <TouchableOpacity
-                            onPress={() =>
-                                navigation.navigate('OpenCreateMenu')
-                            }>
+                        <TouchableOpacity onPress={() => closeSchedule()}>
                             <FontAwesome name='close' size={24} />
                         </TouchableOpacity>
                     </View>

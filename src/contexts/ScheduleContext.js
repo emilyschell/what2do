@@ -6,6 +6,8 @@ export const ScheduleProvider = ({ children }) => {
     const [scheduleInfo, setScheduleInfo] = useState({
         type: '',
         sid: '',
+    });
+    const [linkedScheduleInfo, setLinkedScheduleInfo] = useState({
         tid: '',
         onLinkedSchedule: false,
         parentSid: '',
@@ -20,35 +22,40 @@ export const ScheduleProvider = ({ children }) => {
     };
 
     const setTid = (tid) => {
-        setScheduleInfo({ ...scheduleInfo, tid });
+        setLinkedScheduleInfo({ ...linkedScheduleInfo, tid });
     };
 
     const setOnLinkedSchedule = (bool) => {
-        setScheduleInfo({
-            ...scheduleInfo,
+        setLinkedScheduleInfo({
+            ...linkedScheduleInfo,
             onLinkedSchedule: bool,
         });
     };
 
     const setParentSid = (sid) => {
-        setScheduleInfo({ ...scheduleInfo, parentSid: sid });
+        setLinkedScheduleInfo({ ...linkedScheduleInfo, parentSid: sid });
     };
 
     const scheduleContextSetters = {
         setType,
         setSid,
+        setScheduleInfo,
+    };
+
+    const linkedScheduleContextSetters = {
         setTid,
         setParentSid,
         setOnLinkedSchedule,
-        setScheduleInfo,
+        setLinkedScheduleInfo,
     };
 
     return (
         <ScheduleContext.Provider
             value={{
-                scheduleInfo,
                 ...scheduleInfo,
                 ...scheduleContextSetters,
+                ...linkedScheduleInfo,
+                ...linkedScheduleContextSetters,
             }}>
             {children}
         </ScheduleContext.Provider>

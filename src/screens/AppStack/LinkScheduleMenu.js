@@ -43,9 +43,6 @@ const LinkScheduleMenu = ({ navigation }) => {
     }, []);
 
     const linkSchedule = async (sid) => {
-        console.log('sid from LSM: ', sid);
-        console.log('parentSid from LSM: ', parentSid);
-        console.log('tid from LSM: ', tid);
         try {
             const parentTaskRef = doc(
                 db,

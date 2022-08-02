@@ -34,15 +34,8 @@ import { Entypo } from '@expo/vector-icons';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
-    const {
-        setType,
-        type,
-        sid,
-        scheduleInfo,
-        setScheduleInfo,
-        tid,
-        parentSid,
-    } = useContext(ScheduleContext);
+    const { setType, type, sid, linkedScheduleInfo, setLinkedScheduleInfo } =
+        useContext(ScheduleContext);
 
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
@@ -277,12 +270,8 @@ const EditSchedule = ({ navigation }) => {
         navigation.navigate('OpenCreateMenu');
     };
 
-    const openLinkedScheduleMenu = (newTid) => {
-        setScheduleInfo({ ...scheduleInfo, tid: newTid, parentSid: sid });
-
-        console.log('tid after set: ', tid);
-        console.log('parentSid after set: ', parentSid);
-
+    const openLinkedScheduleMenu = (tid) => {
+        setLinkedScheduleInfo({ ...linkedScheduleInfo, tid, parentSid: sid });
         navigation.navigate('LinkScheduleMenu');
     };
 

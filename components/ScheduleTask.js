@@ -8,16 +8,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 const ScheduleTask = ({ task }) => {
-    const { type, sid, setSid, setParentSid, setOnLinkedSchedule } =
+    const { type, sid, setSid, linkedScheduleInfo, setLinkedScheduleInfo } =
         useContext(ScheduleContext);
     const [complete, setComplete] = useState(false);
     const navigation = useNavigation();
 
     const getLinkedSchedule = () => {
-        setParentSid(sid);
-        setOnLinkedSchedule(true);
+        setLinkedScheduleInfo({
+            ...linkedScheduleInfo,
+            parentSid: sid,
+            onLinkedSchedule: true,
+        });
         setSid(task.subSchedule);
-        navigation.navigate('ReadSchedule');
+        navigation.push('ReadSchedule');
     };
 
     const Checkbox = () => {
