@@ -32,6 +32,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import CustomModal from '../../../components/CustomModal';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
@@ -39,7 +40,8 @@ const EditSchedule = ({ navigation }) => {
 
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
-    const [modalShown, setModalShown] = useState(false);
+    const [deleteModalShown, setDeleteModalShown] = useState(false);
+    const [discardModalShown, setDiscardModalShown] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
     const [deleteType, setDeleteType] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -217,63 +219,39 @@ const EditSchedule = ({ navigation }) => {
 
     const onPressDelete = (toDelete) => {
         setDeleteItem(toDelete);
-        setModalShown(true);
+        setDeleteModalShown(true);
     };
 
     const ConfirmDeleteModal = (
-        <Modal visible={modalShown} transparent={true}>
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                <View
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-                    <View style={styles.modal}>
-                        <Text style={styles.mediumText}>
-                            Cannot undo delete, do you want to delete{' '}
-                            {deleteType}?
-                        </Text>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                width: '100%',
-                            }}>
-                            <Pressable
-                                style={[styles.smallButtons, { margin: 10 }]}
-                                onPress={() => setModalShown(false)}
-                                title='Cancel'>
-                                <Text style={styles.smallButtonText}>
-                                    Cancel
-                                </Text>
-                            </Pressable>
-                            <Pressable
-                                style={[styles.smallButtons, { margin: 10 }]}
-                                onPress={
-                                    deleteType === 'task'
-                                        ? () => {
-                                              deleteTask();
-                                              setModalShown(false);
-                                          }
-                                        : () => {
-                                              deleteSchedule();
-                                              setModalShown(false);
-                                          }
-                                }>
-                                <Text style={styles.smallButtonText}>
-                                    Delete
-                                </Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </Modal>
+        <CustomModal
+            modalShown={deleteModalShown}
+            msg={`Cannot undo delete, do you want to delete ${deleteType}?`}
+            lCallback={() => setDeleteModalShown(false)}
+            lText='Cancel'
+            rCallback={
+                deleteType === 'task'
+                    ? () => {
+                          deleteTask();
+                          setDeleteModalShown(false);
+                      }
+                    : () => {
+                          deleteSchedule();
+                          setDeleteModalShown(false);
+                      }
+            }
+            rText='Delete'
+        />
+    );
+
+    const ConfirmDiscardModal = (
+        <CustomModal
+            modalShown={discardModalShown}
+            msg='Are you sure you want to discard changes?'
+            rCallback={() => navigation.goBack()}
+            rText='Discard Changes'
+            lCallback={() => setDiscardModalShown(false)}
+            lText='Cancel'
+        />
     );
 
     const deleteSchedule = async () => {
@@ -525,6 +503,7 @@ const EditSchedule = ({ navigation }) => {
                             </View>
 
                             {ConfirmDeleteModal}
+                            {ConfirmDiscardModal}
 
                             {/* New Task Input */}
                             <View
@@ -567,9 +546,7 @@ const EditSchedule = ({ navigation }) => {
                 {/* Small Bottom Buttons */}
                 <CustomSmallButton
                     position='left'
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
+                    onPress={() => setDiscardModalShown(true)}>
                     <Text style={styles.smallButtonText}>Cancel</Text>
                 </CustomSmallButton>
                 <CustomSmallButton

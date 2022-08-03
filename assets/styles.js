@@ -63,6 +63,7 @@ export const styles = StyleSheet.create({
     smallButtonText: {
         fontFamily: 'Roboto',
         fontSize: 18,
+        textAlign: 'center',
     },
     bigButtons: {
         alignItems: 'center',
@@ -136,16 +137,6 @@ export const styles = StyleSheet.create({
         marginLeft: 5,
         width: 150,
     },
-    // imageContainer: {
-    //     alignItems: 'center',
-    //     borderColor: colors.borderColor,
-    //     borderWidth: 1,
-    //     borderRadius: 10,
-    //     height: 150,
-    //     marginRight: 10,
-    //     justifyContent: 'center',
-    //     width: 150,
-    // },
     addButton: {
         borderRadius: 5,
         borderWidth: 1,
@@ -223,11 +214,12 @@ export const styles = StyleSheet.create({
     modal: {
         alignSelf: 'center',
         backgroundColor: colors.bgError,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: colors.borderColor,
-        borderWidth: 1,
         borderRadius: 10,
+        borderStyle: 'dashed',
+        borderWidth: 2,
         padding: 10,
         width: 300,
         height: 200,
