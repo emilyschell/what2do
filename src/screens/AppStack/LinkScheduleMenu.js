@@ -5,14 +5,7 @@ import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
 import { AuthContext } from '../../contexts/AuthContext';
 import { db } from '../../firebase/firebase';
-import {
-    doc,
-    collection,
-    getDocs,
-    setDoc,
-    query,
-    where,
-} from 'firebase/firestore';
+import { doc, collection, getDocs, query, where } from 'firebase/firestore';
 import FileItem from '../../../components/FileItem';
 
 const LinkScheduleMenu = ({ navigation, route }) => {
@@ -20,7 +13,7 @@ const LinkScheduleMenu = ({ navigation, route }) => {
     const { currentUser } = useContext(AuthContext);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { currentSubschedule } = route.params;
+    const { currentSubschedule, linkTask } = route.params;
 
     useEffect(() => {
         const getSchedules = async () => {
@@ -43,48 +36,14 @@ const LinkScheduleMenu = ({ navigation, route }) => {
         getSchedules();
     }, []);
 
-    const linkSchedule = async (sid) => {
-        try {
-            const parentTaskRef = doc(
-                db,
-                'users',
-                currentUser.uid,
-                'schedules',
-                parentSid,
-                'tasks',
-                tid
-            );
-            await setDoc(parentTaskRef, { subSchedule: sid }, { merge: true });
-            alert('Schedules successfully linked!');
-            navigation.push('EditSchedule');
-        } catch (error) {
-            console.log('Error adding linked schedule: ', error);
-        }
+    const linkSchedule = (sid) => {
+        linkTask(tid, sid);
+        navigation.navigate('EditSchedule');
     };
 
-    const removeSubschedule = async () => {
-        try {
-            const parentTaskRef = doc(
-                db,
-                'users',
-                currentUser.uid,
-                'schedules',
-                parentSid,
-                'tasks',
-                tid
-            );
-            await setDoc(
-                parentTaskRef,
-                {
-                    subSchedule: null,
-                },
-                { merge: true }
-            );
-            alert('Link successfully removed!');
-            navigation.push('EditSchedule');
-        } catch (error) {
-            console.log('Error removing linked schedule: ', error);
-        }
+    const removeSubschedule = () => {
+        linkTask(tid, null);
+        navigation.navigate('EditSchedule');
     };
 
     if (loading) {
@@ -135,7 +94,7 @@ const LinkScheduleMenu = ({ navigation, route }) => {
                     onPress={() => {
                         navigation.goBack();
                     }}>
-                    <Text style={styles.smallButtonText}>Back</Text>
+                    <Text style={styles.smallButtonText}>Cancel</Text>
                 </CustomSmallButton>
                 <CustomSmallButton
                     style={{ backgroundColor: colors.bgError }}

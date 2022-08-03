@@ -112,6 +112,17 @@ const EditSchedule = ({ navigation }) => {
         }
     };
 
+    const linkTask = (tid, ssid) => {
+        const newTasks = tasks.map((task) => {
+            if (task.tid === tid) {
+                return { ...task, subSchedule: ssid };
+            } else {
+                return task;
+            }
+        });
+        setTasks(newTasks);
+    };
+
     const updateSchedule = async () => {
         setLoading(true);
 
@@ -273,7 +284,10 @@ const EditSchedule = ({ navigation }) => {
 
     const openLinkedScheduleMenu = (tid, ss) => {
         setLinkedScheduleInfo({ ...linkedScheduleInfo, tid, parentSid: sid });
-        navigation.navigate('LinkScheduleMenu', { currentSubschedule: ss });
+        navigation.navigate('LinkScheduleMenu', {
+            currentSubschedule: ss,
+            linkTask,
+        });
     };
 
     const renderTask = ({ item, drag, isActive }) => {
