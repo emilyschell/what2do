@@ -9,7 +9,7 @@ const SettingScreen = ({ navigation }) => {
     const onSignOut = async () => {
         try {
             await signOut(auth);
-            navigation.navigate('WelcomeScreen');
+            navigation.navigate('Schedules');
         } catch (error) {
             alert('Unable to sign out right now');
         }

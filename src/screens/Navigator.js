@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from './AuthStack/WelcomeScreen';
 import LoginScreen from './AuthStack/LoginScreen';
 import SignUpScreen from './AuthStack/SignUpScreen';
@@ -6,16 +7,22 @@ import OpenCreateMenu from './AppStack/OpenCreateMenu';
 import CreateSchedule from './AppStack/CreateSchedule';
 import ScheduleTypeMenu from './AppStack/ScheduleTypeMenu';
 import OpenFileList from './AppStack/OpenFileList';
-import { AuthContext } from '../contexts/AuthContext';
-import { useContext } from 'react';
-import { ScheduleProvider } from '../contexts/ScheduleContext';
 import ReadSchedule from './AppStack/ReadSchedule';
 import EditSchedule from './AppStack/EditSchedule';
 import LinkScheduleMenu from './AppStack/LinkScheduleMenu';
+import SettingsScreen from './DrawerNavigator/SettingsScreen';
+import CustomDrawerNavigator from './DrawerNavigator/CustomDrawerComponent';
+import { AuthContext } from '../contexts/AuthContext';
+import { useContext } from 'react';
+import { ScheduleProvider } from '../contexts/ScheduleContext';
+import { styles, colors } from '../../assets/styles';
+import { Octicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const Navigator = () => {
     const { currentUser } = useContext(AuthContext);
     const Stack = createStackNavigator();
+    const Drawer = createDrawerNavigator();
 
     const AuthStack = () => {
         return (
@@ -30,7 +37,7 @@ const Navigator = () => {
         );
     };
 
-    const AppStack = () => {
+    const ScheduleStack = () => {
         return (
             <ScheduleProvider>
                 <Stack.Navigator
@@ -70,7 +77,43 @@ const Navigator = () => {
         );
     };
 
-    return currentUser ? <AppStack /> : <AuthStack />;
+    const DrawerStack = () => {
+        return (
+            <Drawer.Navigator
+                useLegacyImplementation={true}
+                initialRouteName='Schedules'
+                drawerContent={(props) => <CustomDrawerNavigator {...props} />}
+                screenOptions={{
+                    headerShown: false,
+                    drawerActiveBackgroundColor: colors.bgMain,
+                    drawerActiveTintColor: colors.bgSuccess,
+                    drawerInactiveTintColor: colors.textColorDefault,
+                    drawerLabelStyle: { fontFamily: 'Roboto', fontSize: 28 },
+                    drawerItemStyle: styles.drawerButton,
+                }}>
+                <Drawer.Screen
+                    name='Schedules'
+                    component={ScheduleStack}
+                    options={{
+                        drawerIcon: () => (
+                            <Octicons name='checklist' size={24} />
+                        ),
+                    }}
+                />
+                <Drawer.Screen
+                    name='Settings'
+                    component={SettingsScreen}
+                    options={{
+                        drawerIcon: () => (
+                            <Ionicons name='settings-outline' size={24} />
+                        ),
+                    }}
+                />
+            </Drawer.Navigator>
+        );
+    };
+
+    return currentUser ? <DrawerStack /> : <AuthStack />;
 };
 
 export default Navigator;

@@ -244,4 +244,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
+    drawerButton: {
+        backgroundColor: colors.bgPrimary,
+        borderWidth: 1,
+        borderColor: 'black',
+    },
 });

@@ -1,46 +1,61 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { View, Text, SafeAreaView, Platform } from 'react-native';
+import { styles, colors } from '../../../assets/styles';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  Platform
-} from 'react-native';
+    DrawerContentScrollView,
+    DrawerItemList,
+} from '@react-navigation/drawer';
 
-import { DrawerItems } from 'react-navigation';
-import colors from '../../assets/colors';
-import { Ionicons } from '@expo/vector-icons';
-class CustomDrawerNavigator extends Component {
-  render() {
+import CustomSmallButton from '../../../components/CustomSmallButton';
+import { auth } from '../../firebase/firebase';
+import { signOut } from 'firebase/auth';
+
+const CustomDrawerNavigator = (props) => {
+    const onSignOut = async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            alert('Unable to sign out right now');
+        }
+    };
+
     return (
-      <ScrollView>
-        <SafeAreaView style={{ backgroundColor: colors.bgMain }} />
-        <View
-          style={{
-            height: 150,
-            backgroundColor: colors.bgMain,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingTop: Platform.OS == 'android' ? 20 : 0
-          }}
-        >
-          <Ionicons name="ios-bookmarks" size={100} color={colors.logoColor} />
-          <Text style={{ fontSize: 24, color: 'white', fontWeight: '100' }}>
-            Book Worm
-          </Text>
+        <View style={[styles.container, { padding: 0 }]}>
+            <DrawerContentScrollView
+                {...props}
+                contentContainerStyle={styles.container}>
+                <SafeAreaView style={{ backgroundColor: colors.bgMain }} />
+                <View
+                    style={{
+                        alignItems: 'center',
+                        backgroundColor: colors.bgMain,
+                        flex: 1,
+                        justifyContent: 'center',
+                        paddingTop: Platform.OS == 'android' ? 20 : 0,
+                    }}>
+                    <Text style={styles.largeText}>What2Do</Text>
+                </View>
+                <View
+                    style={{
+                        flex: 1,
+                        width: 280,
+                    }}>
+                    <DrawerItemList {...props} />
+                </View>
+            </DrawerContentScrollView>
+            <View
+                style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    marginBottom: 20,
+                }}>
+                <CustomSmallButton onPress={onSignOut}>
+                    <Text style={styles.smallButtonText}>Log Out</Text>
+                </CustomSmallButton>
+            </View>
         </View>
-        <DrawerItems {...this.props} />
-      </ScrollView>
     );
-  }
-}
-export default CustomDrawerNavigator;
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
+export default CustomDrawerNavigator;
