@@ -26,12 +26,12 @@ import ScheduleTask from '../../../components/ScheduleTask';
 const ReadSchedule = ({ navigation }) => {
     const {
         sid,
-        setSid,
+        type,
         setType,
-        parentSid,
-        parentType,
-        popParentSid,
-        popParentType,
+        setScheduleInfo,
+        parentSidStack,
+        parentTypeStack,
+        setLinkedScheduleInfo,
     } = useContext(ScheduleContext);
     const { currentUser } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
@@ -83,11 +83,23 @@ const ReadSchedule = ({ navigation }) => {
     }, []);
 
     const closeSchedule = () => {
-        setSid(parentSid[parentSid.length - 1]);
-        popParentSid();
-        setType(parentType[parentType.length - 1]);
-        popParentType();
-        navigation.pop();
+        if (parentSidStack.length && parentTypeStack.length) {
+            setScheduleInfo({
+                type: parentTypeStack[parentTypeStack.length - 1],
+                sid: parentSidStack[parentSidStack.length - 1],
+            });
+            const newParentSidStack = [...parentSidStack];
+            newParentSidStack.pop();
+            const newParentTypeStack = [...parentTypeStack];
+            newParentTypeStack.pop();
+            setLinkedScheduleInfo({
+                parentSidStack: newParentSidStack,
+                parentTypeStack: newParentTypeStack,
+            });
+            navigation.pop();
+        } else {
+            navigation.navigate('OpenCreateMenu');
+        }
     };
 
     if (loading) {

@@ -8,14 +8,30 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 const ScheduleTask = ({ task }) => {
-    const { type, sid, setSid, pushParentSid, pushParentType } =
-        useContext(ScheduleContext);
+    const {
+        type,
+        sid,
+        setSid,
+        parentSidStack,
+        parentTypeStack,
+        setLinkedScheduleInfo,
+    } = useContext(ScheduleContext);
     const [complete, setComplete] = useState(false);
     const navigation = useNavigation();
 
     const getLinkedSchedule = () => {
-        pushParentSid(sid);
-        pushParentType(type);
+        console.log('gls func pss: ', parentSidStack);
+        console.log('gls func pts: ', parentTypeStack);
+        const tempSid = sid;
+        const newParentSidStack = [...parentSidStack, tempSid];
+        const newParentTypeStack = [...parentTypeStack, type];
+        console.log(('npss: ', newParentSidStack));
+        console.log('npts: ', newParentTypeStack);
+        setLinkedScheduleInfo({
+            tid: '',
+            parentSidStack: newParentSidStack,
+            parentTypeStack: newParentTypeStack,
+        });
         setSid(task.subSchedule);
         navigation.push('ReadSchedule');
     };

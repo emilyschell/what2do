@@ -9,9 +9,8 @@ export const ScheduleProvider = ({ children }) => {
     });
 
     const [linkedScheduleInfo, setLinkedScheduleInfo] = useState({
-        tid: '',
-        parentSid: [],
-        parentType: [],
+        parentSidStack: [],
+        parentTypeStack: [],
     });
 
     const setType = (type) => {
@@ -22,46 +21,6 @@ export const ScheduleProvider = ({ children }) => {
         setScheduleInfo({ ...scheduleInfo, sid });
     };
 
-    const setTid = (tid) => {
-        setLinkedScheduleInfo({ ...linkedScheduleInfo, tid });
-    };
-
-    const pushParentSid = (sid) => {
-        const newParentSidArr = linkedScheduleInfo.parentSid;
-        newParentSidArr.push(sid);
-        setLinkedScheduleInfo({
-            ...linkedScheduleInfo,
-            parentSid: newParentSidArr,
-        });
-    };
-
-    const popParentSid = () => {
-        const newParentSidArr = linkedScheduleInfo.parentSid;
-        newParentSidArr.pop();
-        setLinkedScheduleInfo({
-            ...linkedScheduleInfo,
-            parentSid: newParentSidArr,
-        });
-    };
-
-    const pushParentType = (type) => {
-        const newParentTypeArr = linkedScheduleInfo.parentType;
-        newParentTypeArr.push(type);
-        setLinkedScheduleInfo({
-            ...linkedScheduleInfo,
-            parentType: newParentTypeArr,
-        });
-    };
-
-    const popParentType = () => {
-        const newParentTypeArr = linkedScheduleInfo.parentType;
-        newParentTypeArr.pop();
-        setLinkedScheduleInfo({
-            ...linkedScheduleInfo,
-            parentType: newParentTypeArr,
-        });
-    };
-
     const scheduleContextSetters = {
         setType,
         setSid,
@@ -69,11 +28,6 @@ export const ScheduleProvider = ({ children }) => {
     };
 
     const linkedScheduleContextSetters = {
-        setTid,
-        pushParentSid,
-        popParentSid,
-        pushParentType,
-        popParentType,
         setLinkedScheduleInfo,
     };
 

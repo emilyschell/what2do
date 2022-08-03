@@ -9,11 +9,10 @@ import { doc, collection, getDocs, query, where } from 'firebase/firestore';
 import FileItem from '../../../components/FileItem';
 
 const LinkScheduleMenu = ({ navigation, route }) => {
-    const { tid, parentSid } = useContext(ScheduleContext);
     const { currentUser } = useContext(AuthContext);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { currentSubschedule, linkTask } = route.params;
+    const { currentSubschedule, tid, parentSid, linkTask } = route.params;
 
     useEffect(() => {
         const getSchedules = async () => {

@@ -35,8 +35,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
-    const { setType, type, sid, linkedScheduleInfo, setLinkedScheduleInfo } =
-        useContext(ScheduleContext);
+    const { setType, type, sid } = useContext(ScheduleContext);
 
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
@@ -283,9 +282,10 @@ const EditSchedule = ({ navigation }) => {
     };
 
     const openLinkedScheduleMenu = (tid, ss) => {
-        setLinkedScheduleInfo({ ...linkedScheduleInfo, tid, parentSid: sid });
         navigation.navigate('LinkScheduleMenu', {
             currentSubschedule: ss,
+            tid,
+            parentSid: ss,
             linkTask,
         });
     };
