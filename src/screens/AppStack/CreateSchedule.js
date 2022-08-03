@@ -18,7 +18,7 @@ import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const CreateSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
@@ -140,11 +140,14 @@ const CreateSchedule = ({ navigation }) => {
                                         color='red'
                                     />
                                 </TouchableOpacity>
-                                <MaterialIcons
-                                    style={{ marginLeft: 20 }}
-                                    name='drag-handle'
+                                <FontAwesome
+                                    name='hand-paper-o'
                                     size={24}
+                                    style={{ marginLeft: 20 }}
                                 />
+                                <Text style={styles.smallButtonText}>
+                                    {tasks.indexOf(item) + 1}
+                                </Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -170,11 +173,14 @@ const CreateSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons
-                                style={{ marginLeft: 20 }}
-                                name='drag-handle'
+                            <FontAwesome
+                                name='hand-paper-o'
                                 size={24}
+                                style={{ marginLeft: 20 }}
                             />
+                            <Text style={styles.smallButtonText}>
+                                {tasks.indexOf(item) + 1}
+                            </Text>
                         </View>
                     </TouchableOpacity>
                 );
@@ -210,11 +216,15 @@ const CreateSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <MaterialIcons
-                                style={{ marginLeft: 20 }}
-                                name='drag-handle'
+                            <Text>{tasks.indexOf(item)}</Text>
+                            <FontAwesome
+                                name='hand-paper-o'
                                 size={24}
+                                style={{ marginLeft: 20 }}
                             />
+                            <Text style={styles.smallButtonText}>
+                                {tasks.indexOf(item) + 1}
+                            </Text>
                         </View>
                     </TouchableOpacity>
                 );

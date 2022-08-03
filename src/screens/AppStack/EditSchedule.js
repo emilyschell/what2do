@@ -31,7 +31,7 @@ import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
 import { Entypo } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
@@ -335,11 +335,14 @@ const EditSchedule = ({ navigation }) => {
                                         }
                                     />
                                 </TouchableOpacity>
-                                <MaterialIcons
-                                    style={{ marginLeft: 20 }}
-                                    name='drag-handle'
+                                <FontAwesome
+                                    name='hand-paper-o'
                                     size={24}
+                                    style={{ marginLeft: 20 }}
                                 />
+                                <Text style={styles.smallButtonText}>
+                                    {tasks.indexOf(item) + 1}
+                                </Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -391,11 +394,14 @@ const EditSchedule = ({ navigation }) => {
                                         }
                                     />
                                 </TouchableOpacity>
-                                <MaterialIcons
-                                    style={{ marginLeft: 20 }}
-                                    name='drag-handle'
+                                <FontAwesome
+                                    name='hand-paper-o'
                                     size={24}
+                                    style={{ marginLeft: 20 }}
                                 />
+                                <Text style={styles.smallButtonText}>
+                                    {tasks.indexOf(item) + 1}
+                                </Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -458,11 +464,14 @@ const EditSchedule = ({ navigation }) => {
                                         }
                                     />
                                 </TouchableOpacity>
-                                <MaterialIcons
-                                    style={{ marginLeft: 20 }}
-                                    name='drag-handle'
+                                <FontAwesome
+                                    name='hand-paper-o'
                                     size={24}
+                                    style={{ marginLeft: 20 }}
                                 />
+                                <Text style={styles.smallButtonText}>
+                                    {tasks.indexOf(item) + 1}
+                                </Text>
                             </View>
                         </View>
                     </TouchableOpacity>
