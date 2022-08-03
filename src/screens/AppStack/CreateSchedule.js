@@ -29,7 +29,13 @@ const CreateSchedule = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const addTask = (text, imageUrl) => {
-        if (text || imageUrl) {
+        if (
+            (type === 'text' && text) ||
+            (type === 'picture' && imageUrl != '../assets/BlankImage.png') ||
+            (type === 'hybrid' &&
+                text &&
+                imageUrl != '../assets/BlankImage.png')
+        ) {
             const newTask = {
                 text: text,
                 image: imageUrl,
@@ -41,11 +47,11 @@ const CreateSchedule = ({ navigation }) => {
                 case 'text':
                     alert('Please enter a task to add');
                     break;
-                case 'photo':
+                case 'picture':
                     alert('Please select a photo to add');
                     break;
                 case 'hybrid':
-                    alert('Please add text or a photo to add');
+                    alert('Please add text and a photo to add');
             }
         }
     };
@@ -73,51 +79,45 @@ const CreateSchedule = ({ navigation }) => {
             task.order = tasks.indexOf(task);
         });
 
-        if (tasks.length && title) {
-            // Add schedule to user's Firestore collection
-            try {
-                const schedulesColl = collection(db, 'users', uid, 'schedules');
-                const schedResponse = await addDoc(schedulesColl, newSchedule);
-                if (schedResponse) {
-                    // Add schedule ID to newly created schedule
-                    await setDoc(
-                        doc(schedulesColl, schedResponse.id),
-                        {
-                            sid: schedResponse.id,
-                        },
-                        { merge: true }
-                    );
-                    // Set schedule id in app context
-                    setSid(schedResponse.id);
+        // Add schedule to user's Firestore collection
+        try {
+            const schedulesColl = collection(db, 'users', uid, 'schedules');
+            const schedResponse = await addDoc(schedulesColl, newSchedule);
+            if (schedResponse) {
+                // Add schedule ID to newly created schedule
+                await setDoc(
+                    doc(schedulesColl, schedResponse.id),
+                    {
+                        sid: schedResponse.id,
+                    },
+                    { merge: true }
+                );
+                // Set schedule id in app context
+                setSid(schedResponse.id);
 
-                    // Assign tasks to newly created schedule, in loops with setTimeout due to rate limits
-                    const tasksColl = collection(
-                        db,
-                        'users',
-                        uid,
-                        'schedules',
-                        schedResponse.id,
-                        'tasks'
-                    );
+                // Assign tasks to newly created schedule, in loops with setTimeout due to rate limits
+                const tasksColl = collection(
+                    db,
+                    'users',
+                    uid,
+                    'schedules',
+                    schedResponse.id,
+                    'tasks'
+                );
 
-                    const timeouts = [];
-                    for (const task of tasks) {
-                        timeouts.push(
-                            setTimeout(addDoc(tasksColl, task), 1000)
-                        );
-                    }
-                    for (const to of timeouts) {
-                        clearTimeout(to);
-                    }
-
-                    setLoading(false);
-                    navigation.navigate('ReadSchedule');
+                const timeouts = [];
+                for (const task of tasks) {
+                    timeouts.push(setTimeout(addDoc(tasksColl, task), 1000));
                 }
-            } catch (error) {
-                console.log('error: ', error);
+                for (const to of timeouts) {
+                    clearTimeout(to);
+                }
+
+                setLoading(false);
+                navigation.navigate('ReadSchedule');
             }
-        } else {
-            alert('Please enter a title and at least 1 task.');
+        } catch (error) {
+            console.log('error: ', error);
         }
     };
 
@@ -299,7 +299,11 @@ const CreateSchedule = ({ navigation }) => {
                 <CustomSmallButton
                     position='right'
                     onPress={() => {
-                        makeSchedule();
+                        if (title && tasks.length) {
+                            makeSchedule();
+                        } else {
+                            alert('Please enter a title and at least 1 task.');
+                        }
                     }}>
                     <Text style={styles.smallButtonText}>Save</Text>
                 </CustomSmallButton>

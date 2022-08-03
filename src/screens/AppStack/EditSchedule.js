@@ -107,7 +107,7 @@ const EditSchedule = ({ navigation }) => {
                     alert('Please select a photo to add');
                     break;
                 case 'hybrid':
-                    alert('Please add text or a photo to add');
+                    alert('Please add text and a photo to add');
             }
         }
     };
