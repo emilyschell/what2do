@@ -19,6 +19,7 @@ import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
 import { FontAwesome } from '@expo/vector-icons';
+import CustomModal from '../../../components/CustomModal';
 
 const CreateSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
@@ -27,6 +28,7 @@ const CreateSchedule = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [discardModalShown, setDiscardModalShown] = useState(false);
 
     const addTask = (text, imageUrl) => {
         if (
@@ -120,6 +122,17 @@ const CreateSchedule = ({ navigation }) => {
             console.log('error: ', error);
         }
     };
+
+    const ConfirmDiscardModal = (
+        <CustomModal
+            modalShown={discardModalShown}
+            msg='Are you sure you want to discard changes?'
+            rCallback={() => navigation.goBack()}
+            rText='Discard Changes'
+            lCallback={() => setDiscardModalShown(false)}
+            lText='Cancel'
+        />
+    );
 
     const renderTask = ({ item, drag, isActive }) => {
         switch (type) {
@@ -297,12 +310,12 @@ const CreateSchedule = ({ navigation }) => {
                         ) : null}
                     </View>
                 </View>
-
+                {ConfirmDiscardModal}
                 {/* Small Bottom Buttons */}
                 <CustomSmallButton
                     position='left'
                     onPress={() => {
-                        navigation.goBack();
+                        setDiscardModalShown(true);
                     }}>
                     <Text style={styles.smallButtonText}>Back</Text>
                 </CustomSmallButton>
