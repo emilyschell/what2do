@@ -20,15 +20,9 @@ const ScheduleTask = ({ task }) => {
     const navigation = useNavigation();
 
     const getLinkedSchedule = () => {
-        console.log('gls func pss: ', parentSidStack);
-        console.log('gls func pts: ', parentTypeStack);
-        const tempSid = sid;
-        const newParentSidStack = [...parentSidStack, tempSid];
+        const newParentSidStack = [...parentSidStack, sid];
         const newParentTypeStack = [...parentTypeStack, type];
-        console.log(('npss: ', newParentSidStack));
-        console.log('npts: ', newParentTypeStack);
         setLinkedScheduleInfo({
-            tid: '',
             parentSidStack: newParentSidStack,
             parentTypeStack: newParentTypeStack,
         });

@@ -26,7 +26,6 @@ import ScheduleTask from '../../../components/ScheduleTask';
 const ReadSchedule = ({ navigation }) => {
     const {
         sid,
-        type,
         setType,
         setScheduleInfo,
         parentSidStack,
