@@ -7,10 +7,12 @@ export const ScheduleProvider = ({ children }) => {
         type: '',
         sid: '',
     });
+
     const [linkedScheduleInfo, setLinkedScheduleInfo] = useState({
         tid: '',
         onLinkedSchedule: false,
         parentSid: '',
+        parentType: '',
     });
 
     const setType = (type) => {

@@ -15,11 +15,12 @@ import {
 } from 'firebase/firestore';
 import FileItem from '../../../components/FileItem';
 
-const LinkScheduleMenu = ({ navigation }) => {
+const LinkScheduleMenu = ({ navigation, route }) => {
     const { tid, parentSid } = useContext(ScheduleContext);
     const { currentUser } = useContext(AuthContext);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { currentSubschedule } = route.params;
 
     useEffect(() => {
         const getSchedules = async () => {
@@ -55,9 +56,34 @@ const LinkScheduleMenu = ({ navigation }) => {
             );
             await setDoc(parentTaskRef, { subSchedule: sid }, { merge: true });
             alert('Schedules successfully linked!');
-            navigation.navigate('EditSchedule');
+            navigation.push('EditSchedule');
         } catch (error) {
             console.log('Error adding linked schedule: ', error);
+        }
+    };
+
+    const removeSubschedule = async () => {
+        try {
+            const parentTaskRef = doc(
+                db,
+                'users',
+                currentUser.uid,
+                'schedules',
+                parentSid,
+                'tasks',
+                tid
+            );
+            await setDoc(
+                parentTaskRef,
+                {
+                    subSchedule: null,
+                },
+                { merge: true }
+            );
+            alert('Link successfully removed!');
+            navigation.push('EditSchedule');
+        } catch (error) {
+            console.log('Error removing linked schedule: ', error);
         }
     };
 
@@ -86,7 +112,7 @@ const LinkScheduleMenu = ({ navigation }) => {
     } else {
         return (
             <View style={[styles.container, { justifyContent: 'flex-start' }]}>
-                <Text style={styles.largeText}>Link Sub-Schedule</Text>
+                <Text style={styles.largeText}>Link Schedule</Text>
                 <View style={styles.fileList}>
                     <FlatList
                         data={schedules}
@@ -98,6 +124,7 @@ const LinkScheduleMenu = ({ navigation }) => {
                                     onPressCallback={linkSchedule}
                                     showDelete={false}
                                     showEdit={false}
+                                    currentSubschedule={currentSubschedule}
                                 />
                             );
                         }}
@@ -109,6 +136,18 @@ const LinkScheduleMenu = ({ navigation }) => {
                         navigation.goBack();
                     }}>
                     <Text style={styles.smallButtonText}>Back</Text>
+                </CustomSmallButton>
+                <CustomSmallButton
+                    style={{ backgroundColor: colors.bgError }}
+                    position='right'
+                    onPress={removeSubschedule}>
+                    <Text
+                        style={[
+                            styles.smallButtonText,
+                            { textAlign: 'center' },
+                        ]}>
+                        Remove Link
+                    </Text>
                 </CustomSmallButton>
             </View>
         );

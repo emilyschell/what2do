@@ -128,12 +128,13 @@ const CreateTask = ({ addTask }) => {
 
             case 'picture':
                 return (
-                    <View style={[styles.taskContainer]}>
-                        <TouchableOpacity
-                            style={styles.imageContainer}
-                            onPress={() => addImage()}>
+                    <View style={[styles.photoTaskContainer]}>
+                        <TouchableOpacity onPress={() => addImage()}>
                             <ImageBackground
-                                style={[styles.image, { opacity: 0.7 }]}
+                                style={[
+                                    styles.image,
+                                    { height: 120, width: 120, opacity: 0.7 },
+                                ]}
                                 source={{ uri: imageUrl }}>
                                 <Entypo name='camera' size={40} />
                             </ImageBackground>
@@ -169,12 +170,20 @@ const CreateTask = ({ addTask }) => {
                             style={{
                                 flexDirection: 'column',
                                 alignItems: 'center',
+                                marginTop: 15,
                             }}>
                             <TouchableOpacity
                                 style={styles.imageContainer}
                                 onPress={() => addImage()}>
                                 <ImageBackground
-                                    style={[styles.image, { opacity: 0.7 }]}
+                                    style={[
+                                        styles.image,
+                                        {
+                                            height: 120,
+                                            width: 120,
+                                            opacity: 0.7,
+                                        },
+                                    ]}
                                     source={{ uri: imageUrl }}
                                     resizeMode='contain'>
                                     <Entypo name='camera' size={40} />

@@ -1,4 +1,4 @@
-import { styles } from '../assets/styles';
+import { colors, styles } from '../assets/styles';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -13,6 +13,7 @@ const FileItem = ({
     showDelete,
     deleteSched,
     showEdit,
+    currentSubschedule,
 }) => {
     const { setSid } = useContext(ScheduleContext);
     const navigation = useNavigation();
@@ -20,7 +21,15 @@ const FileItem = ({
     return (
         <View style={styles.fileItem}>
             <TouchableOpacity onPress={() => onPressCallback(sid)}>
-                <Text style={styles.taskText}>{title}</Text>
+                <Text
+                    style={[
+                        styles.taskText,
+                        currentSubschedule === sid
+                            ? { color: colors.bgSuccess, fontWeight: 'bold' }
+                            : null,
+                    ]}>
+                    {title}
+                </Text>
             </TouchableOpacity>
             <View
                 style={{

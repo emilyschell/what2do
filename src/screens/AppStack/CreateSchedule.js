@@ -14,7 +14,7 @@ import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
 import CreateTask from '../../../components/CreateTask';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, addDoc, setDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
@@ -33,6 +33,7 @@ const CreateSchedule = ({ navigation }) => {
             const newTask = {
                 text: text,
                 image: imageUrl,
+                subSchedule: null,
             };
             setTasks([...tasks, newTask]);
         } else {
@@ -129,20 +130,22 @@ const CreateSchedule = ({ navigation }) => {
                         style={isActive ? styles.activeDragItem : null}>
                         <View style={styles.taskContainer}>
                             <Text style={styles.taskText}>{item.text}</Text>
-                            <TouchableOpacity
-                                onPress={() => deleteTask(item.text)}
-                                style={{ marginLeft: 15 }}>
-                                <Ionicons
-                                    name='ios-trash-outline'
+                            <View style={styles.centeredView}>
+                                <TouchableOpacity
+                                    onPress={() => deleteTask(item.text)}
+                                    style={{ marginLeft: 15 }}>
+                                    <Ionicons
+                                        name='ios-trash-outline'
+                                        size={24}
+                                        color='red'
+                                    />
+                                </TouchableOpacity>
+                                <MaterialIcons
+                                    style={{ marginLeft: 20 }}
+                                    name='drag-handle'
                                     size={24}
-                                    color='red'
                                 />
-                            </TouchableOpacity>
-                            <MaterialIcons
-                                name='drag-indicator'
-                                size={30}
-                                color='#888'
-                            />
+                            </View>
                         </View>
                     </TouchableOpacity>
                 );
@@ -168,9 +171,9 @@ const CreateSchedule = ({ navigation }) => {
                                 />
                             </TouchableOpacity>
                             <MaterialIcons
-                                name='drag-indicator'
-                                size={30}
-                                color='#888'
+                                style={{ marginLeft: 20 }}
+                                name='drag-handle'
+                                size={24}
                             />
                         </View>
                     </TouchableOpacity>
@@ -208,9 +211,9 @@ const CreateSchedule = ({ navigation }) => {
                                 />
                             </TouchableOpacity>
                             <MaterialIcons
-                                name='drag-indicator'
-                                size={30}
-                                color='#888'
+                                style={{ marginLeft: 20 }}
+                                name='drag-handle'
+                                size={24}
                             />
                         </View>
                     </TouchableOpacity>
@@ -238,7 +241,10 @@ const CreateSchedule = ({ navigation }) => {
                                 <TextInput
                                     style={[
                                         styles.taskTextInput,
-                                        { marginRight: 0, textAlign: 'center' },
+                                        {
+                                            marginRight: 0,
+                                            textAlign: 'center',
+                                        },
                                     ]}
                                     placeholder='enter title'
                                     placeholderTextColor={
@@ -267,11 +273,9 @@ const CreateSchedule = ({ navigation }) => {
                     {/* Task List */}
                     <View
                         style={
-                            type === 'text'
-                                ? {
-                                      flex: 3,
-                                  }
-                                : { flex: 2 }
+                            type === 'hybrid'
+                                ? { flex: 3, marginTop: 10 }
+                                : { flex: 4 }
                         }>
                         {tasks.length ? (
                             <DraggableFlatList

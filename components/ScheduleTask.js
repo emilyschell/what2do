@@ -17,6 +17,7 @@ const ScheduleTask = ({ task }) => {
         setLinkedScheduleInfo({
             ...linkedScheduleInfo,
             parentSid: sid,
+            parentType: type,
             onLinkedSchedule: true,
         });
         setSid(task.subSchedule);
@@ -46,18 +47,25 @@ const ScheduleTask = ({ task }) => {
             return (
                 <View style={styles.readTaskContainer}>
                     <Checkbox />
-                    <TouchableOpacity
-                        onPress={() => {
-                            setComplete(!complete);
+                    <View
+                        style={{
+                            width: 230,
                         }}>
-                        <Text
-                            style={[
-                                styles.taskText,
-                                complete ? styles.completed : styles.incomplete,
-                            ]}>
-                            {task.text}
-                        </Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setComplete(!complete);
+                            }}>
+                            <Text
+                                style={[
+                                    styles.taskText,
+                                    complete
+                                        ? styles.completed
+                                        : styles.incomplete,
+                                ]}>
+                                {task.text}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                     {task.subSchedule && (
                         <TouchableOpacity onPress={getLinkedSchedule}>
                             <AntDesign name='rightcircleo' size={24} />
@@ -90,7 +98,9 @@ const ScheduleTask = ({ task }) => {
                         />
                     </TouchableOpacity>
                     {task.subSchedule && (
-                        <TouchableOpacity onPress={getLinkedSchedule}>
+                        <TouchableOpacity
+                            style={{ marginLeft: 10 }}
+                            onPress={getLinkedSchedule}>
                             <AntDesign name='rightcircleo' size={24} />
                         </TouchableOpacity>
                     )}
@@ -111,13 +121,6 @@ const ScheduleTask = ({ task }) => {
                             setComplete(!complete);
                         }}
                         style={{ marginLeft: 15, alignItems: 'center' }}>
-                        <Text
-                            style={[
-                                styles.taskText,
-                                complete ? styles.completed : styles.incomplete,
-                            ]}>
-                            {task.text}
-                        </Text>
                         <Image
                             style={[
                                 styles.image,
@@ -125,6 +128,13 @@ const ScheduleTask = ({ task }) => {
                             ]}
                             source={{ uri: task.image }}
                         />
+                        <Text
+                            style={[
+                                styles.taskText,
+                                complete ? styles.completed : styles.incomplete,
+                            ]}>
+                            {task.text}
+                        </Text>
                     </TouchableOpacity>
                     {task.subSchedule && (
                         <TouchableOpacity onPress={getLinkedSchedule}>

@@ -31,6 +31,7 @@ import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
 import { Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
@@ -270,9 +271,9 @@ const EditSchedule = ({ navigation }) => {
         navigation.navigate('OpenCreateMenu');
     };
 
-    const openLinkedScheduleMenu = (tid) => {
+    const openLinkedScheduleMenu = (tid, ss) => {
         setLinkedScheduleInfo({ ...linkedScheduleInfo, tid, parentSid: sid });
-        navigation.navigate('LinkScheduleMenu');
+        navigation.navigate('LinkScheduleMenu', { currentSubschedule: ss });
     };
 
     const renderTask = ({ item, drag, isActive }) => {
@@ -283,25 +284,49 @@ const EditSchedule = ({ navigation }) => {
                         onLongPress={drag}
                         style={isActive ? styles.activeDragItem : null}>
                         <View style={styles.taskContainer}>
-                            <Text style={styles.taskText}>{item.text}</Text>
-                            <TouchableOpacity
-                                style={{ marginLeft: 10 }}
-                                onPress={() => {
-                                    setDeleteType('task');
-                                    onPressDelete(item);
+                            <Text style={[styles.taskText, { marginLeft: 10 }]}>
+                                {item.text}
+                            </Text>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
                                 }}>
-                                <Ionicons
-                                    name='ios-trash-outline'
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setDeleteType('task');
+                                        onPressDelete(item);
+                                    }}>
+                                    <Ionicons
+                                        name='ios-trash-outline'
+                                        size={24}
+                                        color='red'
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        openLinkedScheduleMenu(
+                                            item.tid,
+                                            item.subSchedule
+                                        )
+                                    }>
+                                    <Entypo
+                                        name='link'
+                                        size={24}
+                                        color={
+                                            item.subSchedule
+                                                ? colors.bgSuccess
+                                                : 'black'
+                                        }
+                                    />
+                                </TouchableOpacity>
+                                <MaterialIcons
+                                    style={{ marginLeft: 20 }}
+                                    name='drag-handle'
                                     size={24}
-                                    color='red'
                                 />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    openLinkedScheduleMenu(item.tid)
-                                }>
-                                <Entypo name='link' size={24} />
-                            </TouchableOpacity>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 );
@@ -310,7 +335,7 @@ const EditSchedule = ({ navigation }) => {
                     <TouchableOpacity
                         onLongPress={drag}
                         style={isActive ? styles.activeDragItem : null}>
-                        <View style={styles.taskContainer}>
+                        <View style={styles.photoTaskContainer}>
                             <View style={[styles.imageContainer]}>
                                 <Image
                                     style={styles.image}
@@ -318,23 +343,46 @@ const EditSchedule = ({ navigation }) => {
                                     resizeMode='contain'
                                 />
                             </View>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setDeleteType('task');
-                                    onPressDelete(item);
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
                                 }}>
-                                <Ionicons
-                                    name='ios-trash-outline'
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setDeleteType('task');
+                                        onPressDelete(item);
+                                    }}>
+                                    <Ionicons
+                                        name='ios-trash-outline'
+                                        size={24}
+                                        color='red'
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        openLinkedScheduleMenu(
+                                            item.tid,
+                                            item.subSchedule
+                                        )
+                                    }>
+                                    <Entypo
+                                        name='link'
+                                        size={24}
+                                        color={
+                                            item.subSchedule
+                                                ? colors.bgSuccess
+                                                : 'black'
+                                        }
+                                    />
+                                </TouchableOpacity>
+                                <MaterialIcons
+                                    style={{ marginLeft: 20 }}
+                                    name='drag-handle'
                                     size={24}
-                                    color='red'
                                 />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    openLinkedScheduleMenu(item.tid)
-                                }>
-                                <Entypo name='link' size={24} />
-                            </TouchableOpacity>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 );
@@ -362,23 +410,46 @@ const EditSchedule = ({ navigation }) => {
                                 </View>
                                 <Text style={styles.taskText}>{item.text}</Text>
                             </View>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setDeleteType('task');
-                                    onPressDelete(item);
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
                                 }}>
-                                <Ionicons
-                                    name='ios-trash-outline'
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setDeleteType('task');
+                                        onPressDelete(item);
+                                    }}>
+                                    <Ionicons
+                                        name='ios-trash-outline'
+                                        size={24}
+                                        color='red'
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        openLinkedScheduleMenu(
+                                            item.tid,
+                                            item.subSchedule
+                                        )
+                                    }>
+                                    <Entypo
+                                        name='link'
+                                        size={24}
+                                        color={
+                                            item.subSchedule
+                                                ? colors.bgSuccess
+                                                : 'black'
+                                        }
+                                    />
+                                </TouchableOpacity>
+                                <MaterialIcons
+                                    style={{ marginLeft: 20 }}
+                                    name='drag-handle'
                                     size={24}
-                                    color='red'
                                 />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    openLinkedScheduleMenu(item.tid)
-                                }>
-                                <Entypo name='link' size={24} />
-                            </TouchableOpacity>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 );
@@ -434,15 +505,16 @@ const EditSchedule = ({ navigation }) => {
 
                             {/* New Task Input */}
                             <View
-                                style={
+                                style={[
                                     type === 'text'
                                         ? {
                                               flex: 1,
                                               margin: 0,
                                               width: '100%',
                                           }
-                                        : { flex: 2 }
-                                }>
+                                        : { flex: 2 },
+                                    type === 'picture' ? { flex: 1 } : null,
+                                ]}>
                                 <CreateTask addTask={addTask} />
                             </View>
                         </>
@@ -485,7 +557,6 @@ const EditSchedule = ({ navigation }) => {
                     <Text style={styles.smallButtonText}>Save</Text>
                 </CustomSmallButton>
             </View>
-            // {/* // </DismissKeyboard> */}
         );
     }
 };

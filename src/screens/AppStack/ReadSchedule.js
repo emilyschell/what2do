@@ -29,6 +29,7 @@ const ReadSchedule = ({ navigation }) => {
         setType,
         onLinkedSchedule,
         parentSid,
+        parentType,
         setSid,
         setLinkedScheduleInfo,
     } = useContext(ScheduleContext);
@@ -84,9 +85,11 @@ const ReadSchedule = ({ navigation }) => {
     const closeSchedule = onLinkedSchedule
         ? () => {
               setSid(parentSid);
+              setType(parentType);
               setLinkedScheduleInfo({
                   tid: '',
                   parentSid: '',
+                  parentType: '',
                   onLinkedSchedule: false,
               });
               navigation.pop();
@@ -113,7 +116,7 @@ const ReadSchedule = ({ navigation }) => {
                             width: 20,
                             zIndex: 1000,
                         }}>
-                        <TouchableOpacity onPress={() => closeSchedule()}>
+                        <TouchableOpacity onPress={closeSchedule}>
                             <FontAwesome name='close' size={24} />
                         </TouchableOpacity>
                     </View>
@@ -129,9 +132,7 @@ const ReadSchedule = ({ navigation }) => {
                     </View>
                     <FlatList
                         data={tasks}
-                        renderItem={({ item }) => {
-                            return <ScheduleTask task={item} />;
-                        }}
+                        renderItem={({ item }) => <ScheduleTask task={item} />}
                     />
                 </View>
             </View>
