@@ -10,9 +10,8 @@ export const ScheduleProvider = ({ children }) => {
 
     const [linkedScheduleInfo, setLinkedScheduleInfo] = useState({
         tid: '',
-        onLinkedSchedule: false,
-        parentSid: '',
-        parentType: '',
+        parentSid: [],
+        parentType: [],
     });
 
     const setType = (type) => {
@@ -27,15 +26,40 @@ export const ScheduleProvider = ({ children }) => {
         setLinkedScheduleInfo({ ...linkedScheduleInfo, tid });
     };
 
-    const setOnLinkedSchedule = (bool) => {
+    const pushParentSid = (sid) => {
+        const newParentSidArr = linkedScheduleInfo.parentSid;
+        newParentSidArr.push(sid);
         setLinkedScheduleInfo({
             ...linkedScheduleInfo,
-            onLinkedSchedule: bool,
+            parentSid: newParentSidArr,
         });
     };
 
-    const setParentSid = (sid) => {
-        setLinkedScheduleInfo({ ...linkedScheduleInfo, parentSid: sid });
+    const popParentSid = () => {
+        const newParentSidArr = linkedScheduleInfo.parentSid;
+        newParentSidArr.pop();
+        setLinkedScheduleInfo({
+            ...linkedScheduleInfo,
+            parentSid: newParentSidArr,
+        });
+    };
+
+    const pushParentType = (type) => {
+        const newParentTypeArr = linkedScheduleInfo.parentType;
+        newParentTypeArr.push(type);
+        setLinkedScheduleInfo({
+            ...linkedScheduleInfo,
+            parentType: newParentTypeArr,
+        });
+    };
+
+    const popParentType = () => {
+        const newParentTypeArr = linkedScheduleInfo.parentType;
+        newParentTypeArr.pop();
+        setLinkedScheduleInfo({
+            ...linkedScheduleInfo,
+            parentType: newParentTypeArr,
+        });
     };
 
     const scheduleContextSetters = {
@@ -46,8 +70,10 @@ export const ScheduleProvider = ({ children }) => {
 
     const linkedScheduleContextSetters = {
         setTid,
-        setParentSid,
-        setOnLinkedSchedule,
+        pushParentSid,
+        popParentSid,
+        pushParentType,
+        popParentType,
         setLinkedScheduleInfo,
     };
 

@@ -8,18 +8,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 const ScheduleTask = ({ task }) => {
-    const { type, sid, setSid, linkedScheduleInfo, setLinkedScheduleInfo } =
+    const { type, sid, setSid, pushParentSid, pushParentType } =
         useContext(ScheduleContext);
     const [complete, setComplete] = useState(false);
     const navigation = useNavigation();
 
     const getLinkedSchedule = () => {
-        setLinkedScheduleInfo({
-            ...linkedScheduleInfo,
-            parentSid: sid,
-            parentType: type,
-            onLinkedSchedule: true,
-        });
+        pushParentSid(sid);
+        pushParentType(type);
         setSid(task.subSchedule);
         navigation.push('ReadSchedule');
     };
@@ -153,6 +149,8 @@ ScheduleTask.propTypes = {
     task: PropTypes.shape({
         image: PropTypes.string,
         text: PropTypes.string,
+        order: PropTypes.number,
+        subSchedule: PropTypes.string,
     }),
 };
 
