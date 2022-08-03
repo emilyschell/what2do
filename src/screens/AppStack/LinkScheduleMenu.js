@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { styles, colors } from '../../../assets/styles';
-import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../../components/CustomSmallButton';
 import { AuthContext } from '../../contexts/AuthContext';
 import { db } from '../../firebase/firebase';

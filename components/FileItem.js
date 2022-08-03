@@ -5,6 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
 import { ScheduleContext } from '../src/contexts/ScheduleContext';
+import { FontAwesome } from '@expo/vector-icons';
 
 const FileItem = ({
     title,
@@ -20,16 +21,19 @@ const FileItem = ({
 
     return (
         <View style={styles.fileItem}>
-            <TouchableOpacity onPress={() => onPressCallback(sid)}>
+            <TouchableOpacity
+                style={{ flexDirection: 'row' }}
+                onPress={() => onPressCallback(sid)}>
                 <Text
                     style={[
                         styles.taskText,
-                        currentSubschedule === sid
-                            ? { color: colors.bgSuccess, fontWeight: 'bold' }
-                            : null,
+                        currentSubschedule === sid ? { marginRight: 10 } : null,
                     ]}>
                     {title}
                 </Text>
+                {currentSubschedule === sid && (
+                    <FontAwesome name='hand-o-left' size={30} />
+                )}
             </TouchableOpacity>
             <View
                 style={{

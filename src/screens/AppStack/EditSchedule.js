@@ -263,7 +263,7 @@ const EditSchedule = ({ navigation }) => {
         navigation.navigate('LinkScheduleMenu', {
             currentSubschedule: ss,
             tid,
-            parentSid: ss,
+            parentSid: sid,
             linkTask,
         });
     };
