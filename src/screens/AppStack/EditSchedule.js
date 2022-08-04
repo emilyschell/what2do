@@ -148,8 +148,6 @@ const EditSchedule = ({ navigation }) => {
                 }
             });
             setTasks(newTasks);
-            console.log('tid in linkTask: ', tid);
-            console.log('stl in linkTask: ', schedToLink);
         }
     };
 
@@ -254,7 +252,7 @@ const EditSchedule = ({ navigation }) => {
     const ConfirmDeleteModal = (
         <CustomModal
             modalShown={deleteModalShown}
-            msg={`Cannot undo delete, do you want to delete ${deleteType}?`}
+            msg={`Are you sure you want to delete ${deleteType}?`}
             lCallback={() => setDeleteModalShown(false)}
             lText='Cancel'
             rCallback={

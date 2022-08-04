@@ -29,6 +29,8 @@ const CreateSchedule = ({ navigation }) => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(false);
     const [discardModalShown, setDiscardModalShown] = useState(false);
+    const [pendingTask, setPendingTask] = useState(false);
+    const [unaddedTaskModalShown, setUnaddedTaskModalShown] = useState(false);
 
     const addTask = (text, imageUrl) => {
         if (
@@ -44,6 +46,7 @@ const CreateSchedule = ({ navigation }) => {
                 subSchedule: null,
             };
             setTasks([...tasks, newTask]);
+            setPendingTask(false);
         } else {
             switch (type) {
                 case 'text':
@@ -131,6 +134,20 @@ const CreateSchedule = ({ navigation }) => {
             rText='Discard Changes'
             lCallback={() => setDiscardModalShown(false)}
             lText='Cancel'
+        />
+    );
+
+    const confirmUnaddedTaskModal = (
+        <CustomModal
+            modalShown={unaddedTaskModalShown}
+            msg='Did you mean to add task first?'
+            rCallback={() => {
+                makeSchedule();
+                setUnaddedTaskModalShown(false);
+            }}
+            rText='Discard task'
+            lCallback={() => setUnaddedTaskModalShown(false)}
+            lText='Go back'
         />
     );
 
@@ -229,7 +246,6 @@ const CreateSchedule = ({ navigation }) => {
                                     color='red'
                                 />
                             </TouchableOpacity>
-                            <Text>{tasks.indexOf(item)}</Text>
                             <FontAwesome
                                 name='hand-paper-o'
                                 size={24}
@@ -288,7 +304,10 @@ const CreateSchedule = ({ navigation }) => {
                                           }
                                         : { flex: 2 }
                                 }>
-                                <CreateTask addTask={addTask} />
+                                <CreateTask
+                                    addTask={addTask}
+                                    onChange={() => setPendingTask(true)}
+                                />
                             </View>
                         </>
                     </DismissKeyboard>
@@ -310,7 +329,11 @@ const CreateSchedule = ({ navigation }) => {
                         ) : null}
                     </View>
                 </View>
+
                 {ConfirmDiscardModal}
+
+                {confirmUnaddedTaskModal}
+
                 {/* Small Bottom Buttons */}
                 <CustomSmallButton
                     position='left'
@@ -323,7 +346,11 @@ const CreateSchedule = ({ navigation }) => {
                     position='right'
                     onPress={() => {
                         if (title && tasks.length) {
-                            makeSchedule();
+                            if (pendingTask) {
+                                setUnaddedTaskModalShown(true);
+                            } else {
+                                makeSchedule();
+                            }
                         } else {
                             alert('Please enter a title and at least 1 task.');
                         }

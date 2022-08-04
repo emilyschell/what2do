@@ -18,7 +18,7 @@ import { AuthContext } from '../src/contexts/AuthContext';
 import { manipulateAsync } from 'expo-image-manipulator';
 import PropTypes from 'prop-types';
 
-const CreateTask = ({ addTask }) => {
+const CreateTask = ({ addTask, onChange }) => {
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [imageUrl, setImageUrl] = useState(null);
@@ -53,6 +53,7 @@ const CreateTask = ({ addTask }) => {
             setLoading(true);
             const downloadUrl = await uploadImage(result);
             setImageUrl(downloadUrl);
+            onChange();
             setLoading(false);
         }
     };
@@ -63,6 +64,7 @@ const CreateTask = ({ addTask }) => {
             setLoading(true);
             const downloadUrl = await uploadImage(result);
             setImageUrl(downloadUrl);
+            onChange();
             setLoading(false);
         }
     };
@@ -103,7 +105,10 @@ const CreateTask = ({ addTask }) => {
                             style={[styles.taskTextInput, { flex: 5 }]}
                             placeholder='enter task'
                             placeholderTextColor={colors.textInputPlaceholder}
-                            onChangeText={(val) => setText(val)}
+                            onChangeText={(val) => {
+                                setText(val);
+                                onChange();
+                            }}
                             value={text}
                         />
                         <TouchableOpacity
@@ -199,7 +204,10 @@ const CreateTask = ({ addTask }) => {
                                 placeholderTextColor={
                                     colors.textInputPlaceholder
                                 }
-                                onChangeText={(val) => setText(val)}
+                                onChangeText={(val) => {
+                                    setText(val);
+                                    onChange();
+                                }}
                                 value={text}
                             />
                         </View>
@@ -233,6 +241,7 @@ const CreateTask = ({ addTask }) => {
 
 CreateTask.propTypes = {
     addTask: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
 };
 
 export default CreateTask;

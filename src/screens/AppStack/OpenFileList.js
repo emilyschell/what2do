@@ -77,7 +77,7 @@ const OpenFileList = ({ navigation }) => {
                     }}>
                     <View style={styles.modal}>
                         <Text style={styles.mediumText}>
-                            Cannot undo delete, do you want to delete schedule?
+                            Are you sure you want to delete schedule?
                         </Text>
                         <View
                             style={{
