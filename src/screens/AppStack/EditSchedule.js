@@ -52,6 +52,8 @@ const EditSchedule = ({ navigation }) => {
     const [deleteItem, setDeleteItem] = useState(null);
     const [deleteType, setDeleteType] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [pendingTask, setPendingTask] = useState(false);
+    const [unaddedTaskModalShown, setUnaddedTaskModalShown] = useState(false);
 
     useEffect(() => {
         const getSchedule = async () => {
@@ -106,6 +108,7 @@ const EditSchedule = ({ navigation }) => {
                 image: imageUrl,
             };
             setTasks([...tasks, newTask]);
+            setPendingTask(false);
         } else {
             switch (type) {
                 case 'text':
@@ -278,6 +281,20 @@ const EditSchedule = ({ navigation }) => {
             rText='Discard Changes'
             lCallback={() => setDiscardModalShown(false)}
             lText='Cancel'
+        />
+    );
+
+    const confirmUnaddedTaskModal = (
+        <CustomModal
+            modalShown={unaddedTaskModalShown}
+            msg='Did you mean to add task first?'
+            rCallback={() => {
+                updateSchedule();
+                setUnaddedTaskModalShown(false);
+            }}
+            rText='Discard task'
+            lCallback={() => setUnaddedTaskModalShown(false)}
+            lText='Go back'
         />
     );
 
@@ -538,6 +555,7 @@ const EditSchedule = ({ navigation }) => {
 
                             {ConfirmDeleteModal}
                             {ConfirmDiscardModal}
+                            {confirmUnaddedTaskModal}
 
                             {/* New Task Input */}
                             <View
@@ -551,7 +569,10 @@ const EditSchedule = ({ navigation }) => {
                                         : { flex: 2 },
                                     type === 'picture' ? { flex: 1 } : null,
                                 ]}>
-                                <CreateTask addTask={addTask} />
+                                <CreateTask
+                                    addTask={addTask}
+                                    onChange={() => setPendingTask(true)}
+                                />
                             </View>
                         </>
                     </DismissKeyboard>
@@ -586,7 +607,11 @@ const EditSchedule = ({ navigation }) => {
                 <CustomSmallButton
                     position='right'
                     onPress={() => {
-                        updateSchedule();
+                        if (pendingTask) {
+                            setUnaddedTaskModalShown(true);
+                        } else {
+                            updateSchedule();
+                        }
                     }}>
                     <Text style={styles.smallButtonText}>Save</Text>
                 </CustomSmallButton>
