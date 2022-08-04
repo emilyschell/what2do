@@ -27,21 +27,17 @@ export const ScheduleProvider = ({ children }) => {
         setScheduleInfo({ ...scheduleInfo, sid });
     };
 
-    const scheduleContextSetters = {
-        setType,
-        setSid,
-        setScheduleInfo,
-    };
-
     return (
         <ScheduleContext.Provider
             value={{
                 ...scheduleInfo,
+                setType,
+                setSid,
+                setScheduleInfo,
                 ...linkedScheduleInfo,
-                ...scheduleLinkingInfo,
-                ...scheduleContextSetters,
-                scheduleLinkingInfo,
                 setLinkedScheduleInfo,
+                ...scheduleLinkingInfo,
+                scheduleLinkingInfo,
                 setScheduleLinkingInfo,
             }}>
             {children}
