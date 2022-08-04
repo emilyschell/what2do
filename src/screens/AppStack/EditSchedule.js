@@ -34,8 +34,16 @@ import CustomModal from '../../../components/CustomModal';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
-    const { setType, type, sid, tid, schedToLink } =
-        useContext(ScheduleContext);
+    const {
+        setType,
+        type,
+        sid,
+        tid,
+        schedToLink,
+        order,
+        scheduleLinkingInfo,
+        setScheduleLinkingInfo,
+    } = useContext(ScheduleContext);
 
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
@@ -112,19 +120,37 @@ const EditSchedule = ({ navigation }) => {
         }
     };
 
-    useEffect(() => {
-        linkTask(tid, schedToLink);
-    }, [schedToLink]);
-
-    const linkTask = (tid, schedToLink) => {
-        const newTasks = tasks.map((task) => {
-            if (task.tid === tid) {
-                return { ...task, subSchedule: schedToLink };
-            } else {
-                return task;
-            }
+    const openLinkedScheduleMenu = (ss) => {
+        navigation.navigate('LinkScheduleMenu', {
+            currentSubschedule: ss,
+            parentSid: sid,
         });
-        setTasks(newTasks);
+    };
+
+    useEffect(() => linkTask(), [schedToLink]);
+
+    const linkTask = () => {
+        if (tid) {
+            const newTasks = tasks.map((task) => {
+                if (task.tid === tid) {
+                    return { ...task, subSchedule: schedToLink };
+                } else {
+                    return task;
+                }
+            });
+            setTasks(newTasks);
+        } else {
+            const newTasks = tasks.map((task) => {
+                if (tasks.indexOf(task) === order) {
+                    return { ...task, subSchedule: schedToLink };
+                } else {
+                    return task;
+                }
+            });
+            setTasks(newTasks);
+            console.log('tid in linkTask: ', tid);
+            console.log('stl in linkTask: ', schedToLink);
+        }
     };
 
     const updateSchedule = async () => {
@@ -262,14 +288,6 @@ const EditSchedule = ({ navigation }) => {
         navigation.navigate('OpenCreateMenu');
     };
 
-    const openLinkedScheduleMenu = (tid, ss) => {
-        navigation.navigate('LinkScheduleMenu', {
-            currentSubschedule: ss,
-            tid,
-            parentSid: sid,
-        });
-    };
-
     const renderTask = ({ item, drag, isActive }) => {
         switch (type) {
             case 'text':
@@ -299,12 +317,20 @@ const EditSchedule = ({ navigation }) => {
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() =>
+                                    onPress={() => {
+                                        setScheduleLinkingInfo({
+                                            tid: item.tid,
+                                            schedToLink: item.subSchedule,
+                                            order: tasks.indexOf(item),
+                                        });
+                                        console.log(
+                                            'sli from onpress: ',
+                                            scheduleLinkingInfo
+                                        );
                                         openLinkedScheduleMenu(
-                                            item.tid,
                                             item.subSchedule
-                                        )
-                                    }>
+                                        );
+                                    }}>
                                     <Entypo
                                         name='link'
                                         size={24}
@@ -358,12 +384,16 @@ const EditSchedule = ({ navigation }) => {
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() =>
+                                    onPress={() => {
+                                        setScheduleLinkingInfo({
+                                            tid: item.tid,
+                                            schedToLink: item.subSchedule,
+                                            order: tasks.indexOf(item),
+                                        });
                                         openLinkedScheduleMenu(
-                                            item.tid,
                                             item.subSchedule
-                                        )
-                                    }>
+                                        );
+                                    }}>
                                     <Entypo
                                         name='link'
                                         size={24}
@@ -428,12 +458,16 @@ const EditSchedule = ({ navigation }) => {
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() =>
+                                    onPress={() => {
+                                        setScheduleLinkingInfo({
+                                            tid: item.tid,
+                                            schedToLink: item.subSchedule,
+                                            order: tasks.indexOf(item),
+                                        });
                                         openLinkedScheduleMenu(
-                                            item.tid,
                                             item.subSchedule
-                                        )
-                                    }>
+                                        );
+                                    }}>
                                     <Entypo
                                         name='link'
                                         size={24}

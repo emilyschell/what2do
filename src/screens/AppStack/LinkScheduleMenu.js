@@ -12,8 +12,9 @@ const LinkScheduleMenu = ({ navigation, route }) => {
     const { currentUser } = useContext(AuthContext);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { currentSubschedule, tid, parentSid } = route.params;
-    const { setScheduleLinkingInfo } = useContext(ScheduleContext);
+    const { currentSubschedule, parentSid } = route.params;
+    const { scheduleLinkingInfo, setScheduleLinkingInfo } =
+        useContext(ScheduleContext);
 
     useEffect(() => {
         const getSchedules = async () => {
@@ -37,12 +38,12 @@ const LinkScheduleMenu = ({ navigation, route }) => {
     }, []);
 
     const linkSchedule = (sid) => {
-        setScheduleLinkingInfo({ tid: tid, schedToLink: sid });
+        setScheduleLinkingInfo({ ...scheduleLinkingInfo, schedToLink: sid });
         navigation.navigate('EditSchedule');
     };
 
     const removeSubschedule = () => {
-        setScheduleLinkingInfo({ tid: tid, schedToLink: null });
+        setScheduleLinkingInfo({ ...scheduleLinkingInfo, schedToLink: null });
         navigation.navigate('EditSchedule');
     };
 

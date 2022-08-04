@@ -16,6 +16,7 @@ export const ScheduleProvider = ({ children }) => {
     const [scheduleLinkingInfo, setScheduleLinkingInfo] = useState({
         tid: null,
         schedToLink: null,
+        order: null,
     });
 
     const setType = (type) => {
@@ -39,6 +40,7 @@ export const ScheduleProvider = ({ children }) => {
                 ...linkedScheduleInfo,
                 ...scheduleLinkingInfo,
                 ...scheduleContextSetters,
+                scheduleLinkingInfo,
                 setLinkedScheduleInfo,
                 setScheduleLinkingInfo,
             }}>
