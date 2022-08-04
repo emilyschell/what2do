@@ -442,20 +442,19 @@ const EditSchedule = ({ navigation }) => {
                         <View
                             style={[
                                 styles.taskContainer,
-                                { justifyContent: 'center' },
+                                { justifyContent: 'center', marginBottom: 0 },
                             ]}>
                             <View
                                 style={{
+                                    marginBottom: 0,
                                     flexDirection: 'column',
                                     alignItems: 'center',
                                 }}>
-                                <View style={styles.imageContainer}>
-                                    <Image
-                                        style={styles.image}
-                                        source={{ uri: item.image }}
-                                        resizeMode='contain'
-                                    />
-                                </View>
+                                <Image
+                                    style={styles.image}
+                                    source={{ uri: item.image }}
+                                    resizeMode='contain'
+                                />
                                 <Text style={styles.taskText}>{item.text}</Text>
                             </View>
                             <View
@@ -545,7 +544,11 @@ const EditSchedule = ({ navigation }) => {
                                 <TextInput
                                     style={[
                                         styles.taskTextInput,
-                                        { marginRight: 0, textAlign: 'center' },
+                                        {
+                                            height: 50,
+                                            marginRight: 0,
+                                            textAlign: 'center',
+                                        },
                                     ]}
                                     placeholder={title}
                                     placeholderTextColor={
@@ -569,8 +572,7 @@ const EditSchedule = ({ navigation }) => {
                                               margin: 0,
                                               width: '100%',
                                           }
-                                        : { flex: 2 },
-                                    type === 'picture' ? { flex: 1 } : null,
+                                        : { flex: 2, marginTop: 20 },
                                 ]}>
                                 <CreateTask
                                     addTask={addTask}
@@ -584,11 +586,9 @@ const EditSchedule = ({ navigation }) => {
 
                     <View
                         style={
-                            type === 'text'
-                                ? {
-                                      flex: 3,
-                                  }
-                                : { flex: 2 }
+                            type === 'hybrid'
+                                ? { flex: 4, marginTop: 20 }
+                                : { flex: 5 }
                         }>
                         {tasks.length ? (
                             <DraggableFlatList

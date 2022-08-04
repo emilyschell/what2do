@@ -190,13 +190,11 @@ const CreateSchedule = ({ navigation }) => {
                         onLongPress={drag}
                         style={isActive ? styles.activeDragItem : null}>
                         <View style={styles.taskContainer}>
-                            <View style={styles.imageContainer}>
-                                <Image
-                                    style={styles.image}
-                                    source={{ uri: item.image }}
-                                    resizeMode='contain'
-                                />
-                            </View>
+                            <Image
+                                style={[styles.image, { margin: 0 }]}
+                                source={{ uri: item.image }}
+                                resizeMode='contain'
+                            />
                             <TouchableOpacity
                                 onPress={() => deleteTask(item.image)}>
                                 <Ionicons
@@ -224,20 +222,18 @@ const CreateSchedule = ({ navigation }) => {
                         <View
                             style={[
                                 styles.taskContainer,
-                                { justifyContent: 'center' },
+                                { marginBottom: 0, justifyContent: 'center' },
                             ]}>
                             <View
                                 style={{
                                     flexDirection: 'column',
                                     alignItems: 'center',
                                 }}>
-                                <View style={styles.imageContainer}>
-                                    <Image
-                                        style={styles.image}
-                                        source={{ uri: item.image }}
-                                        resizeMode='contain'
-                                    />
-                                </View>
+                                <Image
+                                    style={styles.image}
+                                    source={{ uri: item.image }}
+                                    resizeMode='contain'
+                                />
                                 <Text style={styles.taskText}>{item.text}</Text>
                             </View>
                             <TouchableOpacity
@@ -283,6 +279,7 @@ const CreateSchedule = ({ navigation }) => {
                                     style={[
                                         styles.taskTextInput,
                                         {
+                                            height: 50,
                                             marginRight: 0,
                                             textAlign: 'center',
                                         },
@@ -318,8 +315,8 @@ const CreateSchedule = ({ navigation }) => {
                     <View
                         style={
                             type === 'hybrid'
-                                ? { flex: 3, marginTop: 10 }
-                                : { flex: 4 }
+                                ? { flex: 4, marginTop: 10 }
+                                : { flex: 5 }
                         }>
                         {tasks.length ? (
                             <DraggableFlatList

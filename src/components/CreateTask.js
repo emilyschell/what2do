@@ -121,15 +121,7 @@ const CreateTask = ({ addTask, onChange }) => {
                                     alert('Please enter text to add');
                                 }
                             }}>
-                            <Text
-                                style={{
-                                    flex: 1,
-                                    fontSize: 40,
-                                    textAlign: 'center',
-                                    textAlignVertical: 'center',
-                                }}>
-                                +
-                            </Text>
+                            <Text style={styles.addButtonText}>+</Text>
                         </TouchableOpacity>
                     </View>
                 );
