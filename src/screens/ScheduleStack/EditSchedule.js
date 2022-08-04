@@ -16,7 +16,7 @@ import CreateTask from '../../components/CreateTask';
 import { Ionicons } from '@expo/vector-icons';
 import {
     collection,
-    addDoc,
+    writeBatch,
     doc,
     getDocs,
     getDoc,
@@ -176,8 +176,9 @@ const EditSchedule = ({ navigation }) => {
                 );
                 await updateDoc(scheduleRef, { title });
 
-                //delete all tasks from firebase, in loops with timeouts due to rate limits
+                //delete all tasks from firebase, in batch delete
                 try {
+                    const delBatch = writeBatch(db);
                     const tasksColl = collection(
                         db,
                         'users',
@@ -186,36 +187,21 @@ const EditSchedule = ({ navigation }) => {
                         sid,
                         'tasks'
                     );
-                    const timeouts = [];
                     const taskSnap = await getDocs(tasksColl);
                     taskSnap.forEach((task) => {
-                        timeouts.push(
-                            setTimeout(deleteDoc(doc(tasksColl, task.id)), 1000)
-                        );
+                        delBatch.delete(doc(tasksColl, task.id));
                     });
-                    timeouts.forEach((to) => clearTimeout(to));
+                    delBatch.commit();
 
-                    //send all new tasks to firebase, in loops with setTimeout due to rate limits
+                    //send all new tasks to firebase, in batch write
                     if (tasks.length) {
-                        const tasksColl = collection(
-                            db,
-                            'users',
-                            currentUser.uid,
-                            'schedules',
-                            sid,
-                            'tasks'
-                        );
+                        const addBatch = writeBatch(db);
 
-                        const timeouts2 = [];
                         for (const task of tasks) {
-                            timeouts2.push(
-                                setTimeout(addDoc(tasksColl, task), 1000)
-                            );
+                            const taskRef = doc(tasksColl);
+                            addBatch.set(taskRef, task);
                         }
-                        for (const to2 of timeouts2) {
-                            clearTimeout(to2);
-                        }
-
+                        addBatch.commit();
                         setLoading(false);
                         navigation.navigate('ReadSchedule');
                     }

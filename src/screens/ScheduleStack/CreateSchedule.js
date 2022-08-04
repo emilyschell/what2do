@@ -14,7 +14,13 @@ import { ScheduleContext } from '../../contexts/ScheduleContext';
 import CustomSmallButton from '../../components/CustomSmallButton';
 import CreateTask from '../../components/CreateTask';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
+import {
+    collection,
+    addDoc,
+    setDoc,
+    doc,
+    writeBatch,
+} from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../helpers/dismissKeyboard';
@@ -102,7 +108,9 @@ const CreateSchedule = ({ navigation }) => {
                 // Set schedule id in app context
                 setSid(schedResponse.id);
 
-                // Assign tasks to newly created schedule, in loops with setTimeout due to rate limits
+                // Assign tasks to newly created schedule in batch write
+                const batch = writeBatch(db);
+
                 const tasksColl = collection(
                     db,
                     'users',
@@ -112,14 +120,11 @@ const CreateSchedule = ({ navigation }) => {
                     'tasks'
                 );
 
-                const timeouts = [];
                 for (const task of tasks) {
-                    timeouts.push(setTimeout(addDoc(tasksColl, task), 1000));
+                    const taskRef = doc(tasksColl);
+                    batch.set(taskRef, task);
                 }
-                for (const to of timeouts) {
-                    clearTimeout(to);
-                }
-
+                batch.commit();
                 setLoading(false);
                 navigation.navigate('ReadSchedule');
             }
