@@ -2,7 +2,7 @@ import React, { useEffect, useState, createContext } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { auth } from '../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { colors, styles } from '../../assets/styles';
+import { colors, styles } from '../assets/styles';
 
 export const AuthContext = createContext();
 

@@ -6,11 +6,11 @@ import {
     TextInput,
     ActivityIndicator,
 } from 'react-native';
-import { colors, styles } from '../../../assets/styles';
-import CustomSmallButton from '../../../components/CustomSmallButton';
+import { colors, styles } from '../../assets/styles';
+import CustomSmallButton from '../../components/CustomSmallButton';
 import { auth } from '../../firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
+import { DismissKeyboard } from '../../helpers/dismissKeyboard';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');

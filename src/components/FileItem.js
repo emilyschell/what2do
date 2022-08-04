@@ -1,11 +1,12 @@
-import { colors, styles } from '../assets/styles';
+import { styles } from '../assets/styles';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
-import { ScheduleContext } from '../src/contexts/ScheduleContext';
+import { ScheduleContext } from '../contexts/ScheduleContext';
 import { FontAwesome } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
 const FileItem = ({
     title,
@@ -62,6 +63,16 @@ const FileItem = ({
             </View>
         </View>
     );
+};
+
+FileItem.propTypes = {
+    title: PropTypes.string.isRequired,
+    sid: PropTypes.string.isRequired,
+    onPressCallback: PropTypes.func.isRequired,
+    showDelete: PropTypes.bool.isRequired,
+    deleteSched: PropTypes.func.isRequired,
+    showEdit: PropTypes.bool.isRequired,
+    currentSubschedule: PropTypes.string,
 };
 
 export default FileItem;

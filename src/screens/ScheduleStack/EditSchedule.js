@@ -9,10 +9,10 @@ import {
     Image,
 } from 'react-native';
 import DraggableFlatList from 'react-native-draggable-flatlist';
-import { styles, colors } from '../../../assets/styles';
+import { styles, colors } from '../../assets/styles';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
-import CustomSmallButton from '../../../components/CustomSmallButton';
-import CreateTask from '../../../components/CreateTask';
+import CustomSmallButton from '../../components/CustomSmallButton';
+import CreateTask from '../../components/CreateTask';
 import { Ionicons } from '@expo/vector-icons';
 import {
     collection,
@@ -27,10 +27,10 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
-import { DismissKeyboard } from '../../../helpers/dismissKeyboard';
+import { DismissKeyboard } from '../../helpers/dismissKeyboard';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import CustomModal from '../../../components/CustomModal';
+import CustomModal from '../../components/CustomModal';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);

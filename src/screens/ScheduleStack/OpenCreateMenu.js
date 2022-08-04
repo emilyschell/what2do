@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import { styles } from '../../../assets/styles';
-import CustomBigButton from '../../../components/CustomBigButton';
+import { styles } from '../../assets/styles';
+import CustomBigButton from '../../components/CustomBigButton';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { AuthContext } from '../../contexts/AuthContext';

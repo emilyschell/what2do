@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { ScheduleContext } from '../src/contexts/ScheduleContext';
+import { ScheduleContext } from '../contexts/ScheduleContext';
 import { styles, colors } from '../assets/styles';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';

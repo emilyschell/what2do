@@ -7,14 +7,14 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from 'react-native';
-import { ScheduleContext } from '../src/contexts/ScheduleContext';
+import { ScheduleContext } from '../contexts/ScheduleContext';
 import { Entypo } from '@expo/vector-icons';
 import { styles, colors } from '../assets/styles';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import * as ImageHelpers from '../helpers/ImageHelpers';
-import { storage } from '../src/firebase/firebase';
+import { storage } from '../firebase/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { AuthContext } from '../src/contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { manipulateAsync } from 'expo-image-manipulator';
 import PropTypes from 'prop-types';
 

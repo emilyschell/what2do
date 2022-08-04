@@ -1,11 +1,11 @@
 import { useContext, useState, useEffect } from 'react';
 import { Text, View, ActivityIndicator, FlatList } from 'react-native';
-import { styles, colors } from '../../../assets/styles';
-import CustomSmallButton from '../../../components/CustomSmallButton';
+import { styles, colors } from '../../assets/styles';
+import CustomSmallButton from '../../components/CustomSmallButton';
 import { AuthContext } from '../../contexts/AuthContext';
 import { db } from '../../firebase/firebase';
 import { doc, collection, getDocs, query, where } from 'firebase/firestore';
-import FileItem from '../../../components/FileItem';
+import FileItem from '../../components/FileItem';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
 
 const LinkScheduleMenu = ({ navigation, route }) => {

@@ -8,8 +8,8 @@ import {
     TextInput,
     ActivityIndicator,
 } from 'react-native';
-import { colors, styles } from '../../../assets/styles';
-import CustomSmallButton from '../../../components/CustomSmallButton';
+import { colors, styles } from '../../assets/styles';
+import CustomSmallButton from '../../components/CustomSmallButton';
 import { auth, db } from '../../firebase/firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';

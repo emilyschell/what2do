@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, SafeAreaView, Platform } from 'react-native';
-import { styles, colors } from '../../../assets/styles';
+import { styles, colors } from '../../assets/styles';
 import {
     DrawerContentScrollView,
     DrawerItemList,
 } from '@react-navigation/drawer';
 
-import CustomSmallButton from '../../../components/CustomSmallButton';
+import CustomSmallButton from '../../components/CustomSmallButton';
 import { auth } from '../../firebase/firebase';
 import { signOut } from 'firebase/auth';
 

@@ -4,8 +4,8 @@ import { View, ActivityIndicator } from 'react-native';
 import { styles, colors } from './assets/styles';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-import Navigator from './src/screens/Navigator';
-import { AuthProvider } from './src/contexts/AuthContext';
+import Navigator from './Navigator';
+import { AuthProvider } from './contexts/AuthContext';
 import { decode, encode } from 'base-64';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 

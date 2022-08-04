@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
-import { styles } from '../../../assets/styles';
+import { styles } from '../../assets/styles';
 import React, { useContext } from 'react';
-import CustomBigButton from '../../../components/CustomBigButton';
+import CustomBigButton from '../../components/CustomBigButton';
 import { FontAwesome } from '@expo/vector-icons';
 import { ScheduleContext } from '../../contexts/ScheduleContext';
-import CustomSmallButton from '../../../components/CustomSmallButton';
+import CustomSmallButton from '../../components/CustomSmallButton';
 
 const ScheduleTypeMenu = ({ navigation }) => {
     const { setScheduleInfo } = useContext(ScheduleContext);

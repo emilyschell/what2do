@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { styles, colors } from '../../../assets/styles';
+import { styles, colors } from '../../assets/styles';
 import {
     View,
     Text,
@@ -21,7 +21,7 @@ import {
     query,
     orderBy,
 } from 'firebase/firestore';
-import ScheduleTask from '../../../components/ScheduleTask';
+import ScheduleTask from '../../components/ScheduleTask';
 
 const ReadSchedule = ({ navigation }) => {
     const {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { styles } from '../assets/styles';
 
 const getPosition = (position) => {
@@ -24,13 +24,9 @@ const CustomSmallButton = ({ children, onPress, style, position }) => {
 };
 
 CustomSmallButton.propTypes = {
-    onPress: Proptypes.func.isRequired,
-    children: Proptypes.element.isRequired,
-    style: Proptypes.oneOfType([Proptypes.object, Proptypes.array]),
-};
-
-CustomSmallButton.defaultProps = {
-    style: {},
+    onPress: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 export default CustomSmallButton;
