@@ -5,8 +5,6 @@ import {
     TextInput,
     SafeAreaView,
     TouchableOpacity,
-    Modal,
-    Pressable,
     ActivityIndicator,
     Image,
 } from 'react-native';
@@ -36,7 +34,8 @@ import CustomModal from '../../../components/CustomModal';
 
 const EditSchedule = ({ navigation }) => {
     const { currentUser } = useContext(AuthContext);
-    const { setType, type, sid } = useContext(ScheduleContext);
+    const { setType, type, sid, tid, schedToLink } =
+        useContext(ScheduleContext);
 
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
@@ -113,10 +112,14 @@ const EditSchedule = ({ navigation }) => {
         }
     };
 
-    const linkTask = (tid, ssid) => {
+    useEffect(() => {
+        linkTask(tid, schedToLink);
+    }, [schedToLink]);
+
+    const linkTask = (tid, schedToLink) => {
         const newTasks = tasks.map((task) => {
             if (task.tid === tid) {
-                return { ...task, subSchedule: ssid };
+                return { ...task, subSchedule: schedToLink };
             } else {
                 return task;
             }
@@ -264,7 +267,6 @@ const EditSchedule = ({ navigation }) => {
             currentSubschedule: ss,
             tid,
             parentSid: sid,
-            linkTask,
         });
     };
 

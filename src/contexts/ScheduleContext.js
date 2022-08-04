@@ -13,6 +13,11 @@ export const ScheduleProvider = ({ children }) => {
         parentTypeStack: [],
     });
 
+    const [scheduleLinkingInfo, setScheduleLinkingInfo] = useState({
+        tid: null,
+        schedToLink: null,
+    });
+
     const setType = (type) => {
         setScheduleInfo({ ...scheduleInfo, type });
     };
@@ -27,17 +32,15 @@ export const ScheduleProvider = ({ children }) => {
         setScheduleInfo,
     };
 
-    const linkedScheduleContextSetters = {
-        setLinkedScheduleInfo,
-    };
-
     return (
         <ScheduleContext.Provider
             value={{
                 ...scheduleInfo,
-                ...scheduleContextSetters,
                 ...linkedScheduleInfo,
-                ...linkedScheduleContextSetters,
+                ...scheduleLinkingInfo,
+                ...scheduleContextSetters,
+                setLinkedScheduleInfo,
+                setScheduleLinkingInfo,
             }}>
             {children}
         </ScheduleContext.Provider>

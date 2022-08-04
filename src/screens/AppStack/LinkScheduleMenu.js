@@ -6,12 +6,14 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { db } from '../../firebase/firebase';
 import { doc, collection, getDocs, query, where } from 'firebase/firestore';
 import FileItem from '../../../components/FileItem';
+import { ScheduleContext } from '../../contexts/ScheduleContext';
 
 const LinkScheduleMenu = ({ navigation, route }) => {
     const { currentUser } = useContext(AuthContext);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { currentSubschedule, tid, parentSid, linkTask } = route.params;
+    const { currentSubschedule, tid, parentSid } = route.params;
+    const { setScheduleLinkingInfo } = useContext(ScheduleContext);
 
     useEffect(() => {
         const getSchedules = async () => {
@@ -35,12 +37,12 @@ const LinkScheduleMenu = ({ navigation, route }) => {
     }, []);
 
     const linkSchedule = (sid) => {
-        linkTask(tid, sid);
+        setScheduleLinkingInfo({ tid: tid, schedToLink: sid });
         navigation.navigate('EditSchedule');
     };
 
     const removeSubschedule = () => {
-        linkTask(tid, null);
+        setScheduleLinkingInfo({ tid: tid, schedToLink: null });
         navigation.navigate('EditSchedule');
     };
 
