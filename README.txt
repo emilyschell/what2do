@@ -1,1 +1,0 @@
-Capstone project for Ada Developers Academy cohort 17. A user-friendly task management tool for neurodiverse users.
