@@ -28,6 +28,7 @@ const CreateSchedule = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [changesMade, setChangesMade] = useState(false);
     const [discardModalShown, setDiscardModalShown] = useState(false);
     const [pendingTask, setPendingTask] = useState(false);
     const [unaddedTaskModalShown, setUnaddedTaskModalShown] = useState(false);
@@ -46,6 +47,7 @@ const CreateSchedule = ({ navigation }) => {
                 subSchedule: null,
             };
             setTasks([...tasks, newTask]);
+            setChangesMade(true);
             setPendingTask(false);
         } else {
             switch (type) {
@@ -338,7 +340,11 @@ const CreateSchedule = ({ navigation }) => {
                 <CustomSmallButton
                     position='left'
                     onPress={() => {
-                        setDiscardModalShown(true);
+                        if (changesMade || pendingTask) {
+                            setDiscardModalShown(true);
+                        } else {
+                            navigation.goBack();
+                        }
                     }}>
                     <Text style={styles.smallButtonText}>Back</Text>
                 </CustomSmallButton>
@@ -355,7 +361,7 @@ const CreateSchedule = ({ navigation }) => {
                             alert('Please enter a title and at least 1 task.');
                         }
                     }}>
-                    <Text style={styles.smallButtonText}>Save</Text>
+                    <Text style={styles.smallButtonText}>Create</Text>
                 </CustomSmallButton>
             </View>
         );

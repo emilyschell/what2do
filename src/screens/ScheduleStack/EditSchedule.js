@@ -48,10 +48,11 @@ const EditSchedule = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
     const [deleteModalShown, setDeleteModalShown] = useState(false);
-    const [discardModalShown, setDiscardModalShown] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
     const [deleteType, setDeleteType] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [changesMade, setChangesMade] = useState(false);
+    const [discardModalShown, setDiscardModalShown] = useState(false);
     const [pendingTask, setPendingTask] = useState(false);
     const [unaddedTaskModalShown, setUnaddedTaskModalShown] = useState(false);
 
@@ -109,6 +110,7 @@ const EditSchedule = ({ navigation }) => {
             };
             setTasks([...tasks, newTask]);
             setPendingTask(false);
+            setChangesMade(true);
         } else {
             switch (type) {
                 case 'text':
@@ -245,6 +247,7 @@ const EditSchedule = ({ navigation }) => {
             );
             setTasks(newTasks);
         }
+        setChangesMade(true);
     };
 
     const onPressDelete = (toDelete) => {
@@ -601,8 +604,14 @@ const EditSchedule = ({ navigation }) => {
                 {/* Small Bottom Buttons */}
                 <CustomSmallButton
                     position='left'
-                    onPress={() => setDiscardModalShown(true)}>
-                    <Text style={styles.smallButtonText}>Cancel</Text>
+                    onPress={() => {
+                        if (changesMade || pendingTask) {
+                            setDiscardModalShown(true);
+                        } else {
+                            navigation.goBack();
+                        }
+                    }}>
+                    <Text style={styles.smallButtonText}>Back</Text>
                 </CustomSmallButton>
                 <CustomSmallButton
                     position='right'

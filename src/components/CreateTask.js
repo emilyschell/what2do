@@ -151,12 +151,12 @@ const CreateTask = ({ addTask, onChange }) => {
                         <TouchableOpacity
                             style={styles.addButton}
                             onPress={() => {
-                                if (imageUrl !== blankImageUrl) {
+                                if (imageUrl && imageUrl !== blankImageUrl) {
                                     addTask(null, imageUrl);
                                     setImageUrl(blankImageUrl);
                                 } else
                                     alert(
-                                        'click the camera to upload an image before adding'
+                                        'Click the camera to upload an image before adding.'
                                     );
                             }}>
                             <Text style={styles.addButtonText}>+</Text>
@@ -224,7 +224,7 @@ const CreateTask = ({ addTask, onChange }) => {
                                     setImageUrl(blankImageUrl);
                                 } else {
                                     alert(
-                                        'Please add text and a photo (click camera) to add'
+                                        'Please add text and a photo (click camera) to add.'
                                     );
                                 }
                             }}>
