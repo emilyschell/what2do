@@ -131,7 +131,11 @@ const ReadSchedule = ({ navigation }) => {
                             alignItems: 'center',
                             justifySelf: 'flex-start',
                         }}>
-                        <Text style={[styles.largeText, { margin: 0 }]}>
+                        <Text
+                            style={[
+                                styles.largeText,
+                                { margin: 0, textAlign: 'center' },
+                            ]}>
                             {title}
                         </Text>
                     </View>

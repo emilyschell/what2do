@@ -327,10 +327,6 @@ const EditSchedule = ({ navigation }) => {
                                             schedToLink: item.subSchedule,
                                             order: tasks.indexOf(item),
                                         });
-                                        console.log(
-                                            'sli from onpress: ',
-                                            scheduleLinkingInfo
-                                        );
                                         openLinkedScheduleMenu(
                                             item.subSchedule
                                         );

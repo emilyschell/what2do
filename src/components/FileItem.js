@@ -70,7 +70,7 @@ FileItem.propTypes = {
     sid: PropTypes.string.isRequired,
     onPressCallback: PropTypes.func.isRequired,
     showDelete: PropTypes.bool.isRequired,
-    deleteSched: PropTypes.func.isRequired,
+    deleteSched: PropTypes.func,
     showEdit: PropTypes.bool.isRequired,
     currentSubschedule: PropTypes.string,
 };
