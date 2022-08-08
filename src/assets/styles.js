@@ -147,8 +147,8 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        left: 10,
-        top: 100,
+        right: 10,
+        top: 90,
     },
     addButton: {
         borderRadius: 5,

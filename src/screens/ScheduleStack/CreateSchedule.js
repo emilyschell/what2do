@@ -25,6 +25,7 @@ import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../helpers/dismissKeyboard';
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import CustomModal from '../../components/CustomModal';
 
 const CreateSchedule = ({ navigation }) => {
@@ -38,6 +39,7 @@ const CreateSchedule = ({ navigation }) => {
     const [discardModalShown, setDiscardModalShown] = useState(false);
     const [pendingTask, setPendingTask] = useState(false);
     const [unaddedTaskModalShown, setUnaddedTaskModalShown] = useState(false);
+    const [hideCreateTask, setHideCreateTask] = useState(false);
 
     const addTask = (text, imageUrl) => {
         if (
@@ -297,22 +299,39 @@ const CreateSchedule = ({ navigation }) => {
                                     onChangeText={(val) => setTitle(val)}
                                 />
                             </View>
+
                             {/* New Task Input */}
-                            <View
-                                style={
-                                    type === 'text'
-                                        ? {
-                                              flex: 1,
-                                              margin: 0,
-                                              width: '100%',
-                                          }
-                                        : { flex: 2 }
-                                }>
-                                <CreateTask
-                                    addTask={addTask}
-                                    onChange={() => setPendingTask(true)}
-                                />
-                            </View>
+                            {type !== 'text' && (
+                                <TouchableOpacity
+                                    style={styles.toggleButton}
+                                    onPress={() => {
+                                        setHideCreateTask(!hideCreateTask);
+                                    }}>
+                                    {hideCreateTask ? (
+                                        <Ionicons name='add' size={24} />
+                                    ) : (
+                                        <AntDesign name='close' size={20} />
+                                    )}
+                                </TouchableOpacity>
+                            )}
+
+                            {!hideCreateTask && (
+                                <View
+                                    style={
+                                        type === 'text'
+                                            ? {
+                                                  flex: 1,
+                                                  margin: 0,
+                                                  width: '100%',
+                                              }
+                                            : { flex: 2 }
+                                    }>
+                                    <CreateTask
+                                        addTask={addTask}
+                                        onChange={() => setPendingTask(true)}
+                                    />
+                                </View>
+                            )}
                         </>
                     </DismissKeyboard>
 
