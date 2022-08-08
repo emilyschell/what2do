@@ -134,7 +134,11 @@ const CreateTask = ({ addTask, onChange }) => {
                             <ImageBackground
                                 style={[
                                     styles.image,
-                                    { height: 120, width: 120, opacity: 0.7 },
+                                    {
+                                        height: 120,
+                                        width: 120,
+                                        opacity: 0.7,
+                                    },
                                 ]}
                                 source={{ uri: imageUrl }}>
                                 <Entypo name='camera' size={40} />

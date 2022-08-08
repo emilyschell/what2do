@@ -30,6 +30,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { DismissKeyboard } from '../../helpers/dismissKeyboard';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import CustomModal from '../../components/CustomModal';
 
 const EditSchedule = ({ navigation }) => {
@@ -55,6 +56,7 @@ const EditSchedule = ({ navigation }) => {
     const [discardModalShown, setDiscardModalShown] = useState(false);
     const [pendingTask, setPendingTask] = useState(false);
     const [unaddedTaskModalShown, setUnaddedTaskModalShown] = useState(false);
+    const [hideCreateTask, setHideCreateTask] = useState(false);
 
     useEffect(() => {
         const getSchedule = async () => {
@@ -546,21 +548,40 @@ const EditSchedule = ({ navigation }) => {
                             {confirmUnaddedTaskModal}
 
                             {/* New Task Input */}
-                            <View
-                                style={[
-                                    type === 'text'
-                                        ? {
-                                              flex: 1,
-                                              margin: 0,
-                                              width: '100%',
-                                          }
-                                        : { flex: 2, marginTop: 20 },
-                                ]}>
-                                <CreateTask
-                                    addTask={addTask}
-                                    onChange={() => setPendingTask(true)}
-                                />
-                            </View>
+                            {type !== 'text' && (
+                                <TouchableOpacity
+                                    style={styles.toggleButton}
+                                    onPress={() => {
+                                        setHideCreateTask(!hideCreateTask);
+                                    }}>
+                                    {hideCreateTask ? (
+                                        <Ionicons name='add' size={24} />
+                                    ) : (
+                                        <AntDesign name='close' size={20} />
+                                    )}
+                                </TouchableOpacity>
+                            )}
+
+                            {!hideCreateTask && (
+                                <View
+                                    style={[
+                                        type === 'text'
+                                            ? {
+                                                  flex: 1,
+                                                  margin: 0,
+                                                  width: '100%',
+                                              }
+                                            : {
+                                                  flex: 2,
+                                                  marginTop: 20,
+                                              },
+                                    ]}>
+                                    <CreateTask
+                                        addTask={addTask}
+                                        onChange={() => setPendingTask(true)}
+                                    />
+                                </View>
+                            )}
                         </>
                     </DismissKeyboard>
 
