@@ -308,9 +308,9 @@ const CreateSchedule = ({ navigation }) => {
                                         setHideCreateTask(!hideCreateTask);
                                     }}>
                                     {hideCreateTask ? (
-                                        <Ionicons name='add' size={24} />
+                                        <AntDesign name='caretdown' size={24} />
                                     ) : (
-                                        <AntDesign name='close' size={20} />
+                                        <AntDesign name='caretup' size={24} />
                                     )}
                                 </TouchableOpacity>
                             )}

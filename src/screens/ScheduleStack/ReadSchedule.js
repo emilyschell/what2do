@@ -134,7 +134,11 @@ const ReadSchedule = ({ navigation }) => {
                         <Text
                             style={[
                                 styles.largeText,
-                                { margin: 0, textAlign: 'center' },
+                                {
+                                    margin: 0,
+                                    marginRight: 8,
+                                    textAlign: 'center',
+                                },
                             ]}>
                             {title}
                         </Text>
