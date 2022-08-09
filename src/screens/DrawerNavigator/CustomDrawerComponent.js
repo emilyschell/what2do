@@ -5,7 +5,6 @@ import {
     DrawerContentScrollView,
     DrawerItemList,
 } from '@react-navigation/drawer';
-
 import CustomSmallButton from '../../components/CustomSmallButton';
 import { auth } from '../../firebase/firebase';
 import { signOut } from 'firebase/auth';
@@ -21,28 +20,30 @@ const CustomDrawerNavigator = (props) => {
 
     return (
         <View style={[styles.container, { padding: 0 }]}>
-            <DrawerContentScrollView
-                {...props}
-                contentContainerStyle={styles.container}>
-                <SafeAreaView style={{ backgroundColor: colors.bgMain }} />
-                <View
-                    style={{
-                        alignItems: 'center',
-                        backgroundColor: colors.bgMain,
-                        flex: 1,
-                        justifyContent: 'center',
-                        paddingTop: Platform.OS == 'android' ? 20 : 0,
-                    }}>
-                    <Text style={styles.largeText}>What2Do</Text>
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                        width: 280,
-                    }}>
-                    <DrawerItemList {...props} />
-                </View>
-            </DrawerContentScrollView>
+            <View style={{ flex: 4 }}>
+                <DrawerContentScrollView
+                    {...props}
+                    contentContainerStyle={[styles.container, { flex: 4 }]}>
+                    <SafeAreaView style={{ backgroundColor: colors.bgMain }} />
+                    <View
+                        style={{
+                            alignItems: 'center',
+                            backgroundColor: colors.bgMain,
+                            // flex: 1,
+                            justifyContent: 'center',
+                            paddingTop: Platform.OS == 'android' ? 20 : 0,
+                        }}>
+                        <Text style={styles.largeText}>What2Do</Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 4,
+                            width: 280,
+                        }}>
+                        <DrawerItemList {...props} />
+                    </View>
+                </DrawerContentScrollView>
+            </View>
             <View
                 style={{
                     flex: 1,

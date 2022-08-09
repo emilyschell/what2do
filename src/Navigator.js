@@ -10,6 +10,13 @@ import OpenFileList from './screens/ScheduleStack/OpenFileList';
 import ReadSchedule from './screens/ScheduleStack/ReadSchedule';
 import EditSchedule from './screens/ScheduleStack/EditSchedule';
 import LinkScheduleMenu from './screens/ScheduleStack/LinkScheduleMenu';
+import Home from './screens/DrawerNavigator/Home';
+import ChooseToken from './screens/GoalStack/ChooseToken';
+import CreateGoal from './screens/GoalStack/CreateGoal';
+import EditGoal from './screens/GoalStack/EditGoal';
+import OpenCreateGoal from './screens/GoalStack/OpenCreateGoal';
+import OpenGoal from './screens/GoalStack/OpenGoal';
+import ReadGoal from './screens/GoalStack/ReadGoal';
 import SettingsScreen from './screens/DrawerNavigator/SettingsScreen';
 import CustomDrawerNavigator from './screens/DrawerNavigator/CustomDrawerComponent';
 import { AuthContext } from './contexts/AuthContext';
@@ -77,11 +84,30 @@ const Navigator = () => {
         );
     };
 
+    const GoalStack = () => {
+        return (
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: false,
+                }}>
+                <Stack.Screen
+                    name='OpenCreateGoal'
+                    component={OpenCreateGoal}
+                />
+                <Stack.Screen name='CreateGoal' component={CreateGoal} />
+                <Stack.Screen name='ChooseToken' component={ChooseToken} />
+                <Stack.Screen name='OpenGoal' component={OpenGoal} />
+                <Stack.Screen name='ReadGoal' component={ReadGoal} />
+                <Stack.Screen name='EditGoal' component={EditGoal} />
+            </Stack.Navigator>
+        );
+    };
+
     const DrawerStack = () => {
         return (
             <Drawer.Navigator
                 useLegacyImplementation={true}
-                initialRouteName='Schedules'
+                initialRouteName='Home'
                 drawerContent={(props) => <CustomDrawerNavigator {...props} />}
                 screenOptions={{
                     headerShown: false,
@@ -92,12 +118,26 @@ const Navigator = () => {
                     drawerItemStyle: styles.drawerButton,
                 }}>
                 <Drawer.Screen
+                    name='Home'
+                    component={Home}
+                    options={{
+                        drawerIcon: () => <Ionicons name='home' size={24} />,
+                    }}
+                />
+                <Drawer.Screen
                     name='Schedules'
                     component={ScheduleStack}
                     options={{
                         drawerIcon: () => (
                             <Octicons name='checklist' size={24} />
                         ),
+                    }}
+                />
+                <Drawer.Screen
+                    name='Goals'
+                    component={GoalStack}
+                    options={{
+                        drawerIcon: () => <Octicons name='star' size={24} />,
                     }}
                 />
                 <Drawer.Screen
