@@ -15,6 +15,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { FontAwesome } from '@expo/vector-icons';
+import CustomModal from '../../components/CustomModal';
 
 const ReadGoal = ({ navigation, route }) => {
     const { currentUser } = useContext(AuthContext);
@@ -26,6 +27,7 @@ const ReadGoal = ({ navigation, route }) => {
     const [reward, setReward] = useState('');
     const [earned, setEarned] = useState(0);
     const [tokenUrl, setTokenUrl] = useState('');
+    const [modalShown, setModalShown] = useState(false);
     const { gid } = route.params;
 
     useEffect(() => {
@@ -104,6 +106,22 @@ const ReadGoal = ({ navigation, route }) => {
         });
     };
 
+    const resetModal = (
+        <CustomModal
+            modalShown={modalShown}
+            msg='Are you sure you want to clear all tokens?'
+            lCallback={() => setModalShown(false)}
+            lText='Cancel'
+            rCallback={() => {
+                setEarned(0);
+                setTokens(0);
+                getTokens();
+                setModalShown(false);
+            }}
+            rText='Clear tokens'
+        />
+    );
+
     if (loading) {
         return (
             <View style={styles.container}>
@@ -112,36 +130,26 @@ const ReadGoal = ({ navigation, route }) => {
         );
     } else {
         return (
-            <View style={[styles.container, { paddingTop: 0 }]}>
+            <View style={[styles.container, {}]}>
                 <SafeAreaView />
-                <View
-                    style={{
-                        width: '100%',
-                        alignItems: 'center',
-                        justifySelf: 'flex-start',
-                    }}>
-                    <Text
-                        style={[
-                            styles.largeText,
-                            {
-                                margin: 0,
-                                marginRight: 8,
-                                textAlign: 'center',
-                            },
-                        ]}>
-                        {title}
-                    </Text>
-                </View>
-                <View
-                    style={[
-                        styles.scheduleView,
-                        {
-                            height: 200,
-                            padding: 15,
-                            alignItems: 'flex-start',
-                            justifyContent: 'center',
-                        },
-                    ]}>
+                <View style={[styles.goalView, {}]}>
+                    <View
+                        style={{
+                            width: '100%',
+                            alignItems: 'center',
+                        }}>
+                        <Text
+                            style={[
+                                styles.largeText,
+                                {
+                                    margin: 0,
+                                    marginRight: 8,
+                                    textAlign: 'center',
+                                },
+                            ]}>
+                            {title}
+                        </Text>
+                    </View>
                     <View
                         style={{
                             alignSelf: 'flex-end',
@@ -187,6 +195,7 @@ const ReadGoal = ({ navigation, route }) => {
                         </Text>
                     </Text>
                 </View>
+                {resetModal}
                 <ScrollView
                     contentContainerStyle={{
                         flexDirection: 'row',
@@ -198,12 +207,13 @@ const ReadGoal = ({ navigation, route }) => {
                     {getTokens()}
                 </ScrollView>
                 <CustomSmallButton
-                    onPress={() => {
-                        setEarned(0);
-                        setTokens(0);
-                        getTokens();
-                    }}
-                    style={{ marginBottom: 10 }}>
+                    position='right'
+                    onPress={() => setModalShown(true)}
+                    style={{
+                        backgroundColor: colors.bgError,
+                        height: 30,
+                        width: 70,
+                    }}>
                     <Text style={styles.smallButtonText}>Reset</Text>
                 </CustomSmallButton>
             </View>

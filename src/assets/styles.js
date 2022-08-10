@@ -252,6 +252,17 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black',
     },
+    goalView: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        borderColor: colors.borderColor,
+        borderWidth: 1,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        padding: 10,
+        paddingTop: 0,
+        width: '90%',
+    },
     formLine: {
         alignItems: 'center',
         flexDirection: 'row',
