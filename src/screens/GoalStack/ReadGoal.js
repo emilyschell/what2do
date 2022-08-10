@@ -194,7 +194,7 @@ const ReadGoal = ({ navigation, route }) => {
                         setTokens();
                         getTokens();
                     }}>
-                    <Text style={styles.smallButtonText}>Clear Tokens</Text>
+                    <Text style={styles.smallButtonText}>Reset</Text>
                 </CustomSmallButton>
             </View>
         );

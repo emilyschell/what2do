@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { styles, colors } from '../../assets/styles';
 import CustomSmallButton from '../../components/CustomSmallButton';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useActionSheet } from '@expo/react-native-action-sheet';
@@ -28,9 +28,28 @@ const ChooseToken = ({ navigation, route }) => {
     const { currentUser } = useContext(AuthContext);
     const uid = currentUser.uid;
     const { gid } = route.params;
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [tokenUrl, setTokenUrl] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
+
+    useEffect(() => {
+        const getUrl = async () => {
+            const goalRef = doc(db, 'users', uid, 'goals', gid);
+            try {
+                const goal = await getDoc(goalRef);
+                if (goal.exists()) {
+                    const goalData = goal.data();
+                    setTokenUrl(goalData.tokenUrl);
+                    setLoading(false);
+                }
+            } catch (error) {
+                setTokenUrl('');
+                console.log('error getting url: ', error);
+                setLoading(false);
+            }
+        };
+        getUrl();
+    }, []);
 
     const uploadImage = async (image) => {
         let fileName = new Date().toString().replace(/\s+/g, '') + '.jpg';
@@ -145,7 +164,7 @@ const ChooseToken = ({ navigation, route }) => {
         }
     };
 
-    const makeBoard = async () => {
+    const applyToken = async () => {
         const goalRef = doc(db, 'users', uid, 'goals', gid);
         await setDoc(goalRef, { tokenUrl }, { merge: true });
         navigation.navigate('ReadGoal', { gid });
@@ -241,9 +260,21 @@ const ChooseToken = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
                 <CustomSmallButton onPress={() => addToken()}>
-                    <Text style={styles.smallButtonText}>Upload...</Text>
+                    <Text style={styles.smallButtonText}>Custom...</Text>
                 </CustomSmallButton>
-                <Image style={styles.token} source={{ uri: tokenUrl }} />
+                <Image
+                    style={[
+                        styles.token,
+                        {
+                            borderColor: colors.bgSuccess,
+                            borderWidth: 2,
+                            height: 90,
+                            width: 90,
+                            marginTop: 15,
+                        },
+                    ]}
+                    source={{ uri: tokenUrl }}
+                />
 
                 {/* Small Bottom Buttons */}
                 <CustomSmallButton
@@ -258,12 +289,12 @@ const ChooseToken = ({ navigation, route }) => {
                     position='right'
                     onPress={() => {
                         if (tokenUrl) {
-                            makeBoard();
+                            applyToken();
                         } else {
                             alert('Please select or upload a token first.');
                         }
                     }}>
-                    <Text style={styles.smallButtonText}>Create</Text>
+                    <Text style={styles.smallButtonText}>Select</Text>
                 </CustomSmallButton>
             </View>
         );
