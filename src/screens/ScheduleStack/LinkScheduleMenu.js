@@ -79,7 +79,7 @@ const LinkScheduleMenu = ({ navigation, route }) => {
                         renderItem={({ item }) => {
                             return (
                                 <FileItem
-                                    sid={item.sid}
+                                    id={item.sid}
                                     title={item.title}
                                     onPressCallback={linkSchedule}
                                     showDelete={false}

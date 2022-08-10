@@ -2,37 +2,32 @@ import { styles } from '../assets/styles';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
-import { ScheduleContext } from '../contexts/ScheduleContext';
 import { FontAwesome } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
 const FileItem = ({
     title,
-    sid,
+    id,
     onPressCallback,
     showDelete,
-    deleteSched,
+    deleteCallback,
     showEdit,
+    editCallback,
     currentSubschedule,
 }) => {
-    const { setSid } = useContext(ScheduleContext);
-    const navigation = useNavigation();
-
     return (
         <View style={styles.fileItem}>
             <TouchableOpacity
                 style={{ flexDirection: 'row' }}
-                onPress={() => onPressCallback(sid)}>
+                onPress={() => onPressCallback(id)}>
                 <Text
                     style={[
                         styles.taskText,
-                        currentSubschedule === sid ? { marginRight: 10 } : null,
+                        currentSubschedule === id ? { marginRight: 10 } : null,
                     ]}>
                     {title}
                 </Text>
-                {currentSubschedule === sid && (
+                {currentSubschedule === id && (
                     <FontAwesome name='hand-o-left' size={30} />
                 )}
             </TouchableOpacity>
@@ -43,7 +38,7 @@ const FileItem = ({
                     flexDirection: 'row',
                 }}>
                 {showDelete && (
-                    <TouchableOpacity onPress={() => deleteSched(sid)}>
+                    <TouchableOpacity onPress={() => deleteCallback(id)}>
                         <Ionicons
                             name='ios-trash-outline'
                             size={24}
@@ -52,11 +47,7 @@ const FileItem = ({
                     </TouchableOpacity>
                 )}
                 {showEdit && (
-                    <TouchableOpacity
-                        onPress={() => {
-                            setSid(sid);
-                            navigation.navigate('EditSchedule');
-                        }}>
+                    <TouchableOpacity onPress={() => editCallback(id)}>
                         <Entypo name='edit' size={24} />
                     </TouchableOpacity>
                 )}
@@ -67,10 +58,11 @@ const FileItem = ({
 
 FileItem.propTypes = {
     title: PropTypes.string.isRequired,
-    sid: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     onPressCallback: PropTypes.func.isRequired,
     showDelete: PropTypes.bool.isRequired,
-    deleteSched: PropTypes.func,
+    deleteCallback: PropTypes.func,
+    editCallback: PropTypes.func,
     showEdit: PropTypes.bool.isRequired,
     currentSubschedule: PropTypes.string,
 };

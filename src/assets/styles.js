@@ -286,6 +286,6 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         height: 75,
         width: 75,
-        margin: 15,
+        margin: 10,
     },
 });

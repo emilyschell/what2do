@@ -143,12 +143,16 @@ const OpenFileList = ({ navigation }) => {
                         renderItem={({ item }) => {
                             return (
                                 <FileItem
-                                    sid={item.sid}
+                                    id={item.sid}
                                     title={item.title}
                                     onPressCallback={selectSchedule}
                                     showDelete={true}
-                                    deleteSched={onPressDelete}
+                                    deleteCallback={onPressDelete}
                                     showEdit={true}
+                                    editCallback={(id) => {
+                                        setSid(id);
+                                        navigation.navigate('EditSchedule');
+                                    }}
                                 />
                             );
                         }}

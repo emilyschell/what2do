@@ -7,6 +7,7 @@ import {
     SafeAreaView,
     ActivityIndicator,
     Image,
+    ScrollView,
 } from 'react-native';
 import CustomSmallButton from '../../components/CustomSmallButton';
 import { db } from '../../firebase/firebase';
@@ -70,9 +71,11 @@ const ReadGoal = ({ navigation, route }) => {
                 <View key={index}>
                     <TouchableOpacity
                         onPress={() => {
-                            setEarned((prev) => prev + 1);
-                            setTokens();
-                            getTokens();
+                            if (earned < quantity) {
+                                setEarned((prev) => prev + 1);
+                                setTokens();
+                                getTokens();
+                            }
                         }}>
                         <Image
                             source={{ uri: tokenUrl }}
@@ -120,7 +123,16 @@ const ReadGoal = ({ navigation, route }) => {
                         {title}
                     </Text>
                 </View>
-                <View style={[styles.scheduleView, { height: 200 }]}>
+                <View
+                    style={[
+                        styles.scheduleView,
+                        {
+                            height: 200,
+                            padding: 15,
+                            alignItems: 'flex-start',
+                            justifyContent: 'center',
+                        },
+                    ]}>
                     <View
                         style={{
                             alignSelf: 'flex-end',
@@ -130,28 +142,44 @@ const ReadGoal = ({ navigation, route }) => {
                             width: 20,
                             zIndex: 1000,
                         }}>
-                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <TouchableOpacity
+                            onPress={() =>
+                                navigation.navigate('OpenCreateGoal')
+                            }>
                             <FontAwesome name='close' size={24} />
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.formText}>
-                        <Text style={{ fontWeight: 'bold' }}>Do: </Text>
-                        {action} {quantity} {unit}
+                    <Text style={[styles.formText, { marginVertical: 10 }]}>
+                        Do:{' '}
+                        <Text style={{ fontFamily: 'Arial' }}>{action} </Text>
                     </Text>
-                    <Text style={styles.formText}>
-                        <Text style={{ fontWeight: 'bold' }}>Get: </Text>
-                        {reward}
+                    <Text style={[styles.formText, { marginBottom: 10 }]}>
+                        For:{' '}
+                        <Text style={{ fontFamily: 'Arial' }}>
+                            {' '}
+                            {quantity} {unit}
+                        </Text>
                     </Text>
-                    <Text style={styles.formText}>
-                        <Text style={{ fontWeight: 'bold' }}>Progress: </Text>
-                        <Text style={{ color: colors.bgSuccess }}>
-                            {earned}
-                        </Text>{' '}
-                        of {quantity}
+                    <Text style={[styles.formText, { marginBottom: 10 }]}>
+                        Get:{' '}
+                        <Text style={{ fontFamily: 'Arial' }}>{reward}</Text>
+                    </Text>
+                    <Text style={[styles.formText, { marginBottom: 10 }]}>
+                        Progress:{' '}
+                        <Text style={{ fontFamily: 'Arial' }}>
+                            <Text
+                                style={{
+                                    color: colors.bgSuccess,
+                                    fontWeight: 'bold',
+                                }}>
+                                {earned}
+                            </Text>{' '}
+                            of {quantity}
+                        </Text>
                     </Text>
                 </View>
-                <View
-                    style={{
+                <ScrollView
+                    contentContainerStyle={{
                         flexDirection: 'row',
                         flexWrap: 'wrap',
                         justifyContent: 'center',
@@ -159,7 +187,7 @@ const ReadGoal = ({ navigation, route }) => {
                         width: 350,
                     }}>
                     {getTokens()}
-                </View>
+                </ScrollView>
                 <CustomSmallButton
                     onPress={() => {
                         setEarned(0);
