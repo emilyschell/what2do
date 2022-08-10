@@ -136,9 +136,19 @@ const CreateTask = ({ addTask, onChange }) => {
                                 style={[
                                     styles.image,
                                     {
+                                        borderWidth: 0,
                                         height: 120,
                                         width: 120,
-                                        opacity: 0.7,
+                                    },
+                                ]}
+                                imageStyle={[
+                                    styles.image,
+                                    {
+                                        height: 120,
+                                        width: 120,
+                                        margin: 0,
+                                        marginLeft: 0,
+                                        opacity: 0.5,
                                     },
                                 ]}
                                 source={{ uri: imageUrl }}>
@@ -185,13 +195,22 @@ const CreateTask = ({ addTask, onChange }) => {
                                     style={[
                                         styles.image,
                                         {
+                                            borderWidth: 0,
                                             height: 120,
                                             width: 120,
-                                            opacity: 0.7,
                                         },
                                     ]}
-                                    source={{ uri: imageUrl }}
-                                    resizeMode='contain'>
+                                    imageStyle={[
+                                        styles.image,
+                                        {
+                                            height: 120,
+                                            width: 120,
+                                            margin: 0,
+                                            marginLeft: 0,
+                                            opacity: 0.5,
+                                        },
+                                    ]}
+                                    source={{ uri: imageUrl }}>
                                     <Entypo name='camera' size={40} />
                                 </ImageBackground>
                             </TouchableOpacity>

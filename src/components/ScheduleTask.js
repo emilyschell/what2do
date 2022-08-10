@@ -130,7 +130,7 @@ const ScheduleTask = ({ task }) => {
                         <Image
                             style={[
                                 styles.image,
-                                complete ? { opacity: 0.7 } : null,
+                                complete ? { opacity: 0.5 } : null,
                             ]}
                             source={{ uri: task.image }}
                         />
