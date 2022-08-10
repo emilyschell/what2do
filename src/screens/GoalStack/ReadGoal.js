@@ -53,9 +53,9 @@ const ReadGoal = ({ navigation, route }) => {
         getGoal();
     }, []);
 
-    const setTokens = async () => {
+    const setTokens = async (newEarned) => {
         const goalRef = doc(db, 'users', currentUser.uid, 'goals', gid);
-        await setDoc(goalRef, { earned }, { merge: true });
+        await setDoc(goalRef, { earned: newEarned }, { merge: true });
     };
 
     const getTokens = () => {
@@ -72,23 +72,32 @@ const ReadGoal = ({ navigation, route }) => {
                     <TouchableOpacity
                         onPress={() => {
                             if (earned < quantity) {
+                                setTokens(earned + 1);
                                 setEarned((prev) => prev + 1);
-                                setTokens();
                                 getTokens();
                             }
-                        }}>
-                        <Image
-                            source={{ uri: tokenUrl }}
-                            style={[
-                                styles.token,
-                                token === 'earned'
-                                    ? {
-                                          borderColor: colors.bgSuccess,
-                                          borderWidth: 2,
-                                      }
-                                    : { opacity: 0.1 },
-                            ]}
-                        />
+                        }}
+                        style={[
+                            styles.token,
+                            token === 'earned'
+                                ? {
+                                      borderColor: colors.bgSuccess,
+                                  }
+                                : null,
+                        ]}>
+                        {token === 'earned' ? (
+                            <Image
+                                source={{ uri: tokenUrl }}
+                                style={{
+                                    borderRadius: 10,
+                                    height: 73,
+                                    width: 73,
+                                    margin: 0,
+                                    borderColor: colors.bgSuccess,
+                                    borderWidth: 2,
+                                }}
+                            />
+                        ) : null}
                     </TouchableOpacity>
                 </View>
             );
@@ -191,7 +200,7 @@ const ReadGoal = ({ navigation, route }) => {
                 <CustomSmallButton
                     onPress={() => {
                         setEarned(0);
-                        setTokens();
+                        setTokens(0);
                         getTokens();
                     }}
                     style={{ marginBottom: 10 }}>
