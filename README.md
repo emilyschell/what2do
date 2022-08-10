@@ -4,9 +4,25 @@ Capstone project for Ada Developers Academy cohort 17. A user-friendly task mana
 
 ## About the App
 
-What2Do is designed for users on the Autism Spectrum or with other neurodifferences, who benefit from uncluttered, concrete visual references for what to expect, how to spend their time, and steps for completing daily tasks. The app is designed with the presence of a support person or caregiver in mind, but can equally be used independently by target users, or users could gradually grow from a read-only role to eventually making and maintaining their own schedules. The app can create, read, edit, delete and link visual checklists comprised of text, photos, or both. Photos can be uploaded from the user's image library or taken with the device camera. Schedules can be linked to sub-schedules to break down tasks into their composite steps and then navigate back to the parent schedule. The user interface is designed to be as user-friendly, undistracting and uncomplicated as possible.
+### Target Users
 
-This is phase 1 of a larger project concept that would also integrate token boards and social stories. Full design concept can be found [here](https://www.figma.com/file/LaCgoyu2Dk6wV2suQgrf9p/What2Do?node-id=2%3A2).
+What2Do is designed for users on the Autism Spectrum or with other neurodifferences, who benefit from uncluttered, concrete visual references for what to expect, how to spend their time, steps for completing daily tasks, and progress toward a goal. The app is designed with the presence of a support person or caregiver in mind, but can equally be used independently by target users, or users could gradually grow from a read-only role to eventually making and maintaining their own schedules and goals.
+
+### Schedules
+
+The app can create, read, edit, delete and link visual checklists comprised of text, photos, or both. Photos can be uploaded from the user's image library or taken with the device camera. Schedules can be linked to sub-schedules to break down tasks into their composite steps and then navigate back to the parent schedule.
+
+### Goals
+
+The app can also create, read, edit, delete and maintain progress on token boards representing a measurable goal. Users can select from a small menu of pre-loaded token options, or upload a custom token using the device camera or image library.
+
+### UI
+
+The user interface is designed to be as user-friendly, undistracting and uncomplicated as possible. It has many user confirmation checks against accidentally deleting or losing data built in, and aims to be as oops-proof as possible. Although the app could be used by any age group, it is also specifically intended to fill the large gap in availability of non-juvenile learning materials for adults with neurodifferences. It presents as an adult productivity tool, but specifically tailored to the needs of learners on the spectrum, and with a simpler interface than most tools designed for neurotypical adults.
+
+### Future Development
+
+This is the first phase of a larger project concept that would integrate additional features. Full design concept can be found [here](https://www.figma.com/file/LaCgoyu2Dk6wV2suQgrf9p/What2Do?node-id=2%3A2). Feedback and suggestions from prospective users or support people are welcome and hugely helpful for future development of this tool.
 
 ## Demo
 
