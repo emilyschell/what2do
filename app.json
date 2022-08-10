@@ -1,10 +1,12 @@
 {
   "expo": {
-    "name": "what2do",
+    "name": "What2Do",
     "slug": "what2do",
+    "privacy": "public",
+    "description":"A user-friendly task management tool for neurodiverse users",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/icons/favicon-16x16.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/splash.png",
@@ -18,16 +20,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.emilyschell.what2do",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "foregroundImage": "./src/assets/icons/favicon-32x32.png",
+        "backgroundColor": "#E0E5FF"
+      },
+      "package": "com.emilyschell.what2do",
+      "versionCode": 1
     },
     "web": {
-      "favicon": "./src/assets/favicon.png"
+      "favicon": "./src/assets/icons/favicon.ico"
     }
   }
 }

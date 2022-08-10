@@ -3,14 +3,19 @@
 Capstone project for Ada Developers Academy cohort 17. A user-friendly task management tool for neurodiverse users.
 
 ## About the App
-What2Do is designed for users on the Autism Spectrum or with other neurodifferences, who benefit from uncluttered, concrete visual references for what to expect, how to spend their time, and steps for completing daily tasks. The app is designed with the presence of a support person or caregiver in mind, but can equally be used independently by target users, or users could gradually grow from a read-only role to eventually making and maintaining their own schedules. The app can create, read, edit, delete and link visual checklists comprised of text, photos, or both. Photos can be uploaded from the user's image library or taken with the device camera. Schedules can be linked to sub-schedules to break down tasks into their composite steps and then navigate back to the parent schedule. The user interface is designed to be as user-friendly, undistracting and uncomplicated as possible. 
+
+What2Do is designed for users on the Autism Spectrum or with other neurodifferences, who benefit from uncluttered, concrete visual references for what to expect, how to spend their time, and steps for completing daily tasks. The app is designed with the presence of a support person or caregiver in mind, but can equally be used independently by target users, or users could gradually grow from a read-only role to eventually making and maintaining their own schedules. The app can create, read, edit, delete and link visual checklists comprised of text, photos, or both. Photos can be uploaded from the user's image library or taken with the device camera. Schedules can be linked to sub-schedules to break down tasks into their composite steps and then navigate back to the parent schedule. The user interface is designed to be as user-friendly, undistracting and uncomplicated as possible.
 
 This is phase 1 of a larger project concept that would also integrate token boards and social stories. Full design concept can be found [here](https://www.figma.com/file/LaCgoyu2Dk6wV2suQgrf9p/What2Do?node-id=2%3A2).
 
 ## Demo
+
 Video Demo Coming Soon
 
+## [Try out on Android or iOS using Expo Go app](https://expo.dev/@lauraemilyschell/what2do)
+
 ## Dependencies
+
     "@expo/react-native-action-sheet": "^3.13.0",
     "@firebase/storage": "^0.9.9",
     "@react-native-community/checkbox": "^0.5.12",
@@ -41,6 +46,7 @@ Video Demo Coming Soon
     "react-native-web": "0.17.7"
 
 ## Installation
+
 1. Clone this repository.
 2. Install the Expo command line utility by running `npm install -g expo-cli`.
 3. Install dependencies by running `yarn install`.
@@ -50,10 +56,12 @@ Video Demo Coming Soon
 7. For testing on phone, scan the QR code that appears in the Expo metro bundler.
 
 ## Database
+
 This project is currently registered with Firebase as a web app, so no further action needs to be taken to create a database. See the Google Firebase documentation for more information on how the app was registered.
 
 In order to connect to Firebase, the file GoogleService-Info.plist (firebase config file) needs to be saved to the root of the project.
 
 ## Connect
+
 What2Do is developed by [Ada Developers Academy](https://adadevelopersacademy.org/) cohort 17 student Emily Schell as a capstone project.<br>
 I welcome feedback and questions about the app! Please visit http://emilyschell.me/ to reach out.
