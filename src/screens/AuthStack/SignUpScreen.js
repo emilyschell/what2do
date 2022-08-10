@@ -91,6 +91,7 @@ const SignUpScreen = () => {
                     }}>
                     <Text style={styles.smallButtonText}>Email</Text>
                     <TextInput
+                        autoCapitalize='none'
                         style={styles.textInput}
                         placeholder={'enter email'}
                         placeholderTextColor={colors.textInputPlaceholder}
@@ -108,6 +109,7 @@ const SignUpScreen = () => {
                     />
                     <Text style={styles.smallButtonText}>Password</Text>
                     <TextInput
+                        autoCapitalize='none'
                         style={styles.textInput}
                         placeholder='enter password'
                         placeholderTextColor={colors.textInputPlaceholder}
@@ -118,6 +120,7 @@ const SignUpScreen = () => {
                         value={password}
                     />
                     <TextInput
+                        autoCapitalize='none'
                         style={styles.textInput}
                         placeholder='confirm password'
                         placeholderTextColor={colors.textInputPlaceholder}

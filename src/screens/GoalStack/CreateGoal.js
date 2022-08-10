@@ -100,6 +100,7 @@ const CreateGoal = ({ navigation }) => {
                         <View style={styles.formLine}>
                             <Text style={styles.formText}>Do: </Text>
                             <TextInput
+                                autoCapitalize='none'
                                 style={[styles.goalInput, { width: 250 }]}
                                 value={action}
                                 onChangeText={(val) => {
@@ -111,6 +112,7 @@ const CreateGoal = ({ navigation }) => {
                         <View style={styles.formLine}>
                             <Text style={styles.formText}>For: </Text>
                             <TextInput
+                                autoCapitalize='none'
                                 style={styles.goalInput}
                                 placeholder='#'
                                 value={quantity}
@@ -120,6 +122,7 @@ const CreateGoal = ({ navigation }) => {
                                 }}
                             />
                             <TextInput
+                                autoCapitalize='none'
                                 style={styles.goalInput}
                                 placeholder='units'
                                 value={unit}
@@ -132,6 +135,7 @@ const CreateGoal = ({ navigation }) => {
                         <View style={styles.formLine}>
                             <Text style={styles.formText}>Get: </Text>
                             <TextInput
+                                autoCapitalize='none'
                                 style={[styles.goalInput, { width: 250 }]}
                                 value={reward}
                                 onChangeText={(val) => {

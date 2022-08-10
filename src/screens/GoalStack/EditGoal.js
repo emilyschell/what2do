@@ -112,6 +112,7 @@ const EditGoal = ({ navigation, route }) => {
                         <View style={styles.formLine}>
                             <Text style={styles.formText}>Do: </Text>
                             <TextInput
+                                autoCapitalize='none'
                                 style={[styles.goalInput, { width: 250 }]}
                                 value={action}
                                 onChangeText={(val) => {
@@ -123,6 +124,7 @@ const EditGoal = ({ navigation, route }) => {
                         <View style={styles.formLine}>
                             <Text style={styles.formText}>For: </Text>
                             <TextInput
+                                autoCapitalize='none'
                                 style={styles.goalInput}
                                 placeholder='#'
                                 value={quantity}
@@ -132,6 +134,7 @@ const EditGoal = ({ navigation, route }) => {
                                 }}
                             />
                             <TextInput
+                                autoCapitalize='none'
                                 style={styles.goalInput}
                                 placeholder='units'
                                 value={unit}
@@ -144,6 +147,7 @@ const EditGoal = ({ navigation, route }) => {
                         <View style={styles.formLine}>
                             <Text style={styles.formText}>Get: </Text>
                             <TextInput
+                                autoCapitalize='none'
                                 style={[styles.goalInput, { width: 250 }]}
                                 value={reward}
                                 onChangeText={(val) => {

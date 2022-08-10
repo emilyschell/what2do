@@ -71,6 +71,7 @@ const LoginScreen = ({ navigation }) => {
                                 alignItems: 'center',
                             }}>
                             <TextInput
+                                autoCapitalize='none'
                                 style={styles.textInput}
                                 placeholder={'enter email'}
                                 placeholderTextColor={
@@ -82,6 +83,7 @@ const LoginScreen = ({ navigation }) => {
                                 }
                             />
                             <TextInput
+                                autoCapitalize='none'
                                 style={styles.textInput}
                                 placeholder='enter password'
                                 placeholderTextColor={

@@ -102,6 +102,7 @@ const CreateTask = ({ addTask, onChange }) => {
                 return (
                     <View style={styles.taskContainer}>
                         <TextInput
+                            autoCapitalize='none'
                             style={[styles.taskTextInput, { flex: 5 }]}
                             placeholder='enter task'
                             placeholderTextColor={colors.textInputPlaceholder}
@@ -195,6 +196,7 @@ const CreateTask = ({ addTask, onChange }) => {
                                 </ImageBackground>
                             </TouchableOpacity>
                             <TextInput
+                                autoCapitalize='none'
                                 style={[styles.taskTextInput, { width: 200 }]}
                                 placeholder='enter task'
                                 placeholderTextColor={
