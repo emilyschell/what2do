@@ -193,7 +193,8 @@ const ReadGoal = ({ navigation, route }) => {
                         setEarned(0);
                         setTokens();
                         getTokens();
-                    }}>
+                    }}
+                    style={{ marginBottom: 10 }}>
                     <Text style={styles.smallButtonText}>Reset</Text>
                 </CustomSmallButton>
             </View>

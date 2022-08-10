@@ -35,14 +35,24 @@ const Home = ({ navigation }) => {
                 <CustomBigButton
                     style={[
                         styles.bigButtons,
-                        { flexDirection: 'row', justifyContent: 'flex-start' },
+                        { flexDirection: 'row', justifyContent: 'center' },
                     ]}
                     onPress={() => navigation.navigate('Goals')}>
                     <Image
                         source={require('../../assets/icons/GoalsIcon.png')}
-                        style={{ height: 55, width: 48, marginLeft: 10 }}
+                        style={{
+                            height: 55,
+                            width: 48,
+                            marginLeft: 10,
+                        }}
                     />
-                    <Text style={styles.largeText}>Goals</Text>
+                    <Text
+                        style={[
+                            styles.largeText,
+                            { flex: 1, textAlign: 'center' },
+                        ]}>
+                        Goals
+                    </Text>
                 </CustomBigButton>
             </View>
         </View>
