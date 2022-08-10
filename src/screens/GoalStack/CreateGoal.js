@@ -35,6 +35,7 @@ const CreateGoal = ({ navigation }) => {
             quantity,
             unit,
             reward,
+            earned: 0,
         };
 
         // Add goal to user's Firestore collection
