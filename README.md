@@ -12,7 +12,9 @@ This is phase 1 of a larger project concept that would also integrate token boar
 
 Video Demo Coming Soon
 
-## [Try out on Android or iOS using Expo Go app](https://expo.dev/@lauraemilyschell/what2do)
+## Try out on Android or iOS using Expo Go app
+
+Download Expo app to your device and [click here](https://expo.dev/@lauraemilyschell/what2do) to access app.
 
 ## Dependencies
 
