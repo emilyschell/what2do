@@ -26,7 +26,7 @@ This is the first phase of a larger project concept that would integrate additio
 
 ## Demo
 
-Video Demo Coming Soon
+https://youtu.be/CwST9rXPrEM
 
 ## Try out on Android or iOS using Expo Go app
 
