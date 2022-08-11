@@ -114,7 +114,6 @@ const ReadSchedule = ({ navigation }) => {
                 <View style={styles.scheduleView}>
                     <View
                         style={{
-                            alignSelf: 'flex-end',
                             position: 'absolute',
                             right: 10,
                             top: 10,
@@ -135,8 +134,10 @@ const ReadSchedule = ({ navigation }) => {
                             style={[
                                 styles.largeText,
                                 {
+                                    lineHeight: 40,
                                     margin: 0,
                                     marginRight: 8,
+                                    paddingTop: 20,
                                     textAlign: 'center',
                                 },
                             ]}>

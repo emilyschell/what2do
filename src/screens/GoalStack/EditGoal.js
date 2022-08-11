@@ -167,7 +167,7 @@ const EditGoal = ({ navigation, route }) => {
                             if (changesMade) {
                                 setDiscardModalShown(true);
                             } else {
-                                navigation.goBack();
+                                navigation.navigate('OpenCreateGoal');
                             }
                         }}>
                         <Text style={styles.smallButtonText}>Back</Text>
@@ -184,7 +184,7 @@ const EditGoal = ({ navigation, route }) => {
                                 );
                             }
                         }}>
-                        <Text style={styles.smallButtonText}>Create</Text>
+                        <Text style={styles.smallButtonText}>Save</Text>
                     </CustomSmallButton>
                 </View>
             </DismissKeyboard>

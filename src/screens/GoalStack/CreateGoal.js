@@ -172,7 +172,7 @@ const CreateGoal = ({ navigation }) => {
                                 );
                             }
                         }}>
-                        <Text style={styles.smallButtonText}>Create</Text>
+                        <Text style={styles.smallButtonText}>Save</Text>
                     </CustomSmallButton>
                 </View>
             </DismissKeyboard>

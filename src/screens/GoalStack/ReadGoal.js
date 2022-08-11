@@ -70,37 +70,29 @@ const ReadGoal = ({ navigation, route }) => {
         }
         return tokenArray.map((token, index) => {
             return (
-                <View key={index}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (earned < quantity) {
-                                setTokens(earned + 1);
-                                setEarned((prev) => prev + 1);
-                                getTokens();
-                            }
-                        }}
-                        style={[
-                            styles.token,
-                            token === 'earned'
-                                ? {
-                                      borderColor: colors.bgSuccess,
-                                  }
-                                : null,
-                        ]}>
-                        {token === 'earned' ? (
-                            <Image
-                                source={{ uri: tokenUrl }}
-                                style={{
-                                    borderRadius: 10,
-                                    height: 73,
-                                    width: 73,
-                                    margin: 0,
-                                    borderColor: colors.bgSuccess,
-                                    borderWidth: 2,
-                                }}
-                            />
-                        ) : null}
-                    </TouchableOpacity>
+                <View
+                    key={index}
+                    style={[
+                        styles.token,
+                        token === 'earned'
+                            ? {
+                                  borderColor: colors.bgSuccess,
+                              }
+                            : null,
+                    ]}>
+                    {token === 'earned' ? (
+                        <Image
+                            source={{ uri: tokenUrl }}
+                            style={{
+                                borderRadius: 10,
+                                height: 73,
+                                width: 73,
+                                margin: 0,
+                                borderColor: colors.bgSuccess,
+                                borderWidth: 2,
+                            }}
+                        />
+                    ) : null}
                 </View>
             );
         });
@@ -130,29 +122,11 @@ const ReadGoal = ({ navigation, route }) => {
         );
     } else {
         return (
-            <View style={[styles.container, {}]}>
+            <View style={styles.container}>
                 <SafeAreaView />
-                <View style={[styles.goalView, {}]}>
+                <View style={styles.goalView}>
                     <View
                         style={{
-                            width: '100%',
-                            alignItems: 'center',
-                        }}>
-                        <Text
-                            style={[
-                                styles.largeText,
-                                {
-                                    margin: 0,
-                                    marginRight: 8,
-                                    textAlign: 'center',
-                                },
-                            ]}>
-                            {title}
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            alignSelf: 'flex-end',
                             position: 'absolute',
                             right: 10,
                             top: 10,
@@ -165,6 +139,25 @@ const ReadGoal = ({ navigation, route }) => {
                             }>
                             <FontAwesome name='close' size={24} />
                         </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            width: '100%',
+                            alignItems: 'center',
+                        }}>
+                        <Text
+                            style={[
+                                styles.largeText,
+                                {
+                                    lineHeight: 40,
+                                    paddingTop: 20,
+                                    margin: 0,
+                                    marginRight: 20,
+                                    textAlign: 'center',
+                                },
+                            ]}>
+                            {title}
+                        </Text>
                     </View>
                     <Text style={[styles.formText, { marginVertical: 10 }]}>
                         Do:{' '}
@@ -206,6 +199,27 @@ const ReadGoal = ({ navigation, route }) => {
                     }}>
                     {getTokens()}
                 </ScrollView>
+                <CustomSmallButton
+                    position='right'
+                    onPress={() => {
+                        if (earned < quantity) {
+                            setTokens(earned + 1);
+                            setEarned((prev) => prev + 1);
+                            getTokens();
+                        }
+                    }}
+                    style={{
+                        alignItems: 'center',
+                        backgroundColor: colors.bgSuccess,
+                        bottom: 40,
+                        right: 10,
+                        height: 50,
+                        width: 50,
+                    }}>
+                    <Text style={[styles.addButtonText, { fontSize: 35 }]}>
+                        +
+                    </Text>
+                </CustomSmallButton>
                 <CustomSmallButton
                     position='right'
                     onPress={() => setModalShown(true)}

@@ -280,7 +280,7 @@ const ChooseToken = ({ navigation, route }) => {
                 <CustomSmallButton
                     position='left'
                     onPress={() => {
-                        navigation.goBack();
+                        navigation.navigate('EditGoal', { gid });
                     }}>
                     <Text style={styles.smallButtonText}>Back</Text>
                 </CustomSmallButton>
