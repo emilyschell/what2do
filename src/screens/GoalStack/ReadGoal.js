@@ -122,7 +122,7 @@ const ReadGoal = ({ navigation, route }) => {
         );
     } else {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, { paddingTop: 0 }]}>
                 <SafeAreaView />
                 <View style={styles.goalView}>
                     <View
@@ -187,18 +187,30 @@ const ReadGoal = ({ navigation, route }) => {
                             of {quantity}
                         </Text>
                     </Text>
+                    <ScrollView
+                        contentContainerStyle={{
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                        {getTokens()}
+                    </ScrollView>
                 </View>
                 {resetModal}
-                <ScrollView
-                    contentContainerStyle={{
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: 350,
+
+                <CustomSmallButton
+                    position='left'
+                    onPress={() => setModalShown(true)}
+                    style={{
+                        backgroundColor: colors.bgError,
+                        height: 30,
+                        right: 10,
+                        bottom: -10,
+                        width: 70,
                     }}>
-                    {getTokens()}
-                </ScrollView>
+                    <Text style={styles.smallButtonText}>Reset</Text>
+                </CustomSmallButton>
                 <CustomSmallButton
                     position='right'
                     onPress={() => {
@@ -211,24 +223,14 @@ const ReadGoal = ({ navigation, route }) => {
                     style={{
                         alignItems: 'center',
                         backgroundColor: colors.bgSuccess,
-                        bottom: 40,
-                        right: 10,
+                        bottom: -10,
                         height: 50,
+                        left: 10,
                         width: 50,
                     }}>
                     <Text style={[styles.addButtonText, { fontSize: 35 }]}>
                         +
                     </Text>
-                </CustomSmallButton>
-                <CustomSmallButton
-                    position='right'
-                    onPress={() => setModalShown(true)}
-                    style={{
-                        backgroundColor: colors.bgError,
-                        height: 30,
-                        width: 70,
-                    }}>
-                    <Text style={styles.smallButtonText}>Reset</Text>
                 </CustomSmallButton>
             </View>
         );

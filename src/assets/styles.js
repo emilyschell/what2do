@@ -259,6 +259,7 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         backgroundColor: '#fff',
+        height: '90%',
         padding: 10,
         paddingTop: 0,
         width: '90%',
